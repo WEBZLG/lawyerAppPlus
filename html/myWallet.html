@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>我的钱包</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+	<body>
+		<div class="paysuccess walletbox">
+			<div class="successtext wallet">
+				<div class="nick-icon"><img src="../images/money1.png"></div>
+				<h4>我的收益</h4>
+				<h4>￥1889</h4>
+			</div>
+			<div class="">
+				<button type="button" class="mui-btn walletbtn" id="deposit">钱包提现</button>
+			</div>
+			<div class="">
+				<button type="button" class="mui-btn walletbtn" id="earnings">收益明细</button>
+			</div>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			// 返回首页
+			mui(".paysuccess").on("tap", "#deposit", function() {
+				mui.openWindowWithTitle({
+					url: "deposit.html",
+					id: "deposit.html",
+					styles: {},
+					extras: {
+						// 打开页面的同时，向新页面传递数据。
+						newsId: "0"
+					}
+				}, {
+					//标题栏的背景色和底边线配置
+					backgroundColor: "#ffffff",
+					// bottomBorderColor:"#267CFB",
+					title: {
+						//标题文字的内容和样式配置
+						text: "提现",
+						styles: {
+							color: "#333333"
+						}
+					},
+					back: {
+						image: {
+							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+							imgSrc: "../images/left-icon.png"
+						}
+					}
+				})
+			})
+			mui(".paysuccess").on("tap", "#earnings", function() {
+				mui.openWindowWithTitle({
+					url: "earningsdetails.html",
+					id: "earningsdetails.html",
+					styles: {},
+					extras: {
+						// 打开页面的同时，向新页面传递数据。
+						newsId: "0"
+					}
+				}, {
+					//标题栏的背景色和底边线配置
+					backgroundColor: "#ffffff",
+					// bottomBorderColor:"#267CFB",
+					title: {
+						//标题文字的内容和样式配置
+						text: "收益明细",
+						styles: {
+							color: "#333333"
+						}
+					},
+					back: {
+						image: {
+							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+							imgSrc: "../images/left-icon.png"
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

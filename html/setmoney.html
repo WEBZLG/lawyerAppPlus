@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>设置金额</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+
+	<body>
+		<div class="deposit paysuccess">
+			<div class="">
+				<div class="mui-input-row">
+					<label>服务金额</label>
+					<input type="text" id="" placeholder="请输入服务金额">
+				</div>
+				<div class="mui-input-row">
+					<label>单位</label>
+					<select name="">
+						<option value="">每12小时</option>
+						<option value="">每份</option>
+					</select>
+					<span class="mui-icon mui-icon-arrowdown"></span>
+				</div>
+			</div>
+			<div class="dbbtn">
+				<button type="button" class="mui-btn" onclick="mui.back();">取消</button>
+				<button type="button" class="mui-btn">保存</button>
+			</div>
+		</div>
+
+
+		<script src="../js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui("body").on("tap", ".depositbtn", function() {
+				mui.openWindow('depositsuccess.html','depositsuccess',{})
+			});
+		</script>
+	</body>
+
+</html>

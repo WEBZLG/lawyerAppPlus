@@ -1,0 +1,281 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>合同定制列表</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!-- <link rel="stylesheet" type="text/css" href="../css/mui.imageviewer.css" /> -->
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+
+	<body>
+		<div class="myorderlist" id="app">
+			<div class="orderlistitem" v-for="item in datalist" :key="item.id">
+				<div class="orderreference" :id="item.id">
+					<div class="ordernum">
+						<p>订单编号：</p>
+						<p>{{item.payMerchantNumber}}</p></div>
+					<em class="orangecolor">{{item.money}}元</em>
+					<div class="orderstatus orangecolor" v-if="item.payState==0">待支付</div>
+					<div class="orderstatus bluecolor" v-if="item.payState==1">已支付</div>
+					<div class="orderstatus redcolor" v-if="item.payState==2">退款中</div>
+					<div class="orderstatus" v-if="item.payState==3">已经退款</div>
+				</div>
+				<div class="orderquestion">
+					<label>问题内容</label>
+					<p class="ordercontent">{{item.content}}</p>
+				</div>
+				<div class="orderchange">
+					<div class="ordertime">{{item.updateTime}}</div>
+					<div class="orderaction" v-if="item.payState==0">
+						<!-- <button type="button" class="mui-btn"></button> -->
+						<button type="button" class="mui-btn" id="gobuy" :num="item.payMerchantNumber">去支付</button>
+					</div>
+					<!-- 					<div class="orderaction">
+						<button type="button" class="mui-btn">取消退款</button>
+						<button type="button" class="mui-btn">查看物流</button>
+					</div>
+					<div class="orderaction">
+						<button type="button" class="mui-btn drawback">申请退款</button>
+						<button type="button" class="mui-btn">查看物流</button>
+						<button type="button" class="mui-btn">确认收到</button>
+					</div> -->
+				</div>
+			</div>
+			<!-- 			<div class="orderlistitem">
+				<div class="orderreference">
+					<div class="ordernum">订单编号：2019017150536290007</div>
+					<em class="orangecolor">298元</em>
+					<div class="orderstatus redcolor">退款中</div>
+				</div>
+				<div class="orderquestion">
+					<label>问题内容</label>
+					<p class="ordercontent">您好请问邻居家总在半夜装修我可以告他吗？已经好几...</p>
+				</div>
+				<div class="orderchange">
+					<div class="ordertime">10-18 11:01</div>
+					<div class="orderaction">
+						<button type="button" class="mui-btn">取消退款</button>
+						<button type="button" class="mui-btn">查看物流</button>
+					</div>
+				</div>
+			</div>
+			<div class="orderlistitem">
+				<div class="orderreference">
+					<div class="ordernum">订单编号：2019017150536290007</div>
+					<em class="orangecolor">298元</em>
+					<div class="orderstatus greencolor">已寄出</div>
+				</div>
+				<div class="orderquestion">
+					<label>问题内容</label>
+					<p class="ordercontent">您好请问邻居家总在半夜装修我可以告他吗？已经好几...</p>
+				</div>
+				<div class="orderchange">
+					<div class="ordertime">10-18 11:01</div>
+					<div class="orderaction">
+						<button type="button" class="mui-btn drawback">申请退款</button>
+						<button type="button" class="mui-btn">查看物流</button>
+						<button type="button" class="mui-btn">确认收到</button>
+					</div>
+				</div>
+			</div>
+			<div class="orderlistitem">
+				<div class="orderreference">
+					<div class="ordernum">订单编号：2019017150536290007</div>
+					<em class="orangecolor">398元</em>
+					<div class="orderstatus bluecolor">已完成</div>
+				</div>
+				<div class="orderquestion">
+					<label>问题内容</label>
+					<p class="ordercontent">您好请问邻居家总在半夜装修我可以告他吗？已经好几...</p>
+				</div>
+				<div class="orderchange">
+					<div class="ordertime">10-18 11:01</div>
+				</div>
+			</div> -->
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var channel = null;
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				options.token = token;
+				letterlist(token);
+				// 获取支付通道
+				plus.payment.getChannels(function(channels) {
+					for (var i in channels) {
+						if (channels[i].id == "wxpay") {
+							channel = channels[i];
+						} else {
+							aliChannel = channels[i];
+						}
+					}
+				}, function(e) {
+					alert("获取支付通道失败：" + e.message);
+				});
+			})
+
+			var options = new Vue({
+				el: '#app',
+				data: {
+					datalist: [],
+					receiveid: '',
+					token: ""
+				},
+				methods: {
+					gohome: function() {
+
+					}
+				}
+			});
+			// 合同定制列表
+			function letterlist(token) {
+				mui.ajax({
+					type: 'get',
+					url: baseurl + "client/mfflContracts",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'serviceId':5,
+						'offset': 0,
+						'limit': 100
+					},
+					success: function(data) {
+						console.log(data)
+						if (data.errCode == 200) {
+							options.datalist = data.datas.data;
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				})
+			}
+
+
+			mui("body").on("tap", ".orderlistitem .orderreference", function() {
+				var lshid = this.getAttribute('id');
+				mui.openWindowWithTitle({
+					url: "myorderlistdetailshtdz.html",
+					id: "myorderlistdetailshtdz.html",
+					styles: {
+						top: "0",
+						bottom: "0",
+					},
+					extras: {
+						// 打开页面的同时，向新页面传递数据。
+						lshid: lshid
+					}
+				}, {
+					//标题栏的背景色和底边线配置
+					backgroundColor: "#267CFB",
+					bottomBorderColor: "#267CFB",
+					title: {
+						//标题文字的内容和样式配置
+						text: "合同定制详情",
+						styles: {
+							color: "#ffffff"
+						}
+					},
+					back: {
+						image: {
+							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+							imgSrc: "../images/wleft-icon.png"
+						}
+					}
+				})
+			});
+
+			mui("body").on("tap", ".drawback", function() {
+				mui.openWindowWithTitle({
+					url: "drawback.html",
+					id: "drawback.html",
+					styles: {},
+					extras: {
+						// 打开页面的同时，向新页面传递数据。
+						newsId: "0"
+					}
+				}, {
+					//标题栏的背景色和底边线配置
+					backgroundColor: "#ffffff",
+					// bottomBorderColor:"#267CFB",
+					title: {
+						//标题文字的内容和样式配置
+						text: "申请退款",
+						styles: {
+							color: "#333333"
+						}
+					},
+					back: {
+						image: {
+							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+							imgSrc: "../images/left-icon.png"
+						}
+					}
+				})
+			});
+			// 支付
+			mui("body").on("tap", "#gobuy", function() {
+				var num = this.getAttribute("num");
+				mui.ajax({
+					type: 'post',
+					url: baseurl + "client/mfflContracts/pay",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", options.token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': options.token
+					},
+					data: {
+						'paymerchantnumber': num
+					},
+					success: function(data) {
+						console.log(data)
+						if (data.errCode == 200) {
+							plus.payment.request(channel, data.datas, function(result) {
+								console.log(result)
+								mui.openWindow({
+									url: 'paysuccess.html',
+									id: 'paysuccess.html',
+									extras: {
+										//自定义扩展参数，可以用来处理页面间传值  
+									}
+								})
+							}, function(error) {
+								console.log(error)
+								// plus.nativeUI.alert(JSON.stringify(error)); 
+							});
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				})
+			});
+		</script>
+	</body>
+
+</html>

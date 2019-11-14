@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>个人资料</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style type="text/css">
+			#div {
+				width: 0px;
+				height: 0px;
+				background: red;
+				position: fixed;
+				top: 70%;
+				left: 50%;
+			}
+
+			#skilled,
+			#sendword,
+			#aptitude,
+			#education {
+				max-height: 400px;
+				position: absolute;
+				top: 70px !important;
+				left: 10% !important;
+				width: 80%;
+				border-radius: 5px;
+			}
+
+			#sendword,
+			#aptitude,
+			#education {
+				height: 253px;
+			}
+
+			.mui-bottom {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="personal">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="headimg">
+						<div class="mui-navigate-right">
+							<div>头像</div>
+							<div class="s-head"><img id="head-img" src="../images/touxiang.png"></div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-navigate-right changename">
+							<div>昵称</div>
+							<div class="per-text mui-text-right" id="myname"></div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell changephone">
+						<div class="mui-navigate-right">
+							<div>手机号码</div>
+							<div class="per-text  mui-text-right" id="phonenum"></div>
+						</div>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="sendwordbtn">
+						<div class="mui-navigate-right ">
+							<div>律师寄语</div>
+							<div class="per-text textover" id="jiyu"></div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-navigate-right" id="educationbtn">
+							<div>教育背景</div>
+							<div class="per-text textover" id="jiaoyu"></div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell" id="aptitudebtn">
+						<div class="mui-navigate-right">
+							<div>资质</div>
+							<div class="per-text textover" id="zizhi"></div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell" id="goodlike">
+						<div class="mui-navigate-right">
+							<div>擅长领域</div>
+							<div class="per-text textover" id="lingyu"></div>
+						</div>
+					</li>
+				</ul>
+				<ul class="mui-table-view" id="certification">
+					<li class="mui-table-view-cell ">
+						<div class="mui-navigate-right">
+							<div>认证信息</div>
+						</div>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell changepassword">
+						<div class="mui-navigate-right">
+							<div>修改密码</div>
+						</div>
+					</li>
+				</ul>
+				<button type="button" class="btn-blue" id="getout">退出登录</button>
+			</div>
+			<div id="div"></div>
+			<div id="skilled" class="mui-popover">
+				<h4 align="center" class="liketitle">请选择擅长领域</h4>
+				<div class="likelist">
+					<div class="mui-input-row mui-checkbox" v-for="item in typelist" :key="item.id">
+						<label>{{item.name}}</label>
+						<input :name="item.name" :value="item.id" type="checkbox" class="checkeds">
+					</div>
+				</div>
+				<div class="likebtn">
+					<div class="cancel">取消</div>
+					<div class="savebtn" id="likebtn">保存</div>
+				</div>
+			</div>
+			<div id="sendword" class="mui-popover">
+				<h4 align="center" class="liketitle">律师寄语</h4>
+				<div class="">
+					<textarea rows="6" cols="" id="lsjy"></textarea>
+				</div>
+				<div class="likebtn">
+					<div class="cancel">取消</div>
+					<div class="savebtn" id="lsjybtn">保存</div>
+				</div>
+			</div>
+			<div id="education" class="mui-popover">
+				<h4 align="center" class="liketitle">教育背景</h4>
+				<div class="">
+					<textarea rows="6" cols="" id="jybj"></textarea>
+				</div>
+				<div class="likebtn">
+					<div class="cancel">取消</div>
+					<div class="savebtn" id="jybjbtn">保存</div>
+				</div>
+			</div>
+			<div id="aptitude" class="mui-popover">
+				<h4 align="center" class="liketitle">资质</h4>
+				<div class="">
+					<textarea rows="6" cols="" id="lszz"></textarea>
+				</div>
+				<div class="likebtn">
+					<div class="cancel">取消</div>
+					<div class="savebtn" id="lszzbtn">保存</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.js"></script>
+	<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init();
+		var options = new Vue({
+			el: '#app',
+			data: {
+				typelist: []
+			},
+			methods: {
+				gohome: function() {
+
+				}
+			}
+		});
+
+
+		document.getElementById("goodlike").addEventListener("tap", function() {
+			mui("#skilled").popover('toggle', document.getElementById("div"));
+		})
+		document.getElementById("sendwordbtn").addEventListener("tap", function() {
+			mui("#sendword").popover('toggle', document.getElementById("div"));
+		})
+		document.getElementById("aptitudebtn").addEventListener("tap", function() {
+			mui("#aptitude").popover('toggle', document.getElementById("div"));
+		})
+		document.getElementById("educationbtn").addEventListener("tap", function() {
+			mui("#education").popover('toggle', document.getElementById("div"));
+		})
+
+		mui('#skilled').on('tap', '.cancel', function() {
+			mui("#skilled").popover('toggle', document.getElementById("div"));
+		})
+		mui('#sendword').on('tap', '.cancel', function() {
+			mui("#sendword").popover('toggle', document.getElementById("div"));
+		})
+		mui('#aptitude').on('tap', '.cancel', function() {
+			mui("#aptitude").popover('toggle', document.getElementById("div"));
+		})
+		mui('#education').on('tap', '.cancel', function() {
+			mui("#education").popover('toggle', document.getElementById("div"));
+		})
+		// 监听ffn
+		window.addEventListener('ffn', function(event) {
+			console.log(event)
+			// 数据都在event.detail里面  
+			var val = event.detail.name;
+			var phone = event.detail.phone;
+			document.getElementById('myname').innerHTML = val;
+			document.getElementById('phonenum').innerHTML = phone;
+		})
+
+		function changinfo(token, field, content, education, thirdlevel) {
+			mui.ajax({
+				type: 'post',
+				url: baseurl + 'client/mfflLawyer/updateLawyerMessage',
+				dataType: "json",
+				beforeSend: function(XMLHttpRequest) {
+					XMLHttpRequest.setRequestHeader(
+						"token", token
+					);
+				},
+				headers: {
+					'contentType': "application/x-www-form-urlencoded",
+					'token': token
+				},
+				data: {
+					field: field,
+					content: content,
+					education: education,
+					thirdlevel: thirdlevel
+				},
+				success: function(data) {
+					console.log(data)
+					if (data.errCode == 200) {
+						mui.toast(data.message)
+						var over = document.getElementsByClassName('mui-backdrop')[0];
+						mui.trigger(over, 'tap');
+					} else {
+						mui.toast(data.message)
+					}
+				},
+				error: function(err) {
+					mui.toast(err)
+				}
+			})
+		}
+
+		mui.plusReady(function() {
+			var token = plus.storage.getItem('token');
+			var userinfo = plus.storage.getItem('userinfo');
+			var message = JSON.parse(userinfo);
+			console.log(message)
+			gettype(token)
+			document.getElementById('head-img').src = imgurl + message.headImgUrl;
+			document.getElementById('myname').innerText = message.nickname;
+			document.getElementById('phonenum').innerText = message.phone;
+			document.getElementById('jiyu').innerText = message.content;
+			document.getElementById('jiaoyu').innerText = message.education;
+			document.getElementById('lingyu').innerText = message.field;
+			document.getElementById('zizhi').innerText = message.lawfirm;
+			mui('body').on('tap', '#lsjybtn', function() {
+				var content = document.getElementById('lsjy').value;
+				changinfo(token, '', content, '', '')
+			})
+			mui('body').on('tap', '#jybjbtn', function() {
+				var education = document.getElementById('jybj').value;
+				changinfo(token, '', '', education, '')
+			})
+			mui('body').on('tap', '#lszzbtn', function() {
+				var thirdlevel = document.getElementById('lszz').value;
+				changinfo(token, '', '', '', thirdlevel)
+			})
+			mui('body').on('tap', '#likebtn', function() {
+				// var field = document.getElementById('field').value;
+				getVals(token);
+
+			})
+
+			// 上传头像
+			mui("body").on("tap", "#headimg", function() {
+				page.imgUp();
+			})
+
+			var page = null;
+			var imgArray = [];
+			var imgstr = "";
+			page = {
+				imgUp: function() {
+					var m = this;
+					plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+								title: "拍照"
+							},
+							{
+								title: "从相册中选择"
+							}
+						]
+					}, function(e) { //1 是拍照  2 从相册中选择  
+						switch (e.index) {
+							case 1:
+								appendByCamera();
+								break;
+							case 2:
+								appendByGallery();
+								break;
+						}
+					});
+				}
+				//摄像头  
+			}
+			// 拍照添加文件
+			function appendByCamera() {
+				plus.camera.getCamera().captureImage(function(e) {
+					console.log(e);
+					plus.io.resolveLocalFileSystemURL(e, function(entry) {
+						var path = entry.toLocalURL();
+						document.getElementById('head-img').src = path;
+						upload(path)
+					}, function(e) {
+						mui.toast("读取拍照文件错误：" + e.message);
+					});
+
+				});
+			}
+			// 从相册添加文件
+			function appendByGallery() {
+				plus.gallery.pick(function(path) {
+					document.getElementById('head-img').src = path;
+					upload(path)
+				});
+			}
+			//服务端接口路径
+			var server = baseurl + "mffl/uploadimagefile";
+			// 上传文件
+			function upload(files) {
+				var files = [{
+					path: files
+				}];
+				if (files.length <= 0) {
+					plus.nativeUI.alert('没有添加上传文件！');
+					return;
+				}
+				mui.toast('开始上传');
+				var wt = plus.nativeUI.showWaiting();
+				var task = plus.uploader.createUpload(server, {
+						method: 'POST'
+					},
+					function(t, status) { //上传完成
+						plus.nativeUI.closeWaiting();
+						if (status == 200) {
+							mui.toast('上传成功');
+							console.log(t.responseText)
+							var imgUrl = JSON.parse(t.responseText).datas.max
+							plus.storage.setItem('uploader', t.responseText);
+							imgArray.push(imgUrl);
+							console.log(imgArray.join(';'));
+							imgstr = imgArray.join(';');
+							console.log(imgstr)
+							changeinfo(token, imgstr, '', '', '')
+						} else {
+							mui.toast('上传失败');
+							wt.close();
+						}
+					}
+				);
+				task.setRequestHeader('token', token);
+				for (var i = 0; i < files.length; i++) {
+					var f = files[i];
+					task.addFile(f.path, {
+						key: 'file'
+					});
+				}
+				task.start();
+			}
+		})
+		mui("body").on('tap', '#getout', function() {
+			plus.storage.removeItem('token');
+			plus.storage.removeItem('userinfo');
+			var btnArray = ['是', '否'];
+			mui.confirm('您确定退出?', '', btnArray, function(e) {
+				if (e.index == 0) {
+					//							在ios的手机端执行这个操作
+					if (mui.os.ios || mui.os.ipad || mui.os.iphone) {
+						// 获取所有Webview窗口
+						var curr = plus.webview.currentWebview();
+						var wvs = plus.webview.all();
+						for (var i = 0, len = wvs.length; i < len; i++) {
+							//关闭除主页页面外的其他页面
+							if (wvs[i].getURL() == curr.getURL())
+								continue;
+							plus.webview.close(wvs[i]);
+						}
+						//打开login页面后再关闭主页面
+						plus.webview.open('login.html');
+						curr.close();
+					} else {
+						//	在android执行退出整个应用	
+						plus.runtime.quit();
+					}
+				}
+			})
+		})
+
+		// 修改号码
+		mui("body").on("tap", ".changephone", function() {
+			mui.openWindowWithTitle({
+				url: "changephone.html",
+				id: "changephone.html",
+				styles: {},
+				extras: {
+					// 打开页面的同时，向新页面传递数据。
+					newsId: "0"
+				}
+			}, {
+				//标题栏的背景色和底边线配置
+				backgroundColor: "#ffffff",
+				//bottomBorderColor:"#00ff00",
+				title: {
+					//标题文字的内容和样式配置
+					text: "修改手机号"
+				},
+				back: {
+					image: {
+						/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+						imgSrc: "../images/left-icon.png"
+					}
+				}
+			})
+		});
+		// 修改名字
+		mui("body").on("tap", ".changename", function() {
+			var nick = document.getElementsByClassName("per-text")[0].innerHTML
+			mui.openWindowWithTitle({
+				url: "changename.html",
+				id: "changename.html",
+				styles: {},
+				extras: {
+					// 打开页面的同时，向新页面传递数据。
+					newsId: nick
+				}
+			}, {
+				//标题栏的背景色和底边线配置
+				backgroundColor: "#ffffff",
+				//bottomBorderColor:"#00ff00",
+				title: {
+					//标题文字的内容和样式配置
+					text: "修改昵称"
+				},
+				back: {
+					image: {
+						/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+						imgSrc: "../images/left-icon.png"
+					}
+				}
+			})
+		});
+
+		// 修改密码
+		mui("body").on("tap", ".changepassword", function() {
+			var nick = document.getElementsByClassName("per-text")[0].innerHTML
+			mui.openWindowWithTitle({
+				url: "changePassword.html",
+				id: "changePassword.html",
+				styles: {},
+				extras: {
+					// 打开页面的同时，向新页面传递数据。
+					newsId: nick
+				}
+			}, {
+				//标题栏的背景色和底边线配置
+				backgroundColor: "#ffffff",
+				//bottomBorderColor:"#00ff00",
+				title: {
+					//标题文字的内容和样式配置
+					text: "修改密码"
+				},
+				back: {
+					image: {
+						/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+						imgSrc: "../images/left-icon.png"
+					}
+				}
+			})
+		});
+
+		// 认证信息
+		mui("body").on("tap", "#certification", function() {
+			mui.openWindowWithTitle({
+				url: "certification.html",
+				id: "certification.html",
+				styles: {},
+				extras: {
+					// 打开页面的同时，向新页面传递数据。
+					newsId: 0
+				}
+			}, {
+				//标题栏的背景色和底边线配置
+				backgroundColor: "#ffffff",
+				//bottomBorderColor:"#00ff00",
+				title: {
+					//标题文字的内容和样式配置
+					text: "信息认证"
+				},
+				back: {
+					image: {
+						/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+						imgSrc: "../images/left-icon.png"
+					}
+				}
+			})
+		});
+
+		function gettype(token) {
+			mui.ajax({
+				type: 'get',
+				contentType: "application/x-www-form-urlencoded",
+				url: baseurl + "mffl/getserviceidtype", //此处填写自己的服务器url地址；
+				dataType: "json",
+				beforeSend: function(XMLHttpRequest) {
+					XMLHttpRequest.setRequestHeader(
+						"token", token
+					);
+				},
+				headers: {
+					'contentType': "application/x-www-form-urlencoded",
+					'token': token
+				},
+				data: { //data携带的参数，根据自己的服务器参数写就ok；
+					serviceid: 1,
+				},
+				success: function(data) {
+					console.log(data);
+					if (data.errCode == 200) {
+						options.typelist = data.datas
+					} else {
+						mui.toast(data.message)
+					}
+				},
+				error: function(err) {
+					console.log(err)
+				}
+			});
+		}
+
+		function getVals(token) {
+			var res = getCheckBoxRes('checkeds');
+			if (res.length < 1) {
+				mui.toast('请选择');
+				return;
+			}
+			changinfo(token, res, '', '', '')
+		}
+
+		function getCheckBoxRes(className) {
+			var rdsObj = document.getElementsByClassName(className);
+			var checkVal = new Array();
+			var k = 0;
+			for (i = 0; i < rdsObj.length; i++) {
+				if (rdsObj[i].checked) {
+					checkVal[k] = rdsObj[i].value;
+					k++;
+				}
+			}
+			return checkVal;
+		}
+	</script>
+</html>
