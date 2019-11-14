@@ -190,7 +190,7 @@
 			function getdetails(token, id) {
 				mui.ajax({
 					type: 'get',
-					url: baseurl + "client/mfflLawyerletters/" + id,
+					url: baseurl + "Lawyer/mfflLawyerletters/" + id,
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
@@ -318,7 +318,7 @@
 			function ems(token, id) {
 				mui.ajax({
 					type: 'get',
-					url: baseurl + "client/mfflLawyerletters/showCourier",
+					url: baseurl + "Lawyer/mfflLawyerletters/showCourier",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
@@ -349,7 +349,7 @@
 			function phone(token, htid) {
 				mui.ajax({
 					type: 'get',
-					url: baseurl + "client/mfflContracts/Phone",
+					url: baseurl + "Lawyer/mfflLawyerletters/Phone",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(

@@ -61,3 +61,41 @@ var util = {
 		})
 	}
 };
+// 修改信息
+function changeinfo(token, headimgurl, nickname, phone, code,fun) {
+	mui.ajax({
+		type: 'post',
+		url: baseurl + "mffl/updateSysUser",
+		dataType: "json",
+		beforeSend: function(XMLHttpRequest) {
+			XMLHttpRequest.setRequestHeader(
+				"token", token
+			);
+		},
+		header: {
+			'contentType': "application/x-www-form-urlencoded",
+			'token': token
+		},
+		data: {
+			'headImgUrl':headimgurl,
+			'nickname':nickname,
+			'phone':phone,
+			'code':code
+		},
+		success: function(data) {
+			console.log(data);
+			if (data.errCode == 200) {
+				plus.storage.setItem('userinfo', data.datas);
+				mui.toast("修改成功！")
+				var userinfo = plus.storage.getItem('userinfo');
+				console.log(userinfo)
+				fun();
+			} else {
+				mui.toast("data.message")
+			}
+		},
+		error: function(err) {
+			console.log(err)
+		}
+	});
+}

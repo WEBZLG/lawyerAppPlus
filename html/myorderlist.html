@@ -14,54 +14,105 @@
 
 	<body>
 		<div class="myorderlist" id="app">
-			<div class="orderlistitem" v-for="item in datalist" :key="item.id">
-				<div class="orderreference" :id="item.id">
-					<div class="ordernum">订单编号：{{item.payMerchantNumber}}</div>
-					<div class="orderstatus" :class='item.tradingState==0?"orangecolor":""'>{{item.tradingState==0?"未完成":"已完成"}}</div>
-				</div>
-				<div class="orderquestion">
-					<label>问题内容</label>
-					<p class="ordercontent">{{item.content}}</p>
-				</div>
-				<div class="orderchange">
-					<div class="ordertime">{{item.updateTime}}</div>
-					<div class="orderaction">
-						<button type="button" class="mui-btn changebtn" :id='item.id'>修改内容</button>
-						<button type="button" class="mui-btn cancelbtn" :id='item.id'>取消发布</button>
+			<div class="mui-scroll-wrapper" id="pullrefresh">
+				<div class="mui-scroll">
+					<div class="orderlistitem" v-for="item in datalist" :key="item.id">
+						<div class="orderreference" :id="item.id">
+							<div class="ordernum">订单编号：{{item.payMerchantNumber}}</div>
+							<div class="orderstatus" :class='item.tradingState==0?"orangecolor":""'>{{item.tradingState==0?"未完成":"已完成"}}</div>
+						</div>
+						<div class="orderquestion">
+							<label>问题内容</label>
+							<p class="ordercontent">{{item.content}}</p>
+							<div class="news-show" v-if="item.imageUrl!=''">
+								<div class="news-img" v-for="imgitem in item.imageUrl.split(';')" :key="imgitem">
+									<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+								</div>
+							</div>
+						</div>
+						<div class="orderchange">
+							<div class="ordertime">{{item.updateTime}}</div>
+							<div class="orderaction">
+								<button type="button" class="mui-btn changebtn" :id='item.id'>修改内容</button>
+								<button type="button" class="mui-btn cancelbtn" :id='item.id'>取消发布</button>
+							</div>
+						</div>
+					</div>
+					<div class="nodata" v-if="datalist.length==0">
+						暂无数据
 					</div>
 				</div>
 			</div>
-			<div class="nodata" v-if="datalist.length==0">暂无数据</div>
 		</div>
 		<script src="../js/mui.js"></script>
 		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
-				longtap:true
+				longtap: true,
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style: 'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
 			});
-
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				options.token = token;
+				datalist(token, 0, 10)
+				mui('body').on('tap', '.cancelbtn', function() {
+					var id = this.getAttribute('id');
+					var btnArray = ['是', '否'];
+					mui.confirm('确定取消发布?', '', btnArray, function(e) {
+						if (e.index == 0) {
+							cancel(token, id);
+						}
+					})
+				})
+			})
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				console.log('下')
+				setTimeout(function() {
+					datalist(options.token, 0, 10)
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+				}, 1500);
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				console.log('上')
+				options.limit = options.limit * 1 + 10;
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+					datalist(options.token, options.offset, options.limit)
+				}, 1500);
+			}
 			var options = new Vue({
 				el: '#app',
 				data: {
 					datalist: '',
 					token: '',
 					uid: '',
-					infor: ''
+					infor: '',
+					offset: '0',
+					limit: '10'
 				},
 				methods: {
 
 				}
 			});
-			mui.plusReady(function() {
-				var token = plus.storage.getItem('token');
-				options.token = token;
-				datalist(token);
-				mui('body').on('tap', '.cancelbtn', function() {
-					var id = this.getAttribute('id');
-					cancel(token, id);
-				})
-			})
+
 
 
 			// 取消发布
@@ -95,7 +146,7 @@
 				})
 			}
 			// 获取列表
-			function datalist(token) {
+			function datalist(token, offset, limit) {
 				mui.ajax({
 					type: 'get',
 					url: baseurl + "client/mfflConsultations",
@@ -111,8 +162,8 @@
 					},
 					data: {
 						'freeOrPaid': '0',
-						'offset': '0',
-						'limit': '100'
+						'offset': offset,
+						'limit': limit
 					},
 					success: function(data) {
 						console.log(data)
@@ -176,15 +227,15 @@
 					}
 				})
 			});
-			
+
 			mui('body').on('tap', '.changebtn', function() {
-				var id = this.getAttribute('id');
+				var yid = this.getAttribute('id');
 				mui.openWindowWithTitle({
 					url: "mychangemfzx.html",
 					id: "mychangemfzx.html",
 					extras: {
 						// 打开页面的同时，向新页面传递数据。
-						id: id
+						yid: yid
 					}
 				}, {
 					//标题栏的背景色和底边线配置

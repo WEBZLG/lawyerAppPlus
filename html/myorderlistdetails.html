@@ -31,7 +31,7 @@
 				</div>
 				<div class="ordertype">
 					<div class="tags">
-						<!-- <span class="tag" v-for="tag in item.datadetails.userinfo.fieldList" :key="tag">{{tag}}</span> -->
+						<span class="tag">{{datadetails.typename}}</span>
 					</div>
 
 					<div class="orderstatus orangecolor">
@@ -40,10 +40,20 @@
 				<div class="descitem">
 					<label>问题内容</label>
 					<div v-html="datadetails.content"></div>
+					<div class="news-show" v-if="datadetails.imageUrl!=''">
+						<div class="news-img" v-for="imgitem in datadetails.imageUrl.split(';')" :key="imgitem">
+							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+						</div>
+					</div>
 				</div>
 				<div class="descitem">
 					<label>对方态度</label>
 					<div v-html="datadetails.defendantAttitude"></div>
+					<div class="news-show" v-if="datadetails.defendantUrl!=''">
+						<div class="news-img" v-for="imgitem in datadetails.defendantUrl.split(';')" :key="imgitem">
+							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+						</div>
+					</div>
 				</div>
 				<div class="descitem">
 					<label>我的诉求</label>
@@ -62,6 +72,12 @@
 						<div class="hot-box">
 							<div class="hot-num">{{item.userinfo.updateTime}}</div>
 						</div>
+					</div>
+					<div class="mui-text-right" v-if="datadetails.bestAnswerId==item.id">
+						<div class="checkicon">
+							<img src="../images/caina.png" >
+						</div>
+						<span class="orangecolor">已采纳</span>
 					</div>
 					<div class="">
 						<p class="anscontent">{{item.reply}}</p>
