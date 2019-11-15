@@ -61,7 +61,7 @@
 				</div>
 			</div>
 			<div class="br">—— 律师解答 ——</div>
-			<div class="mui-content">
+			<div class="mui-content marginbottom">
 				<div class="lawyeransitem" v-for="item in  datadetails.replyList" :key="item.id">
 					<div class="user-info">
 						<div class="user-box">
@@ -104,7 +104,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="mui-content pubbox mui-hidden" id="pubipt">
+			<div class="mui-content pubbox" id="pubipt">
 				<div class="iptbox">
 					<input type="text" placeholder="说点什么" id="saytext">
 				</div>
@@ -125,24 +125,24 @@
 				options.token = token;
 				options.infoid = infoid;
 				getdetails(token, infoid)
-				mui('body').on('tap', '.cainabtn', function() {
-					var ansid = this.getAttribute('asnid');
-					var bestid = this.getAttribute('bestid');
-					setbestans(token, ansid, bestid);
-					getdetails(token, infoid);
-				});
-				mui('body').on('tap', '.ask', function() {
-					document.getElementById("pubipt").classList.remove('mui-hidden');	
-					var ansid = this.getAttribute('asnid');
-					var appendid = this.getAttribute('appendid');
-					options.ansid = ansid;
-					options.appendid = appendid;
-				});
+				// mui('body').on('tap', '.cainabtn', function() {
+				// 	var ansid = this.getAttribute('asnid');
+				// 	var bestid = this.getAttribute('bestid');
+				// 	setbestans(token, ansid, bestid);
+				// 	getdetails(token, infoid);
+				// });
+				// mui('body').on('tap', '.ask', function() {
+				// 	document.getElementById("pubipt").classList.remove('mui-hidden');	
+				// 	var ansid = this.getAttribute('asnid');
+				// 	var appendid = this.getAttribute('appendid');
+				// 	options.ansid = ansid;
+				// 	options.appendid = appendid;
+				// });
 			})
 				mui('body').on('tap', '#pubtalk', function() {
 					console.log("追评")
 					var text = document.getElementById('saytext').value;
-					addans(options.token, options.ansid, options.appendid,text)
+					addans(options.token, options.datadetails.id,0,text)
 				});
 			var options = new Vue({
 				el: '#app',
@@ -250,7 +250,8 @@
 						console.log(data)
 						if (data.errCode == 200) {
 							mui.toast("评论成功！");
-							getdetails(options.token, options.infoid)
+							getdetails(options.token, options.infoid);
+							document.getElementById('saytext').value='';
 						} else {
 							mui.toast(data.message);
 							mui.back();

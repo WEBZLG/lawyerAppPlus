@@ -112,7 +112,8 @@ p {
 	margin: 0 auto 12px;
 }
 
-.phonenum input[type='text'] {
+.phonenum input[type='text'],
+.phonenum input[type='password']{
 	padding: 22px 15px;
 	border: none;
 	border-bottom: 1px solid #E1E1E1;
@@ -2003,6 +2004,7 @@ textarea {
 	padding: 10px 0;
 	border-bottom: 1px solid #e1e1e1;
 	background-color: #FFFFFF;
+	align-items: center;
 }
 
 .deposit .mui-input-row label {
@@ -2026,8 +2028,8 @@ textarea {
 }
 
 .setmoney .mui-icon {
-	margin-top: 6px;
-	margin-right: 15px;
+	margin-top: 6px !important;
+	margin-right: 15px !important;
 }
 
 .filtrate {
@@ -2062,4 +2064,11 @@ textarea {
 
 .lawyeransitem {
 	margin-bottom: 15px;
+}
+
+.bindbank{
+	margin-right: 30px;
+}
+.marginbottom{
+	margin-bottom: 80px;
 }

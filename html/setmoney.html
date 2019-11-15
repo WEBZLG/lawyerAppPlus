@@ -12,13 +12,13 @@
 	</head>
 
 	<body>
-		<div class="deposit paysuccess setmoney">
+		<div class="deposit paysuccess">
 			<div class="">
 				<div class="mui-input-row">
 					<label>服务金额</label>
-					<input type="text" id="" placeholder="请输入服务金额">
+					<input type="text" id="price" placeholder="请输入服务金额">
 				</div>
-				<div class="mui-input-row">
+				<div class="mui-input-row setmoney">
 					<label>单位</label>
 					<select name="">
 						<option value="">每12小时</option>
@@ -29,16 +29,20 @@
 			</div>
 			<div class="dbbtn">
 				<button type="button" class="mui-btn" onclick="mui.back();">取消</button>
-				<button type="button" class="mui-btn">保存</button>
+				<button type="button" class="mui-btn depositbtn">保存</button>
 			</div>
 		</div>
 
 
 		<script src="../js/mui.js"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
+			mui.plusReady(function () {
+			    var token = plus.storage.getItem('token');
+			})
 			mui("body").on("tap", ".depositbtn", function() {
-				mui.openWindow('depositsuccess.html','depositsuccess',{})
+				
 			});
 		</script>
 	</body>
