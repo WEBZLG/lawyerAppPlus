@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+	<body>
+		<div class="" id="app">
+			<div class="greybg">
+				<!-- 轮播 -->
+				<div class="banner">
+					<div class="mui-slider banner-slider">
+						<div class="mui-slider-group mui-slider-loop">
+							<div class="mui-slider-item"><a href="#"><img src="../images/banner1.png" /></a></div>
+							<div class="mui-slider-item"><a href="#"><img src="../images/banner1.png" /></a></div>
+							<div class="mui-slider-item"><a href="#"><img src="../images/banner1.png" /></a></div>
+						</div>
+					</div>
+				</div>
+				<!-- 咨询律师 -->
+				<div class="lawyer-list">
+					<div class="pub-sm-title">
+						
+					</div>
+					<div class="type-list">
+						<ul id="type-list">
+							<li>
+								<a href="javascript:void(0)" class="mfzx">
+									<div class="type-icon"><img src="../images/1.png"></div>
+									<h4 class="type-title">免费咨询</h4>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<div class="type-icon"><img src="../images/2.png"></div>
+									<h4 class="type-title">专业咨询</h4>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<div class="type-icon"><img src="../images/4.png"></div>
+									<h4 class="type-title">律师函件</h4>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<div class="type-icon"><img src="../images/5.png"></div>
+									<h4 class="type-title">合同审核</h4>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									<div class="type-icon"><img src="../images/6.png"></div>
+									<h4 class="type-title">合同定制</h4>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- 推荐律师 -->
+			<div class="recommend-list">
+				<div class="pub-sm-title marginlr">
+					<div class="vertical-line">推荐案例</div>
+					<a href="javascript:void(0)" class="view-more" id="tj-more">更多</a>
+				</div>
+				<div class="recom-tab">
+					<div id="slider" class="mui-slider mui-sliders">
+						<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+							<div class="mui-scroll marginlr">
+								<a class="mui-control-item navitem mui-active tjbtn" href="'#mm00" :idx="00">
+									推荐
+								</a>
+								<a class="mui-control-item navitem" :href="'#mm'+index" v-for="(item,index) in lawyertype" :key="item.id" :type='item.id'
+								 :idx="index">
+									{{item.name}}
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="recom-box">
+						<div class="caseitem" v-for="item in lawyerlist" :key="item.id"  :type="item.freeOrPaid" :id="item.id">
+							<div class="justbetween">
+								<div class="user-box">
+									<div class="user-head"><img :src=imgurl+item.headImgUrl></div>
+									<div class="user-name">{{item.nickname}}</div>
+								</div>
+								<div class="tags">
+									<span class="tag" v-if="item.type==1">劳动人事</span>
+									<span class="tag" v-if="item.type==2">婚姻家庭</span>
+									<span class="tag" v-if="item.type==3">债权债务</span>
+									<span class="tag" v-if="item.type==4">房产土地</span>
+									<span class="tag" v-if="item.type==5">行政纠纷</span>
+									<span class="tag" v-if="item.type==6">刑事纠纷</span>
+									<span class="tag" v-if="item.type==7">交通事故</span>
+									<span class="tag" v-if="item.type==8">医疗纠纷</span>
+									<span class="tag" v-if="item.type==9">知识产权</span>
+									<span class="tag" v-if="item.type==10">合同纠纷</span>
+									<span class="tag" v-if="item.type==11">公司法务</span>
+									<span class="tag" v-if="item.type==12">其他</span>
+								</div>
+							</div>
+							<div class="justbetween">
+								<div class="bluecolor">问题内容</div>
+								<div class="orangecolor" v-if="item.money">悬赏{{item.money}}元</div>
+							</div>
+							<div class="textover">
+								<div class="textcontent" v-html="item.content"></div>
+							</div>
+							<div class="news-show" v-if="item.imageUrl!=''">
+								<div class="news-img" v-for="imgitem in item.imageUrl.split(';')" :key="imgitem">
+									<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+								</div>
+							</div>
+							<div class="justbetween actionbox">
+								<div class="view">
+									<div class="view-icon"><img src="../images/browse.png"></div>{{item.hot}}
+								</div>
+								<div class="remark">
+									<div class="reply-icon"><img src="../images/reply1.png"></div>{{item.replyNumber}}
+								</div>
+							</div>
+						</div>
+						<div class="nodata" v-if="lawyerlist.length==0">暂无数据</div>
+					</div>
+				</div>
+			</div>
+
+			<script src="../js/changemui.min.js"></script>
+			<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+			<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+			<script>
+				mui.init({
+					swipeBack: false //启用右滑关闭功能
+				});
+				var options = new Vue({
+					el: '#app',
+					data: {
+						lawyerlist: [],
+						lawyertype: [],
+					},
+					methods: {
+
+					}
+				});
+				mui.plusReady(function() {
+					// mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
+					// 	console.log(e.index)
+					// 	if (e.index == 1) {
+					// 		mui.openWindowWithTitle({
+					// 			url: "certification.html",
+					// 			id: "certification.html",
+					// 			styles: {},
+					// 			extras: {
+					// 				// 打开页面的同时，向新页面传递数据。
+					// 				newsId: "0"
+					// 			}
+					// 		}, {
+					// 			//标题栏的背景色和底边线配置
+					// 			backgroundColor: "#ffffff",
+					// 			//bottomBorderColor:"#00ff00",
+					// 			title: {
+					// 				//标题文字的内容和样式配置
+					// 				text: "律师认证"
+					// 			},
+					// 			back: {
+					// 				image: {
+					// 					/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+					// 					imgSrc: "../images/left-icon.png"
+					// 				}
+					// 			}
+					// 		})
+					// 	}
+					// }, 'div')
+					var token = plus.storage.getItem('token');
+					console.log(token)
+					options.token = token;
+					lawyerlist(token, 0, 10);
+					tjlawyerlist(token);
+					document.querySelector('.mui-sliders').addEventListener('slide', function(event) {
+						var idx = event.detail.slideNumber;
+						console.log(idx)
+						var type = document.getElementsByClassName("navitem")[idx].getAttribute('type');
+						lawyerlist(token,type,10)
+					})
+					mui('body').on('tap', '.tjbtn', function(e) {
+						tjlawyerlist(token);
+					});
+					mui('#sliderSegmentedControl').on('tap', 'a', function(e) {
+						var idx = e.target.attributes.idx.value;
+						options.currentLawyerType = idx;
+						lawyerlist(token, options.lawyertype[idx].id, 10)
+					});
+					document.querySelector('#slider').addEventListener('slide', function(event) {
+						// console.log(event.detail.slideNumber);
+						var idx = event.detail.slideNumber;
+						options.currentLawyerType = idx;
+						lawyerlist(token, options.lawyertype[idx].id, 10)
+					});
+					document.querySelector('.banner .mui-slider').addEventListener('slide', function(event) {
+						console.log(event.detail.slideNumber);
+					});
+
+					mui('#sliderSegmentedControl').on('tap', 'a', function(e) {
+						var idx = e.target.attributes.idx.value;
+						options.currentLawyerType = e.target.attributes.idx.value;
+						lawyerlist(token, options.lawyertype[idx].id, 10)
+					});
+
+					var tjbtn = document.getElementById("tj-more");
+					tjbtn.addEventListener("tap", function() {
+						mui.openWindowWithTitle({
+							url: "lawyerlist.html",
+							id: "lawyerlis.html",
+							styles: {
+								top: "-44px",
+								titleNView: {
+									buttons: [{
+										autoBackButton: true,
+										fontSize: '14px',
+										fontSrc: 'fonts/iconfont.ttf',
+										onclick: function() {
+											opensearch()
+										},
+										text: '\ue724'
+									}],
+									// titleText:"律师列表"
+								}
+							},
+							extras: {
+								// 打开页面的同时，向新页面传递数据。
+								newsId: "0"
+							}
+						}, {
+							//标题栏的背景色和底边线配置
+							backgroundColor: "#ffffff",
+							//bottomBorderColor:"#00ff00",
+							title: {
+								//标题文字的内容和样式配置
+								text: "律师列表"
+							},
+							back: {
+								image: {
+									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+									imgSrc: "../images/left-icon.png"
+								}
+							}
+						});
+					});
+				});
+
+
+				// 律师推荐
+				function lawyerlist(token, type, num) {
+					mui.ajax({
+						type: 'get',
+						url: baseurl + "mffl/lawyerIndex",
+						dataType: "json",
+						beforeSend: function(XMLHttpRequest) {
+							XMLHttpRequest.setRequestHeader(
+								"token", token
+							);
+						},
+						headers: {
+							'contentType': "application/x-www-form-urlencoded",
+							'token': token
+						},
+						data: {
+							'type': type,
+							'count': num
+						},
+						success: function(data) {
+							console.log(data)
+							if (data.errCode == 200) {
+								options.lawyerlist = data.datas;
+								
+								//初始化轮播组件
+								gallery = mui('.mui-slider');
+								gallery.slider();
+							} else {
+								mui.toast(data.message)
+							}
+						},
+						error: function(err) {
+							console.log(err)
+						}
+					})
+				}
+				// 律师列表
+				function tjlawyerlist(token) {
+					mui.ajax({
+						type: 'get',
+						url: baseurl + "mffl/getserviceidtype",
+						dataType: "json",
+						beforeSend: function(XMLHttpRequest) {
+							XMLHttpRequest.setRequestHeader(
+								"token", token
+							);
+						},
+						headers: {
+							'contentType': "application/x-www-form-urlencoded",
+							'token': token
+						},
+						data: {
+							'serviceid':1
+						},
+						success: function(data) {
+							console.log(data)
+							if (data.errCode == 200) {
+								options.lawyertype = data.datas;
+							} else {
+								mui.toast(data.message)
+							}
+						},
+						error: function(err) {
+							console.log(err)
+						}
+					})
+				}
+				// 咨询详情
+				mui("body").on("tap", ".caseitem", function() {
+					var yid = this.getAttribute('id');
+					var wordtype = this.getAttribute('type');
+					if (wordtype == 0) {
+						mui.openWindowWithTitle({
+							url: "myorderlistdetails.html",
+							id: "myorderlistdetails.html",
+							styles: {},
+							extras: {
+								// 打开页面的同时，向新页面传递数据。
+								yid: yid
+							}
+						}, {
+							//标题栏的背景色和底边线配置
+							// backgroundColor: "#267CFB",
+							// bottomBorderColor: "#267CFB",
+							title: {
+								//标题文字的内容和样式配置
+								text: "免费咨询详情",
+								// styles: {
+								// 	color: "#fffff"
+								// }
+							},
+							back: {
+								image: {
+									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+									imgSrc: "../images/left-icon.png"
+								}
+							}
+						})
+					} else if (wordtype == 1) {
+						mui.openWindowWithTitle({
+							url: "myorderlistdetailszy.html",
+							id: "myorderlistdetailszy.html",
+							styles: {},
+							extras: {
+								// 打开页面的同时，向新页面传递数据。
+								yid: yid
+							}
+						}, {
+							//标题栏的背景色和底边线配置
+							// backgroundColor: "#267CFB",
+							// bottomBorderColor: "#267CFB",
+							title: {
+								//标题文字的内容和样式配置
+								text: "专业咨询详情",
+								// styles: {
+								// 	color: "#fffff"
+								// }
+							},
+							back: {
+								image: {
+									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+									imgSrc: "../images/left-icon.png"
+								}
+							}
+						})
+					}
+
+				});
+				// 热门咨询
+				mui(".hot-type").on("tap", "a", function() {
+					var type = this.getAttribute('typeid');
+					var title = this.getAttribute('title');
+					mui.openWindowWithTitle({
+						url: "hotzx.html",
+						id: "hotzx.html",
+						styles: {},
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							type: type,
+							title: title
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						// backgroundColor: "#267CFB",
+						// bottomBorderColor:"#267CFB",
+						title: {
+							//标题文字的内容和样式配置
+							text: "热门咨询",
+							// styles:{
+							// 	color:"#fffff"
+							// }
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					})
+				});
+
+				// 搜索
+				function opensearch() {
+					mui.openWindowWithTitle({
+						url: "lawyersearch.html",
+						id: "lawyersearch.html",
+						styles: {},
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							newsId: "0"
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						backgroundColor: "#ffffff",
+						//bottomBorderColor:"#00ff00",
+						title: {
+							//标题文字的内容和样式配置
+							text: "律师搜索"
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					})
+				}
+				// 免费咨询
+				var oList = document.getElementById("type-list");
+				var aLi = oList.children;
+				for (var i = 0; i < aLi.length; i++) {
+					aLi[i].index = i;
+					aLi[i].onclick = function() {
+						console.log(this.index);
+						if (this.index == 0) {
+							mui.openWindowWithTitle({
+								url: "myorderlist.html",
+								id: "myorderlist.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "免费咨询"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						} else if (this.index == 1) {
+							mui.openWindowWithTitle({
+								url: "myorderlistzy.html",
+								id: "myorderlistzy.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "专业咨询"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						} else if (this.index == 2) {
+							mui.openWindowWithTitle({
+								url: "myorderlistlsh.html",
+								id: "myorderlistlsh.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "律师函"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						} else if (this.index == 3) {
+							mui.openWindowWithTitle({
+								url: "myorderlisthtsh.html",
+								id: "myorderlisthtsh.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "合同审核"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						} else if (this.index == 5) {
+							mui.openWindowWithTitle({
+								url: "myorderlisthtdz.html",
+								id: "myorderlisthtdz.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "合同定制"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						}
+
+					}
+				}
+			</script>
+	</body>
+</html>

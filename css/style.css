@@ -1559,7 +1559,8 @@ label {
 	justify-content: space-between;
 }
 
-input[type='text'] {
+input[type='text'],
+input[type='password']{
 	font-size: 14px !important;
 }
 
@@ -2071,4 +2072,18 @@ textarea {
 }
 .marginbottom{
 	margin-bottom: 80px;
+}
+.likelist .mui-scroll-wrapper{
+	top: 50px;
+	height: 290px;
+}
+.benchbox{
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+	z-index: 9;
+	
 }

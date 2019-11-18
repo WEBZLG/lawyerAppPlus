@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>我的订单</title>
+		<title>我的服务</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -12,21 +12,11 @@
 	</head>
 
 	<body>
-		<div class="myorder">
+		<div class="myorder" id="app">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" id="order1">
+				<li class="mui-table-view-cell" :id="'order'+index"  v-for="(item,index) in servicelist" :key="item.id" :sid='item.id'>
 					<a class="mui-navigate-right">
-						图文咨询设置
-					</a>
-				</li>
-				<li class="mui-table-view-cell" id="order2">
-					<a class="mui-navigate-right">
-						律师函设置
-					</a>
-				</li>
-				<li class="mui-table-view-cell" id="order3">
-					<a class="mui-navigate-right">
-						合同服务设置
+						{{item.name}}
 					</a>
 				</li>
 			</ul>
@@ -34,85 +24,155 @@
 
 
 		<script src="../js/mui.js"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
-			mui(".myorder").on("tap", "li", function() {
-				var options = this.getAttribute("id");
-				console.log(options)
-				if(options=="order1"){
-				mui.openWindowWithTitle({
-					url: "setmoney.html",
-					id: "setmoney.html",
-					styles: {},
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						newsId: "0"
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#ffffff",
-					bottomBorderColor: "#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "图文咨询金额"
-					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/left-icon.png"
-						}
-					}
-				})
-				}else if(options=="order2"){
-				mui.openWindowWithTitle({
-					url: "setmoney.html",
-					id: "setmoney.html",
-					styles: {},
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						newsId: "0"
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#ffffff",
-					bottomBorderColor: "#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "律师函金额"
-					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/left-icon.png"
-						}
-					}
-				})
-				}else if(options=="order3"){
-				mui.openWindowWithTitle({
-					url: "setmoney.html",
-					id: "setmoney.html",
-					styles: {},
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						newsId: "0"
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#ffffff",
-					bottomBorderColor: "#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "合同服务金额"
-					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/left-icon.png"
-						}
-					}
-				})
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				options.token = token
+				getservice(token);
+			})
+			var options = new Vue({
+				el: '#app',
+				data: {
+					servicelist: [],
+					token: '',
+				},
+				methods: {
+			
 				}
 			});
+			mui(".myorder").on("tap", "li", function() {
+				var idx = this.getAttribute("id");
+				var sid = this.getAttribute("sid");
+				if (idx == "order0") {
+					mui.openWindowWithTitle({
+						url: "setmoney.html",
+						id: "setmoney.html",
+						styles: {},
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							sid: sid
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						backgroundColor: "#ffffff",
+						bottomBorderColor: "#267CFB",
+						title: {
+							//标题文字的内容和样式配置
+							text: "图文咨询金额"
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					})
+				} else if (idx == "order1") {
+					mui.openWindowWithTitle({
+						url: "setmoney.html",
+						id: "setmoney.html",
+						styles: {},
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							sid: sid
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						backgroundColor: "#ffffff",
+						bottomBorderColor: "#267CFB",
+						title: {
+							//标题文字的内容和样式配置
+							text: "律师函金额"
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					})
+				} else if (idx == "order2") {
+					mui.openWindowWithTitle({
+						url: "setmoney.html",
+						id: "setmoney.html",
+						styles: {},
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							sid: sid
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						backgroundColor: "#ffffff",
+						bottomBorderColor: "#267CFB",
+						title: {
+							//标题文字的内容和样式配置
+							text: "合同审核金额"
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					})
+				}else if (idx == "order3") {
+					mui.openWindowWithTitle({
+						url: "setmoney.html",
+						id: "setmoney.html",
+						styles: {},
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							sid: sid
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						backgroundColor: "#ffffff",
+						bottomBorderColor: "#267CFB",
+						title: {
+							//标题文字的内容和样式配置
+							text: "合同定制金额"
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					})
+				}
+			});
+
+			function getservice(token) {
+				mui.ajax({
+					type: 'get',
+					url: baseurl + "lawyer/mfflLwyerpersonalservices/getservicelist",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {},
+					success: function(data) {
+						console.log(data)
+						if (data.errCode == 200) {
+							options.servicelist = data.datas;
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				})
+			}
 		</script>
 	</body>
 

@@ -1,0 +1,316 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>合同审核发布</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+
+	<body>
+		<div class="cdertification" id="app">
+			<div class="mui-input-row">
+				<label>姓名</label>
+				<input type="text" id="name" placeholder="请填写姓名">
+			</div>
+			<div class="mui-input-row">
+				<label>执业证号</label>
+				<input type="text" id="cardnum" placeholder="请输入执业证号">
+			</div>
+			<div class="mui-input-row">
+				<label>所在地区</label>
+				<input type="text" id="showCityPicker" placeholder="请选择所在地区">
+			</div>
+			<div class="mui-input-row">
+				<label>所在律所</label>
+				<input type="text" id="lawfirm" placeholder="请输入律师事务所名称">
+			</div>
+			<div class="mui-content" style="margin-bottom: 15px;">
+				<ul id="ulelem" class="justbetween">
+					<li class="addimg imageup " id="imageup1-1">
+						<div class="addicon"><img src="../images/+.png"></div>
+						<p>律师执照正面照片</p>
+						<img class="addimage" src="">
+					</li>
+					<li class="addimg imageup " id="imageup1-2">
+						<div class="addicon"><img src="../images/+.png"></div>
+						<p>律师执照年审照片</p>
+						<img class="addimage" src="">
+					</li>
+				</ul>
+			</div>
+			<div class="mui-input-row">
+				<label>身份证号</label>
+				<input type="text" id="idcard" placeholder="请输入身份证号">
+			</div>
+			<div class="mui-content" style="margin-bottom: 15px;">
+				<ul id="ulelems" class="justbetween">
+					<li class="addimg imageup " id="imageup2-1">
+						<div class="addicon"><img src="../images/+.png"></div>
+						<p>身份证正面照片</p>
+						<img class="addimage" src="">
+					</li>
+					<li class="addimg imageup " id="imageup2-2">
+						<div class="addicon"><img src="../images/+.png"></div>
+						<p>身份证反面照片</p>
+						<img class="addimage" src="">
+					</li>
+				</ul>
+			</div>
+			<div class="dbbtn" style="margin-bottom: 15px;">
+				<button type="button" class="mui-btn" onclick="mui.back();">取消</button>
+				<button type="button" class="mui-btn" id="submit">提交</button>
+			</div>
+		</div>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.js"></script>
+		<script src="../js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				$.init();
+				$.ready(function() {
+					// var token = plus.storage.getItem('token');
+					var cityPicker = new $.PopPicker({
+						layer: 2
+					});
+					cityPicker.setData(cityData3);
+					var showCityPickerButton = doc.getElementById('showCityPicker');
+					showCityPickerButton.addEventListener('tap', function(event) {
+						cityPicker.show(function(items) {
+							doc.getElementById('showCityPicker').value = items[0].text + items[1].text;
+							options.comid = items[1].value;
+							console.log(items[0].text)
+							console.log(items[1].text)
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});
+					}, false);
+				});
+			})(mui, document);
+			mui.plusReady(function () {
+			    var token = plus.storage.getItem('token');
+				options.token=token;
+				mui('body').on('tap','#submit',function(){
+					publish(token)
+				})
+			})
+			// 信息认证发布
+			function publish(token) {
+				var name = document.getElementById('name').value;
+				var cardnum = document.getElementById('cardnum').value;
+				var lawfirm = document.getElementById('lawfirm').value;
+				var idcard = document.getElementById('idcard').value;
+				var area = document.getElementById('showCityPicker').value;
+				var workBootImage = options.img1+','+options.img2;
+				var idnumberImage = options.img3+','+options.img3;
+				var comid = options.comid;
+				mui.ajax({
+					type: 'post',
+					url: baseurl + "client/mfflLawyer/saveLawyerMessage",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'realname': name,
+						'workcode': cardnum,
+						'areaName': area,
+						'comid': comid,
+						'lawfirm': lawfirm,
+						'workBootImage': workBootImage,
+						'idnumber': idcard,
+						'idnumberImage': idnumberImage
+					},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+							mui.toast('提交成功！');
+							mui.back();
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			}
+
+			// 弹出系统选择按钮框
+			function plusReady() {
+				// 弹出系统选择按钮框  
+				mui("body").on("tap", ".imageup", function() {
+					console.log(this.getAttribute("id"))
+					var id = this.getAttribute("id");
+					page.imgUp(id);
+				});
+			}
+			var options = new Vue({
+				el: '#app',
+				data: {
+					img1: '',
+					img2: '',
+					img3: '',
+					img4: '',
+					comid:'',
+					token:''
+				},
+				methods: {
+					gohome: function() {
+
+					}
+				}
+			});
+
+			var page = null;
+			var imgArray = [];
+			var imgstr;
+			page = {
+				imgUp: function(id) {
+					var m = this;
+					plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+								title: "拍照"
+							},
+							{
+								title: "从相册中选择"
+							}
+						]
+					}, function(e) { //1 是拍照  2 从相册中选择  
+						switch (e.index) {
+							case 1:
+								appendByCamera(id);
+								break;
+							case 2:
+								appendByGallery(id);
+								break;
+						}
+					});
+				}
+				//摄像头  
+			}
+			// 拍照添加文件
+			function appendByCamera(id) {
+				plus.camera.getCamera().captureImage(function(e) {
+					plus.io.resolveLocalFileSystemURL(e, function(entry) {
+						var path = entry.toLocalURL();
+						upload(path,id)
+						if (id == 'imageup1-1') {
+							document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].src = path;
+							document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].setAttribute('style',
+								'z-index:1;');
+						} else if (id == 'imageup1-2') {
+							document.getElementById("imageup1-2")[0].src = path;
+							document.getElementById("imageup1-2").getElementsByClassName('addimage')[0].setAttribute('style',
+								'z-index:1;');
+						} else if (id == 'imageup2-1') {
+							document.getElementById("imageup2-1")[0].src = path;
+							document.getElementById("imageup2-1").getElementsByClassName('addimage')[0].setAttribute('style',
+								'z-index:1;');
+						} else if (id == 'imageup2-2') {
+							document.getElementById("imageup2-2")[0].src = path;
+							document.getElementById("imageup2-2").getElementsByClassName('addimage')[0].setAttribute('style',
+								'z-index:1;');
+						}
+					}, function(e) {
+						mui.toast("读取拍照文件错误：" + e.message);
+					});
+
+				});
+			}
+			// 从相册添加文件
+			function appendByGallery(id) {
+				plus.gallery.pick(function(path) {
+					upload(path,id)
+					if (id == 'imageup1-1') {
+						document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].src = path;
+						document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].setAttribute('style', 'z-index:1;');
+					} else if (id == 'imageup1-2') {
+						document.getElementById("imageup1-2").getElementsByClassName('addimage')[0].src = path;
+						document.getElementById("imageup1-2").getElementsByClassName('addimage')[0].setAttribute('style', 'z-index:1;');
+					} else if (id == 'imageup2-1') {
+						document.getElementById("imageup2-1").getElementsByClassName('addimage')[0].src = path;
+						document.getElementById("imageup2-1").getElementsByClassName('addimage')[0].setAttribute('style', 'z-index:1;');
+					} else if (id == 'imageup2-2') {
+						document.getElementById("imageup2-2").getElementsByClassName('addimage')[0].src = path;
+						document.getElementById("imageup2-2").getElementsByClassName('addimage')[0].setAttribute('style', 'z-index:1;');
+					}
+				});
+			}
+			//服务端接口路径
+			var server = baseurl + "mffl/uploadimagefile";
+			// 上传文件
+			function upload(files,id) {
+				var files = [{
+					path: files
+				}];
+				if (files.length <= 0) {
+					plus.nativeUI.alert('没有添加上传文件！');
+					return;
+				}
+				mui.toast('开始上传');
+				var wt = plus.nativeUI.showWaiting();
+				var task = plus.uploader.createUpload(server, {
+						method: 'POST'
+					},
+					function(t, status) { //上传完成
+					console.log(status)
+					console.log(t)
+						plus.nativeUI.closeWaiting();
+						if (status == 200) {
+							mui.toast('上传成功');
+							var imgUrl = JSON.parse(t.responseText).datas.max
+							if (id == 'imageup1-1') {
+								options.img1 = imgUrl;
+							} else if (id == 'imageup1-2') {
+								options.img2 = imgUrl;
+							} else if (id == 'imageup2-1') {
+								options.img3 = imgUrl;
+							} else if (id == 'imageup2-2') {
+								options.img4 = imgUrl;
+							}
+							// plus.storage.setItem('uploader', t.responseText);
+							imgArray.push(imgUrl);
+							console.log(imgArray.join(
+								';'));
+							imgstr = imgArray.join(';');
+						} else {
+							mui.toast('上传失败');
+							wt.close();
+						}
+					}
+				);
+				task.setRequestHeader('token', options.token);
+				for (var i = 0; i < files.length; i++) {
+					var f = files[i];
+					task.addFile(f.path, {
+						key: 'file'
+					});
+				}
+				task.start();
+			}
+			if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+		</script>
+	</body>
+
+</html>
