@@ -59,6 +59,11 @@
 				<div class="talktextarea">
 					<label>事件描述</label>
 					<div class="" v-html="datadetails.describe"></div>
+					<div class="news-show" v-if="datadetails.imageUrl!=''">
+						<div class="news-img" v-for="imgitem in datadetails.imageUrl.split(';')" :key="imgitem">
+							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+						</div>
+					</div>
 				</div>
 				<div class="choosetalk">
 					<label>函件双方(我方)</label>
@@ -77,34 +82,37 @@
 					<div class="">
 						<p>收件人：{{datadetails.laywerinfo.nickname}}</p>
 						<p>联系方式：{{datadetails.laywerinfo.phone}}</p>
-						<p>地址：{{datadetails.laywerinfo.areaName}}{{datadetails.laywerinfo.lawfirm}}</p>
+						<p>地址：{{datadetails.laywerinfo.areaName}}</p>
 					</div>
 				</div>
 				<div class="talktextarea">
-					<div class="ordernum">
+					<p class="ordernum">
 						<span class="ordernumber">订单编号：{{datadetails.payMerchantNumber}}</span>
 						<span class="bluecolor" :num="datadetails.payMerchantNumber" id="copy">复制</span>
-					</div>
+					</p>
 					<p>下单时间：{{datadetails.createTime}}</p>
 					<p>支付时间：{{datadetails.paymentTime}}</p>
 				</div>
 				<div class="orderchange">
 					<div class="ordertime"></div>
+					<!-- <div class="orderaction" v-if="datadetails.payState==1&&datadetails.state==0"> -->
+					<div class="orderaction">
+						<button type="button" class="mui-btn handle">立即处理</button>
+					</div>
 					<div class="orderaction" v-if="datadetails.state==1">
-						<button type="button" class="mui-btn refund">申请退款</button>
-						<button type="button" class="mui-btn">修改邮寄地址</button>
+						<button type="button" class="mui-btn ">添加物流信息</button>
 					</div>
 					<div class="orderaction" v-if="datadetails.state==3">
-						<button type="button" class="mui-btn pjia">评价</button>
+						<button type="button" class="mui-btn ">查看物流</button>
 					</div>
-					<div class="orderaction mui-hidden" v-if="datadetails.state==5">
-						<button type="button" class="mui-btn disrefund">取消退款</button>
-						<button type="button" class="mui-btn" >查看物流</button>
+					<div class="orderaction" v-if="datadetails.payState==2||datadetails.payState==3">
+						<button type="button" class="mui-btn ">修改物流信息</button>
+						<button type="button" class="mui-btn ">查看物流</button>
 					</div>
-					<div class="orderaction mui-hidden" v-if="datadetails.state==2">
-						<button type="button" class="mui-btn refund">申请退款</button>
-						<button type="button" class="mui-btn wuliu" :num="datadetails.courierServicesOrder[0].courierNumber">查看物流</button>
-						<button type="button" class="mui-btn receipt" :id="datadetails.id">确认收到</button>
+					<div class="orderaction" v-if="datadetails.state==2">
+						<button type="button" class="mui-btn ">服务完成</button>
+						<button type="button" class="mui-btn ">修改物流信息</button>
+						<button type="button" class="mui-btn ">查看物流</button>
 					</div>
 				</div>
 			</div>
@@ -122,9 +130,18 @@
 				options.token = token;
 
 				getdetails(token, id)
-
-				mui("body").on('tap', '.refund', function() {
-					refund(token, id)
+				// 立即处理
+				mui("body").on('tap', '.handle', function() {
+					mui.confirm('请选择接受订单或拒绝订单','立即处理',['拒绝','接受'],function (e) {
+						console.log(e.index)
+						var idx = e.index;
+						if(idx==0){
+							// 拒绝
+							refuse(token,id)
+						}else{
+							// 接受
+						}
+					},'div')
 				})
 
 				mui("body").on('tap', '.disrefund', function() {
@@ -142,34 +159,7 @@
 				})
 			})
 			
-			mui("body").on("tap", ".pjia", function() {
-				mui.openWindowWithTitle({
-					url: "evaluate.html",
-					id: "evaluate.html",
-					styles: {},
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						lshId: options.lshid
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#267CFB",
-					bottomBorderColor:"#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "打赏",
-						styles:{
-							color:"#fffff"
-						}
-					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/wleft-icon.png"
-						}
-					}
-				})
-			});
+
 			
 			var options = new Vue({
 				el: '#app',
@@ -216,11 +206,11 @@
 				});
 			}
 
-			//申请退款
-			function refund(token, id) {
+			//拒绝服务
+			function refuse(token, id) {
 				mui.ajax({
 					type: 'get',
-					url: baseurl + "client/mfflContracts/refund",
+					url: baseurl + "Lawyer/mfflLawyerletters/refuse",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
@@ -237,7 +227,7 @@
 					success: function(data) {
 						console.log(data);
 						if (data.errCode == 200) {
-							mui.toast("申请成功！")
+							mui.toast("操作成功！")
 							getdetails(options.token, options.lshid)
 						} else {
 							mui.toast(data.message)

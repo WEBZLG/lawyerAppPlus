@@ -132,35 +132,15 @@
 							<div id="scroll1" class="mui-scroll-wrapper">
 								<div class="mui-scroll">
 									<ul class="mui-table-view">
-										<li class="mui-table-view-cell">
+										<li class="mui-table-view-cell" v-for="item in datalist" :key='item.id' v-if="item.settlement !=1 ">
 											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
+												<p class="gettype">{{item.servciceName}}</p>
+												<p>{{item.settlementTime}}</p>
 											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
-											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
-											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
-											</div>
-											<div class="orangecolor">+20</div>
+											<div class="orangecolor">{{item.state==0?"-":"+"}}{{item.money}}</div>
 										</li>
 									</ul>
+									<div class="nodata" v-if="datalist.length==0">暂无数据</div>
 								</div>
 							</div>
 						</div>
@@ -168,28 +148,15 @@
 							<div class="mui-scroll-wrapper">
 								<div class="mui-scroll">
 									<ul class="mui-table-view">
-										<li class="mui-table-view-cell">
+										<li class="mui-table-view-cell" v-for="item in datalist" :key='item.id' v-if="item.settlement ==1 ">
 											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
+												<p class="gettype">{{item.servciceName}}</p>
+												<p>{{item.settlementTime}}</p>
 											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
-											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
-											</div>
-											<div class="orangecolor">+20</div>
+											<div class="orangecolor">{{item.money}}</div>
 										</li>
 									</ul>
+									<div class="nodata" v-if="datalist.length==0">暂无数据</div>
 								</div>
 							</div>
 						</div>
@@ -197,28 +164,18 @@
 							<div class="mui-scroll-wrapper">
 								<div class="mui-scroll">
 									<ul class="mui-table-view">
-										<li class="mui-table-view-cell">
+										<li class="mui-table-view-cell" v-for="item in applydatalist" :key='item.id'>
 											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
+												<p class="gettype">剩余金额</p>
+												<p>{{item.surplus}}</p>
 											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
+											<div class="orangecolor">
+												<p class="gettype">提现金额</p>
+												<p>{{item.expenditure}}</p>
 											</div>
-											<div class="orangecolor">+20</div>
-										</li>
-										<li class="mui-table-view-cell">
-											<div class="">
-												<p class="gettype">专业咨询服务费/悬赏收入</p>
-												<p>2019-10-22 16:01</p>
-											</div>
-											<div class="orangecolor">+20</div>
 										</li>
 									</ul>
+									<div class="nodata" v-if="applydatalist.length==0">暂无数据</div>
 								</div>
 							</div>
 						</div>
@@ -235,20 +192,25 @@
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
-			
+
 			var options = new Vue({
 				el: '#app',
 				data: {
 					datalist: [],
-					token: ""
+					applydatalist: [],
+					token: "",
+					offset: 0,
+					limit: 10
 				},
 				methods: {
 
 				}
 			});
-			mui.plusReady(function () {
-			    var token = plus.storage.getItem('token');
-				getlist(token,0,10)
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				options.token = token;
+				getlist(token, 0, 10);
+				getapplylist(token, 0, 10)
 			})
 			// 获取支出情况
 			function getlist(token, offset, limit) {
@@ -272,8 +234,42 @@
 					success: function(data) {
 						console.log(data)
 						if (data.errCode == 200) {
-							options.lawyerlist = data.datas.lawyerList;
-							options.lawyertype = data.datas.lawyerType;
+							options.datalist = data.datas.data;
+							//初始化轮播组件
+							gallery = mui('.mui-slider');
+							gallery.slider();
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				})
+			};
+			// 获取提现列表
+			function getapplylist(token, offset, limit) {
+				mui.ajax({
+					type: 'get',
+					url: baseurl + "client/mffCashwithdrawalapplications",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'offset': offset,
+						'limit': limit
+					},
+					success: function(data) {
+						console.log(data)
+						if (data.errCode == 200) {
+							options.applydatalist = data.data;
 							//初始化轮播组件
 							gallery = mui('.mui-slider');
 							gallery.slider();
@@ -286,7 +282,7 @@
 					}
 				})
 			}
-			
+
 			(function($) {
 				//阻尼系数
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -303,8 +299,8 @@
 								callback: function() {
 									var self = this;
 									setTimeout(function() {
-										var ul = self.element.querySelector('.mui-table-view');
-										ul.insertBefore(createFragment(ul, index, 10, true), ul.firstChild);
+										getlist(options.token, 0, 10);
+										getapplylist(options.token, 0, 10)
 										self.endPullDownToRefresh();
 									}, 1000);
 								}
@@ -312,31 +308,18 @@
 							up: {
 								callback: function() {
 									var self = this;
+									options.limit = options.limit * 1 + 10;
 									setTimeout(function() {
-										var ul = self.element.querySelector('.mui-table-view');
-										ul.appendChild(createFragment(ul, index, 5));
+										getlist(options.token, 0, options.limit);
+										getapplylist(options.token, 0, options.limit)
 										self.endPullUpToRefresh();
 									}, 1000);
 								}
 							}
 						});
 					});
-					var createFragment = function(ul, index, count, reverse) {
-						var length = ul.querySelectorAll('li').length;
-						var fragment = document.createDocumentFragment();
-						var li;
-						for (var i = 0; i < count; i++) {
-							li = document.createElement('li');
-							li.className = 'mui-table-view-cell';
-							li.innerHTML = '第' + (index + 1) + '个选项卡子项-' + (length + (reverse ? (count - i) : (i + 1)));
-							fragment.appendChild(li);
-						}
-						return fragment;
-					};
 				});
 			})(mui);
-			
-			
 		</script>
 	</body>
 

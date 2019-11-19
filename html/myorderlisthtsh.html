@@ -24,7 +24,13 @@
 							</div>
 							<em class="orangecolor">{{item.money}}元</em>
 							<div class="orderstatus orangecolor" v-if="item.payState==0">待支付</div>
-							<div class="orderstatus bluecolor" v-if="item.payState==1">已支付</div>
+							<div class="orderstatus bluecolor" v-if="item.payState==1">
+								<span v-if="item.state==1">律师沟通</span>
+								<span v-if="item.state==2">寄送律件</span>
+								<span v-if="item.state==3">完成服务</span>
+								<span v-if="item.state==4">撤销发布</span>
+								<span v-if="item.state==5">申请退款</span>
+							</div>
 							<div class="orderstatus redcolor" v-if="item.payState==2">退款中</div>
 							<div class="orderstatus" v-if="item.payState==3">已经退款</div>
 						</div>
@@ -39,19 +45,16 @@
 						</div>
 						<div class="orderchange">
 							<div class="ordertime">{{item.updateTime}}</div>
-							<div class="orderaction" v-if="item.payState==0">
-								<button type="button" class="mui-btn cancel" :yid="item.id">取消发布</button>
-								<button type="button" class="mui-btn gobuy" :num="item.payMerchantNumber">去支付</button>
+							<div class="orderaction" v-if="item.state==1">
+								<button type="button" class="mui-btn handle" :yid="item.id">立即处理</button>
 							</div>
-							<!-- 					<div class="orderaction">
-						<button type="button" class="mui-btn">取消退款</button>
-						<button type="button" class="mui-btn">查看物流</button>
-					</div>
-					<div class="orderaction">
-						<button type="button" class="mui-btn drawback">申请退款</button>
-						<button type="button" class="mui-btn">查看物流</button>
-						<button type="button" class="mui-btn">确认收到</button>
-					</div> -->
+							<div class="orderaction" v-if="item.payState==1&&item.state!=2">
+								<button type="button" class="mui-btn call" :yid="item.id">拨打电话</button>
+							</div>
+							<div class="orderaction" v-if="item.state==2">
+								<button type="button" class="mui-btn handle" :yid="item.id">查看物流</button>
+								<button type="button" class="mui-btn handle" :yid="item.id">拨打电话</button>
+							</div>
 						</div>
 					</div>
 					<div class="nodata" v-if="datalist.length==0">
