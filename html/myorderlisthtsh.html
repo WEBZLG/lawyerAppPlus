@@ -49,11 +49,7 @@
 								<button type="button" class="mui-btn handle" :yid="item.id">立即处理</button>
 							</div>
 							<div class="orderaction" v-if="item.payState==1&&item.state!=2">
-								<button type="button" class="mui-btn call" :yid="item.id">拨打电话</button>
-							</div>
-							<div class="orderaction" v-if="item.state==2">
-								<button type="button" class="mui-btn handle" :yid="item.id">查看物流</button>
-								<button type="button" class="mui-btn handle" :yid="item.id">拨打电话</button>
+								<button type="button" class="mui-btn call" :phone="item.number" :id="item.id">拨打电话</button>
 							</div>
 						</div>
 					</div>
@@ -103,34 +99,37 @@
 					letterlist(options.token, options.offset, options.limit)
 				}, 1500);
 			}
-			var channel = null;
+
 			mui.plusReady(function() {
 				var token = plus.storage.getItem('token');
 				options.token = token;
 				letterlist(token,0,10);
-				// 获取支付通道
-				plus.payment.getChannels(function(channels) {
-					for (var i in channels) {
-						if (channels[i].id == "wxpay") {
-							channel = channels[i];
-						} else {
-							aliChannel = channels[i];
-						}
-					}
-				}, function(e) {
-					alert("获取支付通道失败：" + e.message);
-				});
-
-				// 取消发布
-				mui("body").on("tap", ".cancel", function() {
+				// 立即处理
+				mui("body").on('tap', '.handle', function() {
 					var id = this.getAttribute('yid');
-					console.log(id)
-					var btnArray = ['是', '否'];
-					mui.confirm('确定取消发布?', '', btnArray, function(e) {
-						if (e.index == 0) {
-							cancel(token, id);
+					mui.confirm('请选择接受订单或拒绝订单', '立即处理', ['拒绝', '接受', '关闭'], function(e) {
+						console.log(e.index)
+						var idx = e.index;
+						if (idx == 0) {
+							// 拒绝
+							refuse(token, id);
+						} else if (idx == 1) {
+							// 接受
+							accept(token, id);
 						}
-					})
+					}, 'div')
+				});
+				// 拨打电话
+				mui("body").on('tap', '.telephone', function() {
+					var phone = this.getAttribute("phone");
+					var htid = this.getAttribute("id");
+					var btnArray = ['拨打', '取消'];
+					mui.confirm('是否拨打' + phone + '?', '提示', btnArray, function(e) {
+						if (e.index == 0) {
+							plus.device.dial(phone, false);
+							phone(options.token, options.htid)
+						}
+					});
 				});
 			})
 
@@ -141,7 +140,8 @@
 					receiveid: '',
 					token: "",
 					offset:0,
-					limit:10
+					limit:10,
+					htid:''
 				},
 				methods: {
 					gohome: function() {
@@ -216,12 +216,11 @@
 					}
 				})
 			});
-
-			// 取消发布
-			function cancel(token, hid) {
+			//拒绝服务
+			function refuse(token, id) {
 				mui.ajax({
-					type: 'DELETE',
-					url: baseurl + "client/mfflContracts/cancel?id=" + hid,
+					type: 'post',
+					url: baseurl + "Lawyer/mfflContracts/refuse",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
@@ -232,57 +231,47 @@
 						'contentType': "application/x-www-form-urlencoded",
 						'token': token
 					},
-					data: {},
+					data: {
+						'id': id
+					},
 					success: function(data) {
-						console.log(data)
+						console.log(data);
 						if (data.errCode == 200) {
-							mui.toast('取消成功！')
-							letterlist(options.token);
+							mui.toast("操作成功！")
+							getdetails(options.token, options.lshid)
 						} else {
 							mui.toast(data.message)
 						}
 					},
 					error: function(err) {
 						console.log(err)
-						mui.toast(err.response)
 					}
-				})
+				});
 			}
-			// 支付
-			mui("body").on("tap", ".gobuy", function() {
-				var num = this.getAttribute("num");
+			
+			//接受订单
+			function accept(token, id) {
 				mui.ajax({
 					type: 'post',
-					url: baseurl + "client/mfflContracts/pay",
+					url: baseurl + "Lawyer/mfflContracts/confirm",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
-							"token", options.token
+							"token", token
 						);
 					},
 					headers: {
 						'contentType': "application/x-www-form-urlencoded",
-						'token': options.token
+						'token': token
 					},
 					data: {
-						'paymerchantnumber': num
+						'id': id
 					},
 					success: function(data) {
-						console.log(data)
+						console.log(data);
 						if (data.errCode == 200) {
-							plus.payment.request(channel, data.datas, function(result) {
-								console.log(result)
-								mui.openWindow({
-									url: 'paysuccess.html',
-									id: 'paysuccess.html',
-									extras: {
-										//自定义扩展参数，可以用来处理页面间传值  
-									}
-								})
-							}, function(error) {
-								console.log(error)
-								// plus.nativeUI.alert(JSON.stringify(error)); 
-							});
+							mui.toast("操作成功！")
+							getdetails(options.token, options.lshid)
 						} else {
 							mui.toast(data.message)
 						}
@@ -290,8 +279,40 @@
 					error: function(err) {
 						console.log(err)
 					}
-				})
-			});
+				});
+			}
+			//拨打电话
+			function phone(token, htid) {
+				mui.ajax({
+					type: 'get',
+					url: baseurl + "Lawyer/mfflContracts/Phone",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'id': htid
+					},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+			
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			}
+
 		</script>
 	</body>
 

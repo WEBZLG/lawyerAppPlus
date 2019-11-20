@@ -16,12 +16,12 @@
 		<div class="myorderlistdetials" id="app">
 			<div class="numbox">
 				<div class="ordernumber">订单编号：{{datadetails.payMerchantNumber}}</div>
-				<div class="bluecolor">复制</div>
+				<div class="bluecolor" :num="datadetails.payMerchantNumber" id="copy">复制</div>
 			</div>
 			<div class="myorderdesc  mui-content">
 				<div class="user-info">
 					<div class="user-box">
-						<div class="user-head"><img :src=imgurl+datadetails.userinfo.headImgUrl></div>
+						<div class="user-head" v-if="datadetails.userinfo"><img :src=imgurl+datadetails.userinfo.headImgUrl></div>
 						<div class="user-type">{{datadetails.identity==0?"用户":"律师"}}</div>
 						<div class="user-name">{{datadetails.nickname}}</div>
 					</div>
@@ -41,7 +41,7 @@
 					<label>问题内容</label>
 					<div v-html="datadetails.content"></div>
 					<div class="news-show" v-if="datadetails.imageUrl!=''">
-						<div class="news-img" v-for="imgitem in datadetails.imageUrl.split(';')" :key="imgitem">
+						<div class="news-img" v-for="imgitem in (datadetails.imageUrl ||'').split(';')" :key="imgitem">
 							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
 						</div>
 					</div>
@@ -50,7 +50,7 @@
 					<label>对方态度</label>
 					<div v-html="datadetails.defendantAttitude"></div>
 					<div class="news-show" v-if="datadetails.defendantUrl!=''">
-						<div class="news-img" v-for="imgitem in datadetails.defendantUrl.split(';')" :key="imgitem">
+						<div class="news-img" v-for="imgitem in (datadetails.defendantUrl || '').split(';')" :key="imgitem">
 							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
 						</div>
 					</div>
@@ -75,20 +75,20 @@
 					</div>
 					<div class="mui-text-right" v-if="datadetails.bestAnswerId==item.id">
 						<div class="checkicon">
-							<img src="../images/caina.png" >
+							<img src="../images/caina.png">
 						</div>
 						<span class="orangecolor">已采纳</span>
 					</div>
 					<div class="">
 						<p class="anscontent">{{item.reply}}</p>
-						<div class="answersecond" v-for="second in item.consultationReplyList" :key="second.id">
-							<div class="answeritme">
+						<div class="answersecond">
+							<div class="answeritme" v-for="second in item.consultationReplyList" :key="second.id">
 								<div class="user-info">
 									<div class="user-name bluecolor">{{second.userinfo.nickname}}</div>
 									<div class="hot-num">{{second.updateTime}}</div>
 								</div>
 								<div class="">
-									<p>回复<em>{{item.userinfo.nickname}}：</em>{{second.reply}}</p>
+									<p>回复<em class="bluecolor">{{item.userinfo.nickname==second.userinfo.nickname?datadetails.userinfo.nickname:item.userinfo.nickname}}：</em>{{second.reply}}</p>
 								</div>
 							</div>
 							<!-- 							<div class="answeritme">
@@ -125,25 +125,15 @@
 				options.token = token;
 				options.infoid = infoid;
 				getdetails(token, infoid)
-				// mui('body').on('tap', '.cainabtn', function() {
-				// 	var ansid = this.getAttribute('asnid');
-				// 	var bestid = this.getAttribute('bestid');
-				// 	setbestans(token, ansid, bestid);
-				// 	getdetails(token, infoid);
-				// });
-				// mui('body').on('tap', '.ask', function() {
-				// 	document.getElementById("pubipt").classList.remove('mui-hidden');	
-				// 	var ansid = this.getAttribute('asnid');
-				// 	var appendid = this.getAttribute('appendid');
-				// 	options.ansid = ansid;
-				// 	options.appendid = appendid;
-				// });
 			})
-				mui('body').on('tap', '#pubtalk', function() {
-					console.log("追评")
-					var text = document.getElementById('saytext').value;
-					addans(options.token, options.datadetails.id,0,text)
-				});
+			mui('body').on('tap', '#pubtalk', function() {
+				var text = document.getElementById('saytext').value;
+				if(options.appendid==null){
+					addans(options.token, options.datadetails.id, 0, text)
+				}else{
+					addans(options.token, options.datadetails.id, options.appendid, text)
+				}
+			});
 			var options = new Vue({
 				el: '#app',
 				data: {
@@ -151,8 +141,9 @@
 					otherdetails: [],
 					infoid: '',
 					token: '',
-					ansid:'',
-					appendid:''	
+					ansid: '',
+					appendid: '',
+
 				},
 				methods: {
 					gohome: function() {
@@ -180,6 +171,7 @@
 						console.log(data)
 						if (data.errCode == 200) {
 							options.datadetails = data.datas;
+							options.appendid = data.datas.status;
 						} else {
 							mui.toast(data.message);
 							mui.back();
@@ -191,43 +183,9 @@
 				})
 			}
 
-			// 设置最佳答案
-			function setbestans(token, ansid, bestid) {
-				mui.ajax({
-					type: 'get',
-					url: baseurl + "client/mfflConsultations/setbestanswer",
-					dataType: "json",
-					beforeSend: function(XMLHttpRequest) {
-						XMLHttpRequest.setRequestHeader(
-							"token", token
-						);
-					},
-					headers: {
-						'contentType': "application/x-www-form-urlencoded",
-						'token': token
-					},
-					data: {
-						'id': ansid,
-						'bestanswerid': bestid
-					},
-					success: function(data) {
-						console.log(data)
-						if (data.errCode == 200) {
-							mui.toast("设置成功！");
-							getdetails(options.token, options.infoid)
-						} else {
-							mui.toast(data.message);
-							mui.back();
-						}
-					},
-					error: function(err) {
-						console.log(err)
-					}
-				})
-			}
 
 			// 追评text
-			function addans(token, ansid, appendid,text) {
+			function addans(token, ansid, appendid, text) {
 				mui.ajax({
 					type: 'post',
 					url: baseurl + "client/mfflConsultations/replyconsultation",
@@ -244,14 +202,14 @@
 					data: {
 						'consultationid': ansid,
 						'appendid': appendid,
-						'reply':text
+						'reply': text
 					},
 					success: function(data) {
 						console.log(data)
 						if (data.errCode == 200) {
 							mui.toast("评论成功！");
 							getdetails(options.token, options.infoid);
-							document.getElementById('saytext').value='';
+							document.getElementById('saytext').value = '';
 						} else {
 							mui.toast(data.message);
 							mui.back();
@@ -262,35 +220,6 @@
 					}
 				})
 			}
-			
-			mui("body").on("tap", ".dsbtn", function() {
-				mui.openWindowWithTitle({
-					url: "myorderdetailsds.html",
-					id: "myorderdetailsds.html",
-					styles: {},
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						newsId: "0"
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#267CFB",
-					bottomBorderColor:"#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "打赏",
-						styles:{
-							color:"#fffff"
-						}
-					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/wleft-icon.png"
-						}
-					}
-				})
-			});
 		</script>
 	</body>
 

@@ -1969,6 +1969,7 @@ textarea {
 	position: absolute;
 	bottom: 20px;
 	width: 100%;
+	z-index: -1;
 }
 
 #changepassword .mui-input-row {
@@ -2086,4 +2087,9 @@ textarea {
     overflow: auto;
 	z-index: 9;
 	
+}
+
+#sendaddr {
+	padding: 0 15px;
+	font-size: 14px;
 }

@@ -1,8 +1,13 @@
-// var baseurl = 'http://dev.ngdemo.cn/mufa/'; //服务器url
-// var imgurl = 'http://dev.ngdemo.cn/mufa/statics'; //图片url
+// var baseurl = 'http://mufa.ngdemo.cn/'; //服务器url
+// var imgurl = 'http://mufa.ngdemo.cn/statics'; //图片url
+// http://mufa.ngdemo.cn/
 var baseurl = 'http://192.168.0.22:8900/'; //服务器url
 var imgurl = 'http://192.168.0.22:8900/statics'; //图片url
-
+// 复制
+mui("body").on('tap', '#copy', function() {
+	var num = this.getAttribute("num");
+	copy_fun(num)
+});
 //  复制方法
 function copy_fun(copy) { //参数copy是要复制的文本内容
 	mui.plusReady(function() {
@@ -62,7 +67,7 @@ var util = {
 	}
 };
 // 修改信息
-function changeinfo(token, headimgurl, nickname, phone, code,fun) {
+function changeinfo(token, headimgurl, nickname, phone, code, fun) {
 	mui.ajax({
 		type: 'post',
 		url: baseurl + "mffl/updateSysUser",
@@ -77,10 +82,10 @@ function changeinfo(token, headimgurl, nickname, phone, code,fun) {
 			'token': token
 		},
 		data: {
-			'headImgUrl':headimgurl,
-			'nickname':nickname,
-			'phone':phone,
-			'code':code
+			'headImgUrl': headimgurl,
+			'nickname': nickname,
+			'phone': phone,
+			'code': code
 		},
 		success: function(data) {
 			console.log(data);

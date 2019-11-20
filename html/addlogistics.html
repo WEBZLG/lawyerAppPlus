@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>添加物流信息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style type="text/css">
+			#getcode {
+				top: 260px;
+				background-color: inherit;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="contact-box" id="changepassword">
+			<div class="mui-input-row">
+				<label>快递单号</label>
+				<input type="text" id="courierNumber" placeholder="请输快递单号">
+			</div>
+			<div class="mui-input-row" style="display: flex;align-items: center;padding-right: 15px;">
+				<label>快递公司</label>
+				<input type="text" id="showExpressage" title='' placeholder="请选择快递公司" style="padding-right: 0;">
+				<span class="mui-icon mui-icon-arrowdown"></span>
+			</div>
+			<div class="mui-input-row">
+				<label>发件人姓名</label>
+				<input type="text" id="Sender" placeholder="请输入发件人姓名">
+			</div>
+			<div class="mui-input-row">
+				<label>发件人电话</label>
+				<input type="text" id="SenderPhone" placeholder="请输入发件人电话">
+			</div>
+			<div class="mui-input-row">
+				<div class="">
+					<label>发件人地址</label>
+				</div>
+				<textarea rows="6" cols="" id="sendaddr" placeholder="请输入发件人姓名"></textarea>
+			</div>
+
+			<div class="dbbtn">
+				<button type="button" class="mui-btn" onclick="mui.back();">取消</button>
+				<button type="button" class="mui-btn" id="submit">提交</button>
+			</div>
+		</div>
+
+
+		<script src="../js/mui.js"></script>
+		<script src="../js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				var self = plus.webview.currentWebview();
+				var lshid = self.lshid;
+				expressage(token);
+				mui('body').on('tap', '#submit', function() {
+					var courierId = document.getElementById('showExpressage').title;
+					var courierNumber = document.getElementById('courierNumber').value;
+					var SenderPhone = document.getElementById('SenderPhone').value;
+					var Sender = document.getElementById('Sender').value;
+					var originatingPlace = document.getElementById('sendaddr').value;
+					if(courierId==''||courierNumber==''||SenderPhone==''||Sender==''||originatingPlace==''){
+						mui.toast('请填写完整邮寄信息')
+						return false;
+					}
+					submit(token, lshid, courierId, courierNumber, Sender, originatingPlace, SenderPhone);
+				})
+			});
+			// 获取快递公司
+			function expressage(token) {
+				mui.ajax({
+					type: 'get',
+					contentType: "application/x-www-form-urlencoded",
+					url: baseurl + "Lawyer/mfflLawyerletters/seeCourierServicesCompany", //此处填写自己的服务器url地址；
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {},
+					success: function(data) {
+						console.log(data);
+						// if (data.errCode == 200) {
+						var res = data;
+						var newdata = [];
+						for (var i = 0; i < res.length; i++) {
+							newdata.push({
+								value: res[i].id,
+								text: res[i].name
+							})
+						};
+						(function($, doc) {
+							$.init();
+							$.ready(function() {
+								// 擅长领域
+								var likesPicker = new $.PopPicker();
+								likesPicker.setData(newdata);
+								var showLikesPickerButton = doc.getElementById('showExpressage');
+								showLikesPickerButton.addEventListener('tap', function(event) {
+									likesPicker.show(function(items) {
+										showLikesPickerButton.value = items[0].text;
+										console.log(items[0].value)
+										showLikesPickerButton.title = items[0].value;
+										//返回 false 可以阻止选择框的关闭
+										//return false;
+									});
+								}, false);
+							});
+						})(mui, document);
+						// } else {
+						// 	mui.toast(data.message)
+						// }
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			};
+			// 提交信息
+			function submit(token, lshid, courierId, courierNumber, Sender, originatingPlace, SenderPhone) {
+				mui.ajax({
+					type: 'post',
+					contentType: "application/x-www-form-urlencoded",
+					url: baseurl + "Lawyer/mfflLawyerletters/sendMail", //此处填写自己的服务器url地址；
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'id': lshid,
+						'courierId': courierId,
+						'courierNumber': courierNumber,
+						'Sender': Sender,
+						'originatingPlace': originatingPlace,
+						'SenderPhone': SenderPhone
+					},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

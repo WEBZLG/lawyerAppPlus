@@ -26,17 +26,17 @@
 				<div class="">{{datadetails.money}}元</div>
 			</div>
 			<div class="myorderdesc">
-				<div class="recom-item mui-content">
+				<div class="recom-item mui-content" v-if="datadetails.laywerinfo">
 					<div class="head-img">
-						<img :src=imgurl+datadetails.laywerinfo.headImgUrl >
+						<img :src=imgurl+datadetails.laywerinfo.headImgUrl>
 					</div>
 					<div class="infor">
 						<div class="intro">
 							<div class="namebtn">
 								<p class="intro-name">{{datadetails.laywerinfo.nickname}}</p>
 								<div class="smdbbtn">
-									<button type="button" class="mui-btn">联系律师</button>
-									<button type="button" class="mui-btn" id="telephone" :phone="datadetails.laywerinfo.phone" :id="datadetails.id">拨打电话</button>
+									<button type="button" class="mui-btn dialog" :sendId="datadetails.laywerinfo.id" :name="datadetails.laywerinfo.nickname">联系律师</button>
+									<button type="button" class="mui-btn telephone" :phone="datadetails.laywerinfo.phone" :id="datadetails.id">拨打电话</button>
 								</div>
 							</div>
 							<p class="intro-city">{{datadetails.laywerinfo.areaName}}</p>
@@ -50,17 +50,17 @@
 				</div>
 				<div class="choosetalk">
 					<label>您的称呼</label>
-					<div class="wsype">{{datadetails.userinfo.nickname}}</div>
+					<div class="wsype" v-if="datadetails.userinfo">{{datadetails.userinfo.nickname}}</div>
 				</div>
 				<div class="choosetalk">
 					<label>联系方式</label>
-					<div class="wsype">{{datadetails.userinfo.phone}}</div>
+					<div class="wsype" v-if="datadetails.userinfo">{{datadetails.userinfo.phone}}</div>
 				</div>
 				<div class="talktextarea">
 					<label>事件描述</label>
 					<div class="" v-html="datadetails.describe"></div>
 					<div class="news-show" v-if="datadetails.imageUrl!=''">
-						<div class="news-img" v-for="imgitem in datadetails.imageUrl.split(';')" :key="imgitem">
+						<div class="news-img" v-for="imgitem in (datadetails.imageUrl || '').split(';')" :key="imgitem">
 							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 				</div>
 				<div class="talktextarea">
 					<label>邮寄信息</label>
-					<div class="">
+					<div class="" v-if="datadetails.laywerinfo">
 						<p>收件人：{{datadetails.laywerinfo.nickname}}</p>
 						<p>联系方式：{{datadetails.laywerinfo.phone}}</p>
 						<p>地址：{{datadetails.laywerinfo.areaName}}</p>
@@ -95,24 +95,18 @@
 				</div>
 				<div class="orderchange">
 					<div class="ordertime"></div>
-					<!-- <div class="orderaction" v-if="datadetails.payState==1&&datadetails.state==0"> -->
-					<div class="orderaction">
+					<div class="orderaction" v-if="datadetails.payState==1&&datadetails.state==0">
 						<button type="button" class="mui-btn handle">立即处理</button>
 					</div>
 					<div class="orderaction" v-if="datadetails.state==1">
-						<button type="button" class="mui-btn ">添加物流信息</button>
+						<button type="button" class="mui-btn addlogistics">添加物流信息</button>
 					</div>
 					<div class="orderaction" v-if="datadetails.state==3">
-						<button type="button" class="mui-btn ">查看物流</button>
+						<button type="button" class="mui-btn viewlogistics">查看物流</button>
 					</div>
 					<div class="orderaction" v-if="datadetails.payState==2||datadetails.payState==3">
 						<button type="button" class="mui-btn ">修改物流信息</button>
-						<button type="button" class="mui-btn ">查看物流</button>
-					</div>
-					<div class="orderaction" v-if="datadetails.state==2">
-						<button type="button" class="mui-btn ">服务完成</button>
-						<button type="button" class="mui-btn ">修改物流信息</button>
-						<button type="button" class="mui-btn ">查看物流</button>
+						<button type="button" class="mui-btn viewlogistics">查看物流</button>
 					</div>
 				</div>
 			</div>
@@ -132,35 +126,127 @@
 				getdetails(token, id)
 				// 立即处理
 				mui("body").on('tap', '.handle', function() {
-					mui.confirm('请选择接受订单或拒绝订单','立即处理',['拒绝','接受'],function (e) {
+					mui.confirm('请选择接受订单或拒绝订单', '立即处理', ['拒绝', '接受', '关闭'], function(e) {
 						console.log(e.index)
 						var idx = e.index;
-						if(idx==0){
+						if (idx == 0) {
 							// 拒绝
-							refuse(token,id)
-						}else{
+							refuse(token, id);
+						} else if (idx == 1) {
 							// 接受
+							accept(token, id);
 						}
-					},'div')
+					}, 'div')
 				})
-
-				mui("body").on('tap', '.disrefund', function() {
-					disrefund(token, id)
+				// 添加物流
+				mui("body").on('tap', '.addlogistics', function() {
+					mui.openWindowWithTitle({
+						url: "addlogistics.html",
+						id: "addlogistics.html",
+						extras: {
+							// 打开页面的同时，向新页面传递数据。
+							lshid: options.lshid
+						}
+					}, {
+						//标题栏的背景色和底边线配置
+						backgroundColor: "#ffffff",
+						//bottomBorderColor:"#00ff00",
+						title: {
+							//标题文字的内容和样式配置
+							text: "添加物流信息"
+						},
+						back: {
+							image: {
+								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+								imgSrc: "../images/left-icon.png"
+							}
+						}
+					});
 				})
-
+				// 完成服务
 				mui("body").on('tap', '.receipt', function() {
 					var id = this.getAttribute("id");
 					receipt(token, id)
-				})
-				
-				mui("body").on('tap', '.wuliu', function() {
-					var num = this.getAttribute("num");
-					receipt(token, num)
-				})
-			})
-			
+				});
 
-			
+				// 拨打电话
+				mui("body").on('tap', '.telephone', function() {
+					var phone = this.getAttribute("phone");
+					var htid = this.getAttribute("id");
+					var btnArray = ['拨打', '取消'];
+					mui.confirm('是否拨打' + phone + '?', '提示', btnArray, function(e) {
+						if (e.index == 0) {
+							plus.device.dial(phone, false);
+							phone(options.token, options.htid)
+						}
+					});
+				});
+				// 联系律师
+				mui("body").on("tap", ".dialog", function() {
+					console.log('对话')
+					var sendId = this.getAttribute("sendId");
+					var newname = this.getAttribute("name");
+					mui.ajax({
+						type: 'post',
+						url: baseurl + "client/mfflChatContents/setStartTime",
+						dataType: "json",
+						beforeSend: function(XMLHttpRequest) {
+							XMLHttpRequest.setRequestHeader(
+								"token", options.token
+							);
+						},
+						headers: {
+							'contentType': "application/x-www-form-urlencoded",
+							'token': options.token
+						},
+						data: {
+							'receiveId': sendId,
+						},
+						success: function(data) {
+							console.log(data)
+							if (data.errCode == 200) {
+								mui.openWindowWithTitle({
+									url: "dialog.html",
+									id: "dialog.html",
+									styles: {},
+									extras: {
+										// 打开页面的同时，向新页面传递数据。
+										sendId: sendId
+									}
+								}, {
+									//标题栏的背景色和底边线配置
+									backgroundColor: "#ffffff",
+									//bottomBorderColor:"#00ff00",
+									title: {
+										//标题文字的内容和样式配置
+										text: newname + "(" + data.datas.timeRemaining + ")",
+										whiteSpace: "normal"
+									},
+									back: {
+										image: {
+											/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+											imgSrc: "../images/left-icon.png"
+										}
+									}
+								})
+							} else {
+								mui.toast(data.message)
+							}
+						},
+						error: function(err) {
+							console.log(err)
+						}
+					})
+				});
+				// 复制
+				mui("body").on('tap', '#copy', function() {
+					var num = this.getAttribute("num");
+					copy_fun(num)
+				});
+			})
+
+
+
 			var options = new Vue({
 				el: '#app',
 				data: {
@@ -239,11 +325,11 @@
 				});
 			}
 
-			//取消申请退款
-			function disrefund(token, id) {
+			//接受订单
+			function accept(token, id) {
 				mui.ajax({
-					type: 'get',
-					url: baseurl + "client/mfflContracts/cancelRefund",
+					type: 'post',
+					url: baseurl + "Lawyer/mfflLawyerletters/confirm",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
@@ -260,7 +346,7 @@
 					success: function(data) {
 						console.log(data);
 						if (data.errCode == 200) {
-							mui.toast("申请成功！")
+							mui.toast("操作成功！")
 							getdetails(options.token, options.lshid)
 						} else {
 							mui.toast(data.message)
@@ -272,7 +358,7 @@
 				});
 			}
 
-			//确认收货
+			//完成服务
 			function receipt(token, htid) {
 				mui.ajax({
 					type: 'get',
@@ -325,7 +411,7 @@
 					success: function(data) {
 						console.log(data);
 						if (data.errCode == 200) {
-							
+
 						} else {
 							mui.toast(data.message)
 						}
@@ -366,24 +452,6 @@
 					}
 				});
 			}
-			// 拨打电话
-			mui("body").on('tap', '#telephone', function() {
-				var phone = this.getAttribute("phone");
-				var htid = this.getAttribute("id");
-				var btnArray = ['拨打', '取消'];
-				mui.confirm('是否拨打' + phone + '?', '提示', btnArray, function(e) {
-					if (e.index == 0) {
-						plus.device.dial(phone, false);
-						phone(options.token, options.htid)
-					}
-				});
-			})
-
-			// 复制
-			mui("body").on('tap', '#copy', function() {
-				var num = this.getAttribute("num");
-				copy_fun(num)
-			})
 		</script>
 	</body>
 
