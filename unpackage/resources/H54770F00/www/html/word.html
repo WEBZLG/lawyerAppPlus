@@ -36,7 +36,9 @@
 							<h5 class="mes-name">{{item.nickname}}</h5>
 							<p class="mes-time">{{item.updateTime}}</p>
 						</div>
-						<p class="mes-des">{{item.content}}</p>
+						<p class="mes-des" v-if="item.state==0">{{item.content}}</p>
+						<p class="mes-des" v-if="item.state==1">[图片]</p>
+						<p class="mes-des" v-if="item.state==2">语音</p>
 					</div>
 				</li>
 			</ul>
@@ -176,7 +178,6 @@
 		});
 
 		mui(".user-message").on("tap", "li", function() {
-			console.log(this.getAttribute("sendId"))
 			var sendId = this.getAttribute("sendId");
 			var newname = this.getAttribute("name");
 			mui.ajax({
@@ -204,7 +205,8 @@
 							styles: {},
 							extras: {
 								// 打开页面的同时，向新页面传递数据。
-								sendId: sendId
+								sendId: sendId,
+								firstTime:data.datas.firstTime
 							}
 						}, {
 							//标题栏的背景色和底边线配置

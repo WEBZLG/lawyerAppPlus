@@ -38,10 +38,10 @@
 						</div>
 						<div class="orderchange">
 							<div class="ordertime">{{item.updateTime}}</div>
-							<div class="orderaction">
+<!-- 							<div class="orderaction">
 								<button type="button" class="mui-btn changebtn" :id='item.id'>修改内容</button>
 								<button type="button" class="mui-btn cancelbtn" :id='item.id'>取消发布</button>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="nodata" v-if="datalist.length==0">
@@ -108,49 +108,13 @@
 				var token = plus.storage.getItem('token');
 				options.token = token;
 				datalist(token, 0, 10);
-				mui('body').on('tap', '.cancelbtn', function() {
-					var btnArray = ['是', '否'];
-					mui.confirm('确定取消发布?', '', btnArray, function(e) {
-						var id = this.getAttribute('id');
-						cancel(token, id);
-					})
-				})
 			})
-			// 取消发布
-			function cancel(token, id) {
-				mui.ajax({
-					type: 'DELETE',
-					url: baseurl + "client/mfflConsultations/" + id,
-					dataType: "json",
-					beforeSend: function(XMLHttpRequest) {
-						XMLHttpRequest.setRequestHeader(
-							"token", token
-						);
-					},
-					headers: {
-						'contentType': "application/x-www-form-urlencoded",
-						'token': token
-					},
-					data: {},
-					success: function(data) {
-						console.log(data)
-						if (data.errCode == 200) {
-							mui.toast('取消成功！')
-							datalist(options.token);
-						} else {
-							mui.toast(data.message)
-						}
-					},
-					error: function(err) {
-						console.log(err)
-					}
-				})
-			}
+
 			// 获取列表
 			function datalist(token, offset, limit) {
 				mui.ajax({
 					type: 'get',
-					url: baseurl + "client/mfflConsultations",
+					url: baseurl + "client/mfflConsultations/participatelist",
 					dataType: "json",
 					beforeSend: function(XMLHttpRequest) {
 						XMLHttpRequest.setRequestHeader(
@@ -184,24 +148,24 @@
 				mui.openWindowWithTitle({
 					url: "myorderlistdetailszy.html",
 					id: "myorderlistdetailszy.html",
-					styles: {
-						top: "-44px",
-						bottom: "0",
-						titleNView: {
-							buttons: [{
-								color: '',
-								colorPressed: '',
-								float: '',
-								fontWeight: 'bold',
-								fontSize: '14px',
-								fontSrc: 'fonts/iconfont.ttf',
-								onclick: function() {
-									alert("需要微信公众平台支持")
-								},
-								text: '\ue618'
-							}]
-						}
-					},
+					// styles: {
+					// 	top: "-44px",
+					// 	bottom: "0",
+					// 	titleNView: {
+					// 		buttons: [{
+					// 			color: '',
+					// 			colorPressed: '',
+					// 			float: '',
+					// 			fontWeight: 'bold',
+					// 			fontSize: '14px',
+					// 			fontSrc: 'fonts/iconfont.ttf',
+					// 			onclick: function() {
+					// 				alert("需要微信公众平台支持")
+					// 			},
+					// 			text: '\ue618'
+					// 		}]
+					// 	}
+					// },
 					extras: {
 						// 打开页面的同时，向新页面传递数据。
 						yid: yid
@@ -225,34 +189,7 @@
 					}
 				})
 			});
-			mui('body').on('tap', '.changebtn', function() {
-				var yid = this.getAttribute('id');
-				mui.openWindowWithTitle({
-					url: "mychangezyzx.html",
-					id: "mychangezyzx.html",
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						yid: yid
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#ffffff",
-					// bottomBorderColor:"#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "专业咨询修改",
-						styles: {
-							color: "#333333"
-						}
-					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/left-icon.png"
-						}
-					}
-				})
-			});
+
 		</script>
 	</body>
 

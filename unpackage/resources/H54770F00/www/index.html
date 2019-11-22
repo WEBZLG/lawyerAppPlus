@@ -9,7 +9,7 @@
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 		<script src="js/mui.min.js"></script>
-		
+
 
 	</head>
 	<body>
@@ -18,20 +18,16 @@
 		</header>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="defaultTab" class="mui-tab-item mui-active" href="html/home.html">
-				<!-- <span class="mui-icon mui-icon-home"></span> -->
 				<span class="mui-tab-label" title="首页"><img style="width:35%;" src="images/ls_home_1.png"></span>
 			</a>
 			<a class="mui-tab-item" href="html/workbench.html">
-				<!-- <span class="mui-icon mui-icon-email"></span> -->
-				<span class="mui-tab-label" title="工作台"><img style="width:35%;" src="images/ls_workdesk_1.png" ></span>
+				<span class="mui-tab-label" title="工作台"><img style="width:35%;" src="images/ls_workdesk_1.png"></span>
 			</a>
 			<a class="mui-tab-item" href="html/word.html">
-				<!-- <span class="mui-icon mui-icon-chatbubble"></span> -->
-				<span class="mui-tab-label" title="消息"><img style="width:35%;" src="images/ls_message_1.png" ></span>
+				<span class="mui-tab-label" title="消息"><img style="width:35%;" src="images/ls_message_1.png"></span>
 			</a>
 			<a class="mui-tab-item" href="html/myself.html">
-				<!-- <span class="mui-icon mui-icon-person"></span> -->
-				<span class="mui-tab-label" title="我的"><img style="width:35%;" src="images/ls_my_1.png" ></span>
+				<span class="mui-tab-label" title="我的"><img style="width:35%;" src="images/ls_my_1.png"></span>
 			</a>
 		</nav>
 		</div>
@@ -39,8 +35,8 @@
 		<script type="text/javascript">
 			mui.init();
 			window.addEventListener('refresh', function(e) {
-			//在父页面中添加监听事件，刷新页面
-			    location.reload();  
+				//在父页面中添加监听事件，刷新页面
+				location.reload();
 			});
 			// var floatw = null;
 			mui.plusReady(function() {
@@ -52,7 +48,7 @@
 						'url': "html/login.html",
 						'id': "html/login.html"
 					})
-				return false;
+					return false;
 				}
 
 				floatw = plus.webview.create("html/publish.html", "publish.html", {
@@ -60,7 +56,7 @@
 					zindex: 10
 				});
 
-				var pages = ["html/home.html", "html/workbench.html","html/word.html", "html/myself.html"];
+				var pages = ["html/home.html", "html/workbench.html", "html/word.html", "html/myself.html"];
 				var arr = document.getElementsByClassName("mui-tab-item");
 				var styles = {
 					top: "45px",
@@ -76,6 +72,38 @@
 					pageArr.push(page);
 					! function(i) {
 						arr[i].addEventListener("tap", function() {
+							switch (i) {
+								case 0:
+									this.childNodes[1].childNodes[0].src = "images/ls_home_2.png"
+									arr[1].childNodes[1].childNodes[0].src = "images/ls_workdesk_1.png"
+									arr[2].childNodes[1].childNodes[0].src = "images/ls_message_1.png"
+									arr[3].childNodes[1].childNodes[0].src = "images/ls_my_1.png"
+									break;
+								case 1:
+									this.childNodes[1].childNodes[0].src = "images/ls_workdesk_2.png"
+									arr[0].childNodes[1].childNodes[0].src = "images/ls_home_1.png"
+									arr[2].childNodes[1].childNodes[0].src = "images/ls_message_1.png"
+									arr[3].childNodes[1].childNodes[0].src = "images/ls_my_1.png"
+									break;
+								case 2:
+									this.childNodes[1].childNodes[0].src = "images/ls_message_2.png"
+									arr[0].childNodes[1].childNodes[0].src = "images/ls_home_1.png"
+									arr[1].childNodes[1].childNodes[0].src = "images/ls_workdesk_1.png"
+									arr[3].childNodes[1].childNodes[0].src = "images/ls_my_1.png"
+									break;
+								case 3:
+									this.childNodes[1].childNodes[0].src = "images/ls_my_2.png"
+									arr[0].childNodes[1].childNodes[0].src = "images/ls_home_1.png"
+									arr[1].childNodes[1].childNodes[0].src = "images/ls_workdesk_1.png"
+									arr[2].childNodes[1].childNodes[0].src = "images/ls_message_1.png"
+									break;
+								
+								default:
+									break;
+							}
+							var pageid = this.getAttribute('href');
+							var wobj = plus.webview.getWebviewById(pageid); //根据页面ID获取到页面对象
+							wobj.reload(true);
 							// if (i == 2) {
 
 							// 	if (floatw) { // 避免快速多次点击创建多个窗口

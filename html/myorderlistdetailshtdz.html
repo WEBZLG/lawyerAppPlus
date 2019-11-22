@@ -16,12 +16,14 @@
 		<div class="myorderlistdetialslsh" id="app">
 			<div class="numbox">
 				<div class="ordernumber">订单状态：
-					<em v-if="datadetails.state==0">发布需求</em>
-					<em v-if="datadetails.state==1">律师沟通</em>
-					<em v-if="datadetails.state==2">寄送律件</em>
-					<em v-if="datadetails.state==3">完成服务</em>
-					<em v-if="datadetails.state==4">撤销发布</em>
-					<em v-if="datadetails.state==5">申请退款</em>
+					<em v-if="datadetails.state==0">发布成功</em>
+					<em v-if="datadetails.state==1">已接单</em>
+					<em v-if="datadetails.state==2">拒绝接单</em>
+					<em v-if="datadetails.state==3">已发货</em>
+					<em v-if="datadetails.state==4">完成交易</em>
+					<em v-if="datadetails.state==5">已撤销订单</em>
+					<em v-if="datadetails.state==6">超时接单撤销，自动退款</em>
+					<em v-if="datadetails.state==7">已退款</em>
 				</div>
 				<div class="">{{datadetails.money}}元</div>
 			</div>
@@ -95,7 +97,7 @@
 				getdetails(token, id)
 				// 服务完成
 				mui("body").on('tap', '.complete', function() {
-					mui.confirm('确定完成服务？', '服务完成',['确定', '取消'],function(e) {
+					mui.confirm('确定完成服务？', '服务完成', ['确定', '取消'], function(e) {
 						console.log(e.index)
 						if (e.index == 0) {
 							complete(token, id);
@@ -104,7 +106,7 @@
 				});
 				// 立即处理
 				mui("body").on('tap', '.handle', function() {
-					mui.confirm('请选择接受订单或拒绝订单', '立即处理', ['拒绝', '接受', '关闭'],function(e) {
+					mui.confirm('请选择接受订单或拒绝订单', '立即处理', ['拒绝', '接受', '关闭'], function(e) {
 						console.log(e.index)
 						var idx = e.index;
 						if (idx == 0) {

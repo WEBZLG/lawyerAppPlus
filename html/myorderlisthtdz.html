@@ -36,11 +36,11 @@
 						</div>
 						<div class="orderchange">
 							<div class="ordertime">{{item.updateTime}}</div>
-							<div class="orderaction" v-if="item.payState==0">
+							<div class="orderaction" v-if="item.payState==1">
 								<button type="button" class="mui-btn handle" :yid="item.id">立即处理</button>
 							</div>
-							<div class="orderaction" v-if="item.payState==0">
-								<button type="button" class="mui-btn telephone" :phone="item.number" :id="item.id">拨打电话</button>
+							<div class="orderaction" v-if="item.payState!=0">
+								<button type="button" v-if="item.state==1||item.state==3||item.state==4||item.state==7" class="mui-btn telephone" :phone="item.number" :id="item.id">拨打电话</button>
 							</div>
 						</div>
 					</div>

@@ -54,7 +54,9 @@
 				}
 			});
 			mui.plusReady(function() {
-
+				plus.Push.getRegistrationID(function(res) {
+					console.log(res)
+				})
 				// 登录注册
 				document.getElementById('zhuce').addEventListener('tap', function() {
 					var zhuceBox = document.getElementById('zhvalue').value;
@@ -92,9 +94,11 @@
 								plus.storage.setItem('token', data.datas.token);
 								var userinfo = JSON.stringify(data.datas.userInfo)
 								plus.storage.setItem('userinfo', userinfo);
+								console.log(userinfo)
 								setTimeout(function() {
 									var home = plus.webview.getLaunchWebview().getURL();
-									plus.webview.open(home)
+									plus.webview.open(home);
+									plus.webview.currentWebview().close();
 								}, 1000)
 								// plus.Push.getRegistrationID(function(res) {
 								// 	if (res.length != 0) {

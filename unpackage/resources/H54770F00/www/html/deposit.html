@@ -14,7 +14,7 @@
 	<body>
 		<div class="deposit setmoney">
 			<div class="">
-				<div class="mui-input-row mui-navigate-right">
+				<div class="mui-input-row mui-navigate-right" id="bindbank">
 					<label>提现到</label>
 					<div class="bindbank">银行卡</div>
 				</div>
@@ -31,11 +31,142 @@
 
 
 		<script src="../js/mui.js"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
-			mui("body").on("tap", ".depositbtn", function() {
-				mui.openWindow('depositsuccess.html', 'depositsuccess', {})
+			var banknum;
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				getbank(token);
+				mui("body").on("tap", "#depositall", function() {
+					getmoney(token);
+				});
+				mui("body").on("tap", ".depositbtn", function() {
+					var money = document.getElementById('zhvalue').value;
+					console.log(banknum)
+					applybank(token, money)
+				});
+
+			})
+			mui("body").on("tap", "#bindbank", function() {
+				mui.openWindowWithTitle({
+					url: "bindbank.html",
+					id: "bindbank.html",
+					styles: {},
+					extras: {
+						// 打开页面的同时，向新页面传递数据。
+						sid: 0
+					}
+				}, {
+					//标题栏的背景色和底边线配置
+					backgroundColor: "#ffffff",
+					bottomBorderColor: "#267CFB",
+					title: {
+						//标题文字的内容和样式配置
+						text: "绑定银行卡"
+					},
+					back: {
+						image: {
+							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+							imgSrc: "../images/left-icon.png"
+						}
+					}
+				})
 			});
+			// 获取账户金额
+			function getmoney(token) {
+				mui.ajax({
+					type: 'get',
+					contentType: "application/x-www-form-urlencoded",
+					url: baseurl + "client/mffCashwithdrawalapplications/getusermoneyall", //此处填写自己的服务器url地址；
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+							document.getElementById('zhvalue').value = data.datas;
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			};
+			// 获取银行卡
+			function getbank(token) {
+				mui.ajax({
+					type: 'get',
+					contentType: "application/x-www-form-urlencoded",
+					url: baseurl + "client/mfflLawyer/showbankcard", //此处填写自己的服务器url地址；
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+							banknum = data.datas.bankcardnumber;
+							console.log(banknum)
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			};
+			// 申请提现
+			function applybank(token, money) {
+				mui.ajax({
+					type: 'post',
+					contentType: "application/x-www-form-urlencoded",
+					url: baseurl + "client/mffCashwithdrawalapplications/applycashwithdrawal", //此处填写自己的服务器url地址；
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'money': money,
+						'bankcardnumber': banknum
+					},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+							mui.openWindow('depositsuccess.html', 'depositsuccess', {})
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			}
 		</script>
 	</body>
 
