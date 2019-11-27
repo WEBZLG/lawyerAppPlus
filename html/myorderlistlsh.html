@@ -21,15 +21,9 @@
 							<div class="ordernum">订单编号：{{item.payMerchantNumber}}</div>
 							<em class="orangecolor">{{item.money}}元</em>
 							<div class="orderstatus orangecolor" v-if="item.payState==0">待支付</div>
-							<div class="orderstatus bluecolor" v-if="item.payState==1">
-								<span v-if="item.state==1">律师沟通</span>
-								<span v-if="item.state==2">寄送律件</span>
-								<span v-if="item.state==3">完成服务</span>
-								<span v-if="item.state==4">撤销发布</span>
-								<span v-if="item.state==5">申请退款</span>
-							</div>
+							<div class="orderstatus bluecolor" v-if="item.payState==1">已支付</div>
 							<div class="orderstatus redcolor" v-if="item.payState==2">退款中</div>
-							<div class="orderstatus" v-if="item.payState==3">已退款</div>
+							<div class="orderstatus" v-if="item.payState==3">已经退款</div>
 						</div>
 						<div class="orderquestion">
 							<label>问题内容</label>
@@ -44,9 +38,6 @@
 							<div class="ordertime">{{item.updateTime}}</div>
 							<div class="orderaction" v-if="item.payState==1&&item.state==0">
 								<button type="button" class="mui-btn handle" :yid="item.id">立即处理</button>
-							</div>
-							<div class="orderaction" v-if="item.payState==1&&item.state!=2">
-								<button type="button" class="mui-btn telephone" :phone="item.number" :id="item.id">拨打电话</button>
 							</div>
 							<div class="orderaction" v-if="item.state==2">
 								<button type="button" class="mui-btn viewlogistics" :yid="item.id">查看物流</button>
@@ -239,7 +230,7 @@
 						console.log(data);
 						if (data.errCode == 200) {
 							mui.toast("操作成功！")
-							getdetails(options.token, options.lshid)
+							letterlist(options.token, options.offset, options.limit);
 						} else {
 							mui.toast(data.message)
 						}
@@ -272,7 +263,7 @@
 						console.log(data);
 						if (data.errCode == 200) {
 							mui.toast("操作成功！")
-							getdetails(options.token, options.lshid)
+							letterlist(options.token, options.offset, options.limit);
 						} else {
 							mui.toast(data.message)
 						}

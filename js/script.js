@@ -1,8 +1,7 @@
-// var baseurl = 'http://mufa.ngdemo.cn/'; //服务器url
-// var imgurl = 'http://mufa.ngdemo.cn/statics'; //图片url
-// http://mufa.ngdemo.cn/
-var baseurl = 'http://192.168.0.22:8900/'; //服务器url
-var imgurl = 'http://192.168.0.22:8900/statics'; //图片url
+var baseurl = 'http://mufa.ngdemo.cn/'; //服务器url
+var imgurl = 'http://mufa.ngdemo.cn/statics'; //图片url
+// var baseurl = 'http://192.168.0.22:8900/'; //服务器url
+// var imgurl = 'http://192.168.0.22:8900/statics'; //图片url
 // 复制
 mui("body").on('tap', '#copy', function() {
 	var num = this.getAttribute("num");
@@ -94,7 +93,7 @@ function changeinfo(token, headimgurl, nickname, phone, code, fun) {
 				mui.toast("修改成功！")
 				var userinfo = plus.storage.getItem('userinfo');
 				console.log(userinfo)
-				fun();
+				fun(data);
 			} else {
 				mui.toast("data.message")
 			}

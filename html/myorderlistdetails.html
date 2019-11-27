@@ -100,7 +100,7 @@
 					<input type="text" placeholder="说点什么" id="saytext">
 				</div>
 				<div class="pubbtnbox">
-					<button type="button" class="mui-btn mui-btn-blue" id="pubtalk">发布</button>
+					<button type="button" class="mui-btn mui-btn-blue" id="pubtalk">发送</button>
 				</div>
 			</div>
 		</div>
@@ -122,7 +122,7 @@
 				if(options.appendid==null){
 					addans(options.token, options.datadetails.id, 0, text)
 				}else{
-					addans(options.token, options.datadetails.id, 70, text)
+					addans(options.token, options.datadetails.id, options.appendid, text)
 				}
 			});
 			var options = new Vue({

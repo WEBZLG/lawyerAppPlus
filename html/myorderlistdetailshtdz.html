@@ -28,21 +28,19 @@
 				<div class="">{{datadetails.money}}元</div>
 			</div>
 			<div class="myorderdesc">
-				<div class="recom-item mui-content">
+				<div class="recom-item mui-content" v-if="datadetails.userinfo">
 					<div class="head-img">
-						<img :src=imgurl+datadetails.laywerinfo.headImgUrl>
+						<img :src=imgurl+datadetails.userinfo.headImgUrl>
 					</div>
 					<div class="infor">
 						<div class="intro">
 							<div class="namebtn">
-								<p class="intro-name">{{datadetails.laywerinfo.nickname}}</p>
+								<p class="intro-name">{{datadetails.userinfo.nickname}}</p>
 								<div class="smdbbtn">
-									<button type="button" class="mui-btn dialog" :sendId="datadetails.laywerinfo.id" :name="datadetails.laywerinfo.nickname">联系律师</button>
-									<button type="button" class="mui-btn telephone" :phone="datadetails.laywerinfo.phone" :id="datadetails.id">拨打电话</button>
+									<button type="button" class="mui-btn dialog" :sendId="datadetails.userinfo.id" :name="datadetails.userinfo.nickname">联系客户</button>
+									<button type="button" class="mui-btn telephone" :phone="datadetails.userinfo.phone" :id="datadetails.id">拨打电话</button>
 								</div>
 							</div>
-							<p class="intro-city">{{datadetails.laywerinfo.areaName}}</p>
-							<p class="intro-company">{{datadetails.laywerinfo.lawfirm}}</p>
 						</div>
 					</div>
 				</div>
@@ -74,10 +72,10 @@
 				</div>
 				<div class="orderchange">
 					<div class="ordertime"></div>
-					<div class="orderaction" v-if="">
+					<div class="orderaction" v-if="datadetails.state==0&&datadetails.payState">
 						<button type="button" class="mui-btn handle">立即处理</button>
 					</div>
-					<div class="orderaction" v-if="">
+					<div class="orderaction" v-if="datadetails.state==1&&datadetails.state==3">
 						<button type="button" class="mui-btn complete">服务完成</button>
 					</div>
 				</div>

@@ -20,10 +20,10 @@
 			</div>
 			<div class="myorderdesc  mui-content">
 				<div class="user-info">
-					<div class="user-box">
+					<div class="user-box" v-if="datadetails.userinfo">
 						<div class="user-head"><img :src=imgurl+datadetails.userinfo.headImgUrl></div>
-						<div class="user-type">{{datadetails.identity==0?"用户":"律师"}}</div>
-						<div class="user-name">{{datadetails.nickname}}</div>
+						<div class="user-type">{{datadetails.userinfo.identity==0?"用户":"律师"}}</div>
+						<div class="user-name">{{datadetails.userinfo.nickname}}</div>
 					</div>
 					<div class="hot-box">
 						<div class="hot-num">{{datadetails.updateTime}}</div>
@@ -31,7 +31,7 @@
 				</div>
 				<div class="ordertype">
 					<div class="tags">
-						<!-- <span class="tag" v-for="tag in item.datadetails.userinfo.fieldList" :key="tag">{{tag}}</span> -->
+						<span class="tag">{{datadetails.typename}}</span> 
 					</div>
 
 					<div class="orderstatus orangecolor"><em class="orangecolor">悬赏{{datadetails.money}}元</em>
@@ -93,15 +93,6 @@
 									<p>回复<em class="bluecolor">{{item.userinfo.nickname==second.userinfo.nickname?datadetails.userinfo.nickname:item.userinfo.nickname}}：</em>{{second.reply}}</p>
 								</div>
 							</div>
-							<!-- 							<div class="answeritme">
-								<div class="user-info">
-									<div class="user-name bluecolor">北京大兴张律师</div>
-									<div class="hot-num">10-16 14:14</div>
-								</div>
-								<div class="">
-									<p>回复<em>大成法律宋律师：</em>谢谢你宋律师，我已经联系物业了并没有什么实际效果。</p>
-								</div>
-							</div> -->
 						</div>
 					</div>
 				</div>
@@ -111,7 +102,7 @@
 					<input type="text" placeholder="说点什么" id="saytext">
 				</div>
 				<div class="pubbtnbox">
-					<button type="button" class="mui-btn mui-btn-blue" id="pubtalk">发布</button>
+					<button type="button" class="mui-btn mui-btn-blue" id="pubtalk">发送</button>
 				</div>
 			</div>
 		</div>

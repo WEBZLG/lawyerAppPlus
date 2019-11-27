@@ -274,6 +274,7 @@ p {
 	font-size: 16px;
 	color: #333333;
 	font-weight: bold;
+	margin-bottom: 8px;
 }
 
 .tag {
@@ -1719,12 +1720,12 @@ input[type='password']{
 	flex: 1;
 }
 
-.namebtn,
+/* .namebtn,
 .myorderlistdetialslsh .smdbbtn {
 	display: flex;
 	align-content: center;
 	justify-content: space-between;
-}
+} */
 
 .myorderlistdetialslsh .smdbbtn button {
 	padding: 0 5px;
