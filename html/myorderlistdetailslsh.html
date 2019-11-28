@@ -80,9 +80,9 @@
 				<div class="talktextarea">
 					<label>邮寄信息</label>
 					<div class="" v-if="datadetails.laywerinfo">
-						<p>收件人：{{datadetails.laywerinfo.nickname}}</p>
-						<p>联系方式：{{datadetails.laywerinfo.phone}}</p>
-						<p>地址：{{datadetails.laywerinfo.areaName}}</p>
+						<p>收件人：{{datadetails.addRessee}}</p>
+						<p>联系方式：{{datadetails.address}}</p>
+						<p>地址：{{datadetails.recipientPhoneNumber}}</p>
 					</div>
 				</div>
 				<div class="talktextarea">
@@ -102,11 +102,11 @@
 						<button type="button" class="mui-btn addlogistics">添加物流信息</button>
 					</div>
 					<div class="orderaction" v-if="datadetails.state==3">
-						<button type="button" class="mui-btn viewlogistics">查看物流</button>
+						<button type="button" class="mui-btn logistics" :id="datadetails.id">查看物流</button>
 					</div>
 					<div class="orderaction" v-if="datadetails.payState==2||datadetails.payState==3">
-						<button type="button" class="mui-btn ">修改物流信息</button>
-						<button type="button" class="mui-btn viewlogistics">查看物流</button>
+						<button type="button" class="mui-btn addlogistics">修改物流信息</button>
+						<button type="button" class="mui-btn logistics" :id="datadetails.id">查看物流</button>
 					</div>
 				</div>
 			</div>
@@ -162,7 +162,12 @@
 							}
 						}
 					});
-				})
+				});
+				mui("body").on('tap', '.logistics', function() {
+					var id = this.getAttribute("id");
+					console.log(id)
+					logistics(token, id)
+				});
 				// 完成服务
 				mui("body").on('tap', '.receipt', function() {
 					var id = this.getAttribute("id");
@@ -391,7 +396,7 @@
 				});
 			}
 			//查看快递
-			function ems(token, id) {
+			function logistics(token, id) {
 				mui.ajax({
 					type: 'get',
 					url: baseurl + "Lawyer/mfflLawyerletters/showCourier",
@@ -411,7 +416,33 @@
 					success: function(data) {
 						console.log(data);
 						if (data.errCode == 200) {
-
+							var datadetails = data.datas[0];
+							mui.openWindowWithTitle({
+								url: "embed.html",
+								id: "embed.html",
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									couriernum: datadetails.courierNumber,
+									name:datadetails.mfflCourierServicesCompany.name
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								// bottomBorderColor:"#267CFB",
+								title: {
+									//标题文字的内容和样式配置
+									text: "查询物流",
+									styles: {
+										color: "#333333"
+									}
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
 						} else {
 							mui.toast(data.message)
 						}
