@@ -72,7 +72,7 @@
 					<div id="slider" class="mui-slider mui-sliders">
 						<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 							<div class="mui-scroll marginlr">
-								<a class="mui-control-item navitem mui-active tjbtn" href="'#mm00" :idx="00">
+								<a class="mui-control-item navitem mui-active tjbtn" href="'#mm00" :idx="00" :type="0">
 									推荐
 								</a>
 								<a class="mui-control-item navitem" :href="'#mm'+index" v-for="(item,index) in lawyertype" :key="item.id" :type='item.id'
@@ -181,76 +181,76 @@
 					options.token = token;
 					lawyerlist(token, 0, 20);
 					tjlawyerlist(token);
-					document.querySelector('.mui-sliders').addEventListener('slide', function(event) {
-						var idx = event.detail.slideNumber;
-						console.log(idx)
-						var type = document.getElementsByClassName("navitem")[idx].getAttribute('type');
-						lawyerlist(token,type,10)
-					})
-					mui('body').on('tap', '.tjbtn', function(e) {
-						tjlawyerlist(token);
-					});
+					// document.querySelector('.mui-sliders').addEventListener('slide', function(event) {
+					// 	var idx = event.detail.slideNumber;
+					// 	console.log(idx)
+					// 	var type = document.getElementsByClassName("navitem")[idx].getAttribute('type');
+					// 	lawyerlist(token,type,10)
+					// })
 					mui('#sliderSegmentedControl').on('tap', 'a', function(e) {
-						var idx = e.target.attributes.idx.value;
-						options.currentLawyerType = idx;
-						lawyerlist(token, options.lawyertype[idx].id, 10)
+						// var idx = e.target.attributes.idx.value;
+						// console.log(idx)
+						// options.currentLawyerType = idx;
+						var type = this.getAttribute('type');
+						// lawyerlist(token, options.lawyertype[idx].id, 10)
+						lawyerlist(token, type, 10)
 					});
-					document.querySelector('#slider').addEventListener('slide', function(event) {
-						// console.log(event.detail.slideNumber);
-						var idx = event.detail.slideNumber;
-						options.currentLawyerType = idx;
-						lawyerlist(token, options.lawyertype[idx].id, 10)
-					});
-					document.querySelector('.banner .mui-slider').addEventListener('slide', function(event) {
-						console.log(event.detail.slideNumber);
-					});
+					// document.querySelector('#slider').addEventListener('slide', function(event) {
+					// 	// console.log(event.detail.slideNumber);
+					// 	var idx = event.detail.slideNumber;
+					// 	options.currentLawyerType = idx;
+					// 	lawyerlist(token, options.lawyertype[idx].id, 10)
+					// });
+					// document.querySelector('.banner .mui-slider').addEventListener('slide', function(event) {
+					// 	console.log(event.detail.slideNumber);
+					// });
 
-					mui('#sliderSegmentedControl').on('tap', 'a', function(e) {
-						var idx = e.target.attributes.idx.value;
-						options.currentLawyerType = e.target.attributes.idx.value;
-						lawyerlist(token, options.lawyertype[idx].id, 10)
-					});
+					// mui('#sliderSegmentedControl').on('tap', 'a', function(e) {
+					// 	var idx = e.target.attributes.idx.value;
+					// 	options.currentLawyerType = e.target.attributes.idx.value;
+					// 	lawyerlist(token, options.lawyertype[idx].id, 10)
+					// });
 
-					var tjbtn = document.getElementById("tj-more");
-					tjbtn.addEventListener("tap", function() {
-						mui.openWindowWithTitle({
-							url: "lawyerlist.html",
-							id: "lawyerlis.html",
-							styles: {
-								top: "-44px",
-								titleNView: {
-									buttons: [{
-										autoBackButton: true,
-										fontSize: '14px',
-										fontSrc: 'fonts/iconfont.ttf',
-										onclick: function() {
-											opensearch()
-										},
-										text: '\ue724'
-									}],
-									// titleText:"律师列表"
-								}
-							},
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								newsId: "0"
-							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: "律师列表"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						});
-					});
+					// var tjbtn = document.getElementById("tj-more");
+					// tjbtn.addEventListener("tap", function() {
+					// 	mui.openWindowWithTitle({
+					// 		url: "lawyerlist.html",
+					// 		id: "lawyerlis.html",
+					// 		styles: {
+					// 			top: "-44px",
+					// 			titleNView: {
+					// 				buttons: [{
+					// 					autoBackButton: true,
+					// 					fontSize: '14px',
+					// 					fontSrc: 'fonts/iconfont.ttf',
+					// 					onclick: function() {
+					// 						opensearch()
+					// 					},
+					// 					text: '\ue724'
+					// 				}],
+					// 				// titleText:"律师列表"
+					// 			}
+					// 		},
+					// 		extras: {
+					// 			// 打开页面的同时，向新页面传递数据。
+					// 			newsId: "0"
+					// 		}
+					// 	}, {
+					// 		//标题栏的背景色和底边线配置
+					// 		backgroundColor: "#ffffff",
+					// 		//bottomBorderColor:"#00ff00",
+					// 		title: {
+					// 			//标题文字的内容和样式配置
+					// 			text: "律师列表"
+					// 		},
+					// 		back: {
+					// 			image: {
+					// 				/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+					// 				imgSrc: "../images/left-icon.png"
+					// 			}
+					// 		}
+					// 	});
+					// });
 				});
 
 
