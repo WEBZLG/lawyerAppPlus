@@ -64,7 +64,7 @@
 				</ul>
 			</div>
 			<div class="dbbtn" style="margin-bottom: 15px;">
-				<button type="button" class="mui-btn" onclick="mui.back();">取消</button>
+				<button type="button" class="mui-btn" id="" onclick="mui.back();">取消</button>
 				<button type="button" class="mui-btn" id="submit">提交</button>
 			</div>
 		</div>
@@ -96,12 +96,16 @@
 					}, false);
 				});
 			})(mui, document);
-			mui.plusReady(function () {
-			    var token = plus.storage.getItem('token');
-				options.token=token;
-				mui('body').on('tap','#submit',function(){
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				options.token = token;
+				mui('body').on('tap', '#submit', function() {
 					publish(token)
-				})
+				});
+				mui("body").on("tap", "#cancel", function() {
+					plus.storage.clear();
+					plus.runtime.quit();
+				});
 			})
 			// 信息认证发布
 			function publish(token) {
@@ -110,9 +114,16 @@
 				var lawfirm = document.getElementById('lawfirm').value;
 				var idcard = document.getElementById('idcard').value;
 				var area = document.getElementById('showCityPicker').value;
-				var workBootImage = options.img1+','+options.img2;
-				var idnumberImage = options.img3+','+options.img3;
+				var workBootImage = options.img1 + ';' + options.img2;
+				var idnumberImage = options.img3 + ';' + options.img4;
 				var comid = options.comid;
+				if (name == '' || cardnum == '' || lawfirm == '' || idcard == '' || area == '' || comid == '') {
+					mui.toast('请完善认证信息');
+					return false;
+				} else if (options.img1 == '' || options.img2 == '' || options.img3 == '' || options.img4 == '') {
+					mui.toast('请上传认证照片');
+					return false;
+				}
 				mui.ajax({
 					type: 'post',
 					url: baseurl + "client/mfflLawyer/saveLawyerMessage",
@@ -139,8 +150,9 @@
 					success: function(data) {
 						console.log(data);
 						if (data.errCode == 200) {
-							mui.toast('提交成功！');
-							mui.back();
+							mui.toast('提交成功！请耐心等待！');
+							document.getElementById('submit').setAttribute('disabled','disabled');
+							plus.storage.clear();
 						} else {
 							mui.toast(data.message)
 						}
@@ -167,8 +179,8 @@
 					img2: '',
 					img3: '',
 					img4: '',
-					comid:'',
-					token:''
+					comid: '',
+					token: ''
 				},
 				methods: {
 					gohome: function() {
@@ -210,7 +222,7 @@
 				plus.camera.getCamera().captureImage(function(e) {
 					plus.io.resolveLocalFileSystemURL(e, function(entry) {
 						var path = entry.toLocalURL();
-						upload(path,id)
+						upload(path, id)
 						if (id == 'imageup1-1') {
 							document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].src = path;
 							document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].setAttribute('style',
@@ -237,7 +249,7 @@
 			// 从相册添加文件
 			function appendByGallery(id) {
 				plus.gallery.pick(function(path) {
-					upload(path,id)
+					upload(path, id)
 					if (id == 'imageup1-1') {
 						document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].src = path;
 						document.getElementById("imageup1-1").getElementsByClassName('addimage')[0].setAttribute('style', 'z-index:1;');
@@ -256,7 +268,7 @@
 			//服务端接口路径
 			var server = baseurl + "mffl/uploadimagefile";
 			// 上传文件
-			function upload(files,id) {
+			function upload(files, id) {
 				var files = [{
 					path: files
 				}];
@@ -270,8 +282,8 @@
 						method: 'POST'
 					},
 					function(t, status) { //上传完成
-					console.log(status)
-					console.log(t)
+						console.log(status)
+						console.log(t)
 						plus.nativeUI.closeWaiting();
 						if (status == 200) {
 							mui.toast('上传成功');

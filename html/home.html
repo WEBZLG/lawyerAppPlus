@@ -25,7 +25,7 @@
 				<!-- 咨询律师 -->
 				<div class="lawyer-list">
 					<div class="pub-sm-title">
-						
+
 					</div>
 					<div class="type-list">
 						<ul id="type-list">
@@ -83,7 +83,7 @@
 						</div>
 					</div>
 					<div class="recom-box">
-						<div class="caseitem" v-for="item in lawyerlist" :key="item.id"  :type="item.freeOrPaid" :id="item.id">
+						<div class="caseitem" v-for="item in lawyerlist" :key="item.id" :type="item.freeOrPaid" :id="item.id">
 							<div class="justbetween">
 								<div class="user-box">
 									<div class="user-head"><img :src=imgurl+item.headImgUrl></div>
@@ -148,39 +148,18 @@
 					}
 				});
 				mui.plusReady(function() {
-					// mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
-					// 	console.log(e.index)
-					// 	if (e.index == 1) {
-					// 		mui.openWindowWithTitle({
-					// 			url: "certification.html",
-					// 			id: "certification.html",
-					// 			styles: {},
-					// 			extras: {
-					// 				// 打开页面的同时，向新页面传递数据。
-					// 				newsId: "0"
-					// 			}
-					// 		}, {
-					// 			//标题栏的背景色和底边线配置
-					// 			backgroundColor: "#ffffff",
-					// 			//bottomBorderColor:"#00ff00",
-					// 			title: {
-					// 				//标题文字的内容和样式配置
-					// 				text: "律师认证"
-					// 			},
-					// 			back: {
-					// 				image: {
-					// 					/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-					// 					imgSrc: "../images/left-icon.png"
-					// 				}
-					// 			}
-					// 		})
-					// 	}
-					// }, 'div')
 					var token = plus.storage.getItem('token');
 					console.log(token)
 					options.token = token;
 					lawyerlist(token, 0, 20);
 					tjlawyerlist(token);
+					var main = plus.webview.getWebviewById('lawyerAppPlus/index.html');
+					mui('.type-list').on('tap', '.mfzx', function(e) {
+					    console.log(e)
+					    mui.fire(main, 'gochat', {
+					        type: 1
+					    });
+					});
 					// document.querySelector('.mui-sliders').addEventListener('slide', function(event) {
 					// 	var idx = event.detail.slideNumber;
 					// 	console.log(idx)
@@ -195,6 +174,7 @@
 						// lawyerlist(token, options.lawyertype[idx].id, 10)
 						lawyerlist(token, type, 10)
 					});
+
 					// document.querySelector('#slider').addEventListener('slide', function(event) {
 					// 	// console.log(event.detail.slideNumber);
 					// 	var idx = event.detail.slideNumber;
@@ -277,7 +257,7 @@
 							console.log(data)
 							if (data.errCode == 200) {
 								options.lawyerlist = data.datas;
-								
+
 								//初始化轮播组件
 								gallery = mui('.mui-slider');
 								gallery.slider();
@@ -306,7 +286,7 @@
 							'token': token
 						},
 						data: {
-							'serviceid':1
+							'serviceid': 1
 						},
 						success: function(data) {
 							console.log(data)
@@ -449,53 +429,10 @@
 					aLi[i].onclick = function() {
 						console.log(this.index);
 						if (this.index == 0) {
-							mui.openWindowWithTitle({
-								url: "myorderlist.html",
-								id: "myorderlist.html",
-								styles: {},
-								extras: {
-									// 打开页面的同时，向新页面传递数据。
-									newsId: "0"
-								}
-							}, {
-								//标题栏的背景色和底边线配置
-								backgroundColor: "#ffffff",
-								//bottomBorderColor:"#00ff00",
-								title: {
-									//标题文字的内容和样式配置
-									text: "免费咨询"
-								},
-								back: {
-									image: {
-										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-										imgSrc: "../images/left-icon.png"
-									}
-								}
-							})
+							alert(0)
+
 						} else if (this.index == 1) {
-							mui.openWindowWithTitle({
-								url: "myorderlistzy.html",
-								id: "myorderlistzy.html",
-								styles: {},
-								extras: {
-									// 打开页面的同时，向新页面传递数据。
-									newsId: "0"
-								}
-							}, {
-								//标题栏的背景色和底边线配置
-								backgroundColor: "#ffffff",
-								//bottomBorderColor:"#00ff00",
-								title: {
-									//标题文字的内容和样式配置
-									text: "专业咨询"
-								},
-								back: {
-									image: {
-										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-										imgSrc: "../images/left-icon.png"
-									}
-								}
-							})
+alert(1)
 						} else if (this.index == 2) {
 							mui.openWindowWithTitle({
 								url: "myorderlistlsh.html",

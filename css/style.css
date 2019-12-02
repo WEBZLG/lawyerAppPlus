@@ -406,7 +406,10 @@ p {
 	overflow: hidden;
 	margin: 0 2px;
 }
-
+.news-img img{
+	height: 100%;
+	width: 100%;
+}
 .news-content {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;

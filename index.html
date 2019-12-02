@@ -20,7 +20,7 @@
 			<a id="defaultTab" class="mui-tab-item mui-active" href="html/home.html">
 				<span class="mui-tab-label" title="首页"><img style="width:35%;" src="images/ls_home_1.png"></span>
 			</a>
-			<a class="mui-tab-item" href="html/workbench.html">
+			<a class="mui-tab-item" href="html/workbench.html" id="chatTab">
 				<span class="mui-tab-label" title="工作台"><img style="width:35%;" src="images/ls_workdesk_1.png"></span>
 			</a>
 			<a class="mui-tab-item" href="html/word.html">
@@ -50,7 +50,78 @@
 					})
 					return false;
 				}
-
+				var userinfo = plus.storage.getItem('userinfo');
+				userinformation = JSON.parse(userinfo);
+				if (userinformation.lawyerinspect == 0) {
+					mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
+						console.log(e.index)
+						if (e.index == 1) {
+							mui.openWindowWithTitle({
+								url: "html/certification.html",
+								id: "html/certification.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "律师认证"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						} else {
+							plus.runtime.quit();
+						}
+					}, 'div');
+					return false;
+				} else if (userinformation.lawyerinspect == 2) {
+					mui.alert('律师认证审核中', '提示', '关闭', function(e) {
+						plus.runtime.quit();
+					}, 'div')
+					return false;
+				} else if (userinformation.lawyerinspect == 3) {
+					mui.confirm('您的律师认证未通过\n请重新认证信息', '温馨提示', ['取消', '确认'], function(e) {
+						console.log(e.index)
+						if (e.index == 1) {
+							mui.openWindowWithTitle({
+								url: "html/certification.html",
+								id: "html/certification.html",
+								styles: {},
+								extras: {
+									// 打开页面的同时，向新页面传递数据。
+									newsId: "0"
+								}
+							}, {
+								//标题栏的背景色和底边线配置
+								backgroundColor: "#ffffff",
+								//bottomBorderColor:"#00ff00",
+								title: {
+									//标题文字的内容和样式配置
+									text: "律师认证"
+								},
+								back: {
+									image: {
+										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+										imgSrc: "../images/left-icon.png"
+									}
+								}
+							})
+						} else {
+							plus.runtime.quit();
+						}
+					}, 'div');
+					return false;
+				}
 				floatw = plus.webview.create("html/publish.html", "publish.html", {
 					background: 'transparent',
 					zindex: 10
@@ -97,15 +168,15 @@
 									arr[1].childNodes[1].childNodes[0].src = "images/ls_workdesk_1.png"
 									arr[2].childNodes[1].childNodes[0].src = "images/ls_message_1.png"
 									break;
-								
+
 								default:
 									break;
 							}
 							var pageid = this.getAttribute('href');
 							var wobj = plus.webview.getWebviewById(pageid); //根据页面ID获取到页面对象
 							wobj.reload(true);
-							// if (i == 2) {
 
+							// if (i == 2) {
 							// 	if (floatw) { // 避免快速多次点击创建多个窗口
 							// 		//floatw.show("fade-in",300);
 							// 		plus.webview.show("html/publish.html", "fade-in", 300);
@@ -120,7 +191,7 @@
 							// 更换标题
 							title.innerHTML = this.querySelector('.mui-tab-label').title;
 
-							if (i == 4) {
+							if (i == 3) {
 								header.style.background = "#267CFB";
 								title.style.color = '#FFFFFF';
 							} else {
@@ -142,6 +213,22 @@
 				}
 				// 默认触发第0个选项卡的tap事件。
 				mui.trigger(arr[0], "tap");
+			});
+			// 动态Tab演示：自定义事件，模拟点击“选项卡”
+			document.addEventListener('gochat', function(e) {
+				alert(666)
+				var type = e.detail.type;
+				var chatTab = document.getElementById("chatTab");
+				//模拟首页点击
+				mui.trigger(chatTab, 'tap', {
+					type: type
+				});
+				//切换选项卡高亮
+				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+				if (chatTab !== current) {
+					current.classList.remove('mui-active');
+					chatTab.classList.add('mui-active');
+				}
 			});
 		</script>
 	</body>

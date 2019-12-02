@@ -34,7 +34,12 @@ function copy_fun(copy) { //参数copy是要复制的文本内容
 		}
 	});
 }
-
+mui('body').on('tap', 'button', function() {
+	document.activeElement.blur();
+})
+mui("body").on("tap", ".imageup", function() {
+	document.activeElement.blur();
+});
 var util = {
 	request: function(method, url, data, success, error) {
 		var token = plus.storage.getItem('token');

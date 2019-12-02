@@ -246,9 +246,10 @@
 									var showCityPickerButton = doc.getElementById('showCityPicker');
 									showCityPickerButton.addEventListener('tap', function(event) {
 										cityPicker.show(function(items) {
-											showCityPickerButton.innerText = items[1].text;
-											options.comid = items[1].value;
-											lawyerlist(options.token, options.comid, options.type, options.order, '', options.offset, options.limit)
+											console.log(items)
+											showCityPickerButton.innerText = items[0].text;
+											options.comid = items[0].value;
+											worklist(options.token, options.freeOrPaid, options.type, options.rank, options.offset, options.limit)
 											//返回 false 可以阻止选择框的关闭
 											//return false;
 										});
