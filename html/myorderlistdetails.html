@@ -21,7 +21,7 @@
 			<div class="myorderdesc  mui-content">
 				<div class="user-info">
 					<div class="user-box" v-if="datadetails.userinfo">
-						<div class="user-head" ><img :src=imgurl+datadetails.userinfo.headImgUrl></div>
+						<div class="user-head"><img :src=imgurl+datadetails.userinfo.headImgUrl></div>
 						<div class="user-type">{{datadetails.userinfo.identity==0?"用户":"律师"}}</div>
 						<div class="user-name">{{datadetails.userinfo.nickname}}</div>
 					</div>
@@ -108,7 +108,16 @@
 		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			mui.init();
+			mui.init({
+				beforeback: function() {
+					//获得父页面的webview
+					var list = plus.webview.currentWebview().opener();
+					//触发父页面的自定义事件(refresh),从而进行刷新
+					mui.fire(list, 'refresh');
+					//返回true,继续页面关闭逻辑
+					return true;
+				}
+			});
 			mui.plusReady(function() {
 				var token = plus.storage.getItem('token');
 				var self = plus.webview.currentWebview();
@@ -119,9 +128,9 @@
 			})
 			mui('body').on('tap', '#pubtalk', function() {
 				var text = document.getElementById('saytext').value;
-				if(options.appendid==null){
+				if (options.appendid == null) {
 					addans(options.token, options.datadetails.id, 0, text)
-				}else{
+				} else {
 					addans(options.token, options.datadetails.id, options.appendid, text)
 				}
 			});

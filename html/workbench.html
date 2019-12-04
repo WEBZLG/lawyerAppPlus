@@ -11,14 +11,15 @@
 		<link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 		<style type="text/css">
-			.filtrate{
+			.filtrate {
 				position: fixed;
 				top: 0;
 				left: 0;
 				right: 0;
 				margin-top: 0;
 			}
-			#pullrefresh{
+
+			#pullrefresh {
 				margin-top: 80px;
 			}
 		</style>
@@ -40,52 +41,52 @@
 				</div>
 			</div>
 			<!-- <div class="benchbox"> -->
-				<div class="mui-scroll-wrapper" id="pullrefresh">
-					<div class="mui-scroll">
-						<div class="caseitem" v-for="item in worklist" :key="item.id" :type="item.freeOrPaid" :id="item.id">
-							<div class="justbetween">
-								<div class="user-box">
-									<div class="user-head"><img :src=imgurl+item.headImgUrl></div>
-									<div class="user-name">{{item.nickname}}</div>
-								</div>
-								<div class="tags">
-									<span class="tag" v-if="item.type==1">劳动人事</span>
-									<span class="tag" v-if="item.type==2">婚姻家庭</span>
-									<span class="tag" v-if="item.type==3">债权债务</span>
-									<span class="tag" v-if="item.type==4">房产土地</span>
-									<span class="tag" v-if="item.type==5">行政纠纷</span>
-									<span class="tag" v-if="item.type==6">刑事纠纷</span>
-									<span class="tag" v-if="item.type==7">交通事故</span>
-									<span class="tag" v-if="item.type==8">医疗纠纷</span>
-									<span class="tag" v-if="item.type==9">知识产权</span>
-									<span class="tag" v-if="item.type==10">合同纠纷</span>
-									<span class="tag" v-if="item.type==11">公司法务</span>
-									<span class="tag" v-if="item.type==12">其他</span>
-								</div>
+			<div class="mui-scroll-wrapper" id="pullrefresh">
+				<div class="mui-scroll">
+					<div class="caseitem" v-for="item in worklist" :key="item.id" :type="item.freeOrPaid" :id="item.id">
+						<div class="justbetween">
+							<div class="user-box">
+								<div class="user-head"><img :src=imgurl+item.headImgUrl></div>
+								<div class="user-name">{{item.nickname}}</div>
 							</div>
-							<div class="justbetween">
-								<div class="bluecolor">问题内容</div>
-								<div class="orangecolor" v-if="item.money">悬赏{{item.money}}元</div>
-							</div>
-							<div class="textover">
-								<div class="textcontent" v-html="item.content"></div>
-							</div>
-							<div class="news-show" v-if="item.imageUrl!=''">
-								<div class="news-img" v-for="imgitem in item.imageUrl.split(';')" :key="imgitem">
-									<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
-								</div>
-							</div>
-							<div class="justbetween actionbox">
-								<div class="view">
-									<div class="view-icon"><img src="../images/browse.png"></div>{{item.hot}}
-								</div>
-								<div class="remark">
-									<div class="reply-icon"><img src="../images/reply1.png"></div>{{item.replyNumber}}
-								</div>
+							<div class="tags">
+								<span class="tag" v-if="item.type==1">劳动人事</span>
+								<span class="tag" v-if="item.type==2">婚姻家庭</span>
+								<span class="tag" v-if="item.type==3">债权债务</span>
+								<span class="tag" v-if="item.type==4">房产土地</span>
+								<span class="tag" v-if="item.type==5">行政纠纷</span>
+								<span class="tag" v-if="item.type==6">刑事纠纷</span>
+								<span class="tag" v-if="item.type==7">交通事故</span>
+								<span class="tag" v-if="item.type==8">医疗纠纷</span>
+								<span class="tag" v-if="item.type==9">知识产权</span>
+								<span class="tag" v-if="item.type==10">合同纠纷</span>
+								<span class="tag" v-if="item.type==11">公司法务</span>
+								<span class="tag" v-if="item.type==12">其他</span>
 							</div>
 						</div>
-						<div class="nodata" v-if="worklist.length==0">暂无数据</div>
+						<div class="justbetween">
+							<div class="bluecolor">问题内容</div>
+							<div class="orangecolor" v-if="item.money">悬赏{{item.money}}元</div>
+						</div>
+						<div class="textover">
+							<div class="textcontent" v-html="item.content"></div>
+						</div>
+						<div class="news-show" v-if="item.imageUrl!=''">
+							<div class="news-img" v-for="imgitem in item.imageUrl.split(';')" :key="imgitem">
+								<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+							</div>
+						</div>
+						<div class="justbetween actionbox">
+							<div class="view">
+								<div class="view-icon"><img src="../images/browse.png"></div>{{item.hot}}
+							</div>
+							<div class="remark">
+								<div class="reply-icon"><img src="../images/reply1.png"></div>{{item.replyNumber}}
+							</div>
+						</div>
 					</div>
+					<div class="nodata" v-if="worklist.length==0">暂无数据</div>
+				</div>
 				<!-- </div> -->
 			</div>
 		</div>
@@ -136,7 +137,8 @@
 				var token = plus.storage.getItem('token');
 				options.token = token
 				servicetype(token);
-				worklist(token, '', '', '', 0, 10);
+				console.log(options.freeOrPaid)
+				worklist(token, options.freeOrPaid,options.type, options.rank, 0, 10);
 			});
 
 			var options = new Vue({
@@ -149,12 +151,14 @@
 					freeOrPaid: '',
 					rank: '',
 					offset: 0,
-					limit: 10
+					limit: 10,
+					zxtype:''
 				},
 				methods: {
 
 				}
 			});
+
 			// 服务类型
 			function servicetype(token) {
 				mui.ajax({
@@ -184,7 +188,6 @@
 									text: res[i].name
 								})
 							}
-							console.log(newdata)
 							options.servicetype = newdata;
 							(function($, doc) {
 								$.init();
@@ -248,7 +251,7 @@
 										cityPicker.show(function(items) {
 											console.log(items)
 											showCityPickerButton.innerText = items[0].text;
-											options.comid = items[0].value;
+											options.freeOrPaid = items[0].value;
 											worklist(options.token, options.freeOrPaid, options.type, options.rank, options.offset, options.limit)
 											//返回 false 可以阻止选择框的关闭
 											//return false;
@@ -256,6 +259,21 @@
 									}, false);
 								});
 							})(mui, document);
+							document.addEventListener('changeType', function(e) {
+								var zxtype = e.detail.type;
+								options.zxtype = zxtype;
+								console.log(zxtype)
+								var title = document.getElementById('showCityPicker');
+								if (zxtype == 0) {
+									options.freeOrPaid = 0;
+									title.innerText = '免费咨询';
+									worklist(options.token,'0', options.type, options.rank, options.offset, options.limit)
+								} else if (zxtype == 1) {
+									options.freeOrPaid = 1;
+									title.innerText = '专业咨询';
+									worklist(options.token,'1', options.type, options.rank, options.offset, options.limit)
+								}
+							})
 						} else {
 							mui.toast(data.message)
 						}
@@ -265,6 +283,7 @@
 					}
 				})
 			}
+
 
 			function worklist(token, freeOrPaid, type, rank, offset, limit) {
 				mui.ajax({

@@ -12,7 +12,7 @@
 	<body>
 		<div class="sysmessagelist" id="app">
 			<ul>
-				<li v-for="item in datadetails" :key='item.id' :mid="item.messageId" :type="item.type">
+				<li v-for="item in datadetails" :key='item.id' :id='item.id' :mid="item.messageId" :type="item.type">
 					<p><span class="dot" v-if="item.status==1"></span>{{item.updateTime}}</p>
 					<p class="sysdesc">{{item.content}}</p>
 				</li>
@@ -28,6 +28,13 @@
 			mui.init({
 				swipeBack: false //启用右滑关闭功能
 			});
+			(function($, doc) {
+				window.addEventListener('refresh', function(e) {
+					//执行刷新
+					console.log("刷新父页面")
+					location.reload();
+				});
+			})(mui, document);
 			mui.plusReady(function() {
 				var token = plus.storage.getItem('token');
 				options.token = token;
@@ -67,10 +74,10 @@
 			});
 			mui('.sysmessagelist').on('tap', 'li', function() {
 				var mid = this.getAttribute('mid');
-				var kid = this.getAttribute('key');
+				var kid = this.getAttribute('id');
 				var type = this.getAttribute('type');
 				console.log(mid, type)
-				updatemes(options.token,kid)
+				updatemes(options.token, kid)
 				switch (type) {
 					case "1":
 						mui.openWindowWithTitle({
@@ -237,7 +244,7 @@
 				}
 			});
 
-			function updatemes(token,kid) {
+			function updatemes(token, kid) {
 				mui.ajax({
 					type: 'get',
 					url: baseurl + "client/mfflChatContents/updateMessageStatus",
@@ -252,12 +259,11 @@
 						'token': token
 					},
 					data: {
-						'id':kid
+						'id': kid
 					},
 					success: function(data) {
 						console.log(data);
-						if (data.errCode == 200) {
-						} else {
+						if (data.errCode == 200) {} else {
 							mui.toast(data.message)
 						}
 					},

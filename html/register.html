@@ -37,7 +37,7 @@
 					<input type="button" id="getcode" value="获取验证码" />
 				</div>
 				<div class="dbbtn">
-					<button type="button" class="mui-btn" onclick="mui.back()">返回登录</button>
+					<button type="button" class="mui-btn" id="return">返回登录</button>
 					<button type="button" class="mui-btn" id="zhuce">注 册</button>
 				</div>
 				<div class="goRegister mui-text-center">
@@ -229,6 +229,10 @@
 					}
 				})
 			});
+			mui('body').on('tap', '#return', function() {
+				plus.webview.currentWebview().close();
+				plus.webview.open('login.html');
+			})
 		</script>
 	</body>
 </html>

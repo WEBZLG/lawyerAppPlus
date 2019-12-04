@@ -122,11 +122,6 @@
 					}, 'div');
 					return false;
 				}
-				floatw = plus.webview.create("html/publish.html", "publish.html", {
-					background: 'transparent',
-					zindex: 10
-				});
-
 				var pages = ["html/home.html", "html/workbench.html", "html/word.html", "html/myself.html"];
 				var arr = document.getElementsByClassName("mui-tab-item");
 				var styles = {
@@ -172,22 +167,9 @@
 								default:
 									break;
 							}
-							var pageid = this.getAttribute('href');
-							var wobj = plus.webview.getWebviewById(pageid); //根据页面ID获取到页面对象
-							wobj.reload(true);
-
-							// if (i == 2) {
-							// 	if (floatw) { // 避免快速多次点击创建多个窗口
-							// 		//floatw.show("fade-in",300);
-							// 		plus.webview.show("html/publish.html", "fade-in", 300);
-							// 	} else {
-							// 		floatw = plus.webview.create("html/publish.html", "publish", {
-							// 			background: 'transparent',
-							// 			zindex: 10,
-							// 		});
-							// 		floatw.show("fade-in", 300);
-							// 	}
-							// } else {
+							// var pageid = this.getAttribute('href');
+							// var wobj = plus.webview.getWebviewById(pageid); //根据页面ID获取到页面对象
+							// wobj.reload(true);
 							// 更换标题
 							title.innerHTML = this.querySelector('.mui-tab-label').title;
 
@@ -213,23 +195,25 @@
 				}
 				// 默认触发第0个选项卡的tap事件。
 				mui.trigger(arr[0], "tap");
+				// 动态Tab演示：自定义事件，模拟点击“选项卡”
 			});
-			// 动态Tab演示：自定义事件，模拟点击“选项卡”
 			document.addEventListener('gochat', function(e) {
-				alert(666)
+				var arr = document.getElementsByClassName("mui-tab-item");
 				var type = e.detail.type;
-				var chatTab = document.getElementById("chatTab");
+				
+				changeType(type);
 				//模拟首页点击
-				mui.trigger(chatTab, 'tap', {
+				mui.trigger(arr[1], 'tap', {
 					type: type
 				});
-				//切换选项卡高亮
-				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
-				if (chatTab !== current) {
-					current.classList.remove('mui-active');
-					chatTab.classList.add('mui-active');
-				}
 			});
+
+			function changeType(type) {
+				var chat = plus.webview.getWebviewById('html/workbench.html');
+				mui.fire(chat, 'changeType', {
+					type: type
+				})
+			}
 		</script>
 	</body>
 </html>

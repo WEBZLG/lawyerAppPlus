@@ -166,9 +166,9 @@
 									return false;
 								} else {
 									setTimeout(function() {
+										plus.webview.currentWebview().close();
 										var home = plus.webview.getLaunchWebview().getURL();
 										plus.webview.open(home);
-										plus.webview.currentWebview().close();
 									}, 1000)
 								}
 								// plus.Push.getRegistrationID(function(res) {

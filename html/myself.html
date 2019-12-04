@@ -61,12 +61,15 @@
 					userinfo: '',
 					token: ''
 				},
-				methods: {
-					gohome: function() {
-
-					}
-				}
+				methods: {}
 			});
+			(function($, doc) {
+				window.addEventListener('refresh', function(e) {
+					//执行刷新
+					console.log("刷新父页面")
+					location.reload();
+				});
+			})(mui, document);
 			mui.plusReady(function() {
 				var token = plus.storage.getItem('token');
 				var userinfo = plus.storage.getItem('userinfo');
@@ -130,7 +133,7 @@
 								}
 							}
 						})
-					} else if(this.index == 2){
+					} else if (this.index == 2) {
 						mui.openWindowWithTitle({
 							url: "myWallet.html",
 							id: "myWallet.html",
@@ -154,7 +157,7 @@
 								}
 							}
 						})
-					}else{
+					} else {
 						{
 							mui.openWindowWithTitle({
 								url: "myservice.html",
