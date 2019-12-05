@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>律师认证</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+
+	<body>
+		<div class="cdertification" id="app">
+			<div class="mui-input-row">
+				<label>姓名</label>
+				<input type="text" id="name"  :value="details.realname" readonly>
+			</div>
+			<div class="mui-input-row">
+				<label>执业证号</label>
+				<input type="text" id="cardnum" :value="details.workCode" readonly>
+			</div>
+			<div class="mui-input-row">
+				<label>所在地区</label>
+				<input type="text" id="showCityPicker" :value="details.areaName" readonly>
+			</div>
+			<div class="mui-input-row">
+				<label>所在律所</label>
+				<input type="text" id="lawfirm" :value="details.lawfirm" readonly>
+			</div>
+			<div class="mui-content" style="margin-bottom: 15px;">
+				<ul id="ulelem" class="justbetween" v-if="details.idnumberImage">
+					<li class="addimg imageup " v-for="imgitem in details.idnumberImage.split(';')" :key="imgitem">
+						<img class="" :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+					</li>
+				</ul>
+			</div>
+			<div class="mui-input-row">
+				<label>身份证号</label>
+				<input type="text" id="idcard" :value="details.idnumber" readonly>
+			</div>
+			<div class="mui-content" style="margin-bottom: 15px;">
+				<ul id="ulelems" class="justbetween"  v-if="details.workBootImage">
+					<li class="addimg imageup " v-for="imgitem in details.workBootImage.split(';')" :key="imgitem">
+						<img class="" :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../js/mui.js"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.plusReady(function() {
+				var token = plus.storage.getItem('token');
+				options.token = token;
+				getdetails(token);
+			})
+			var options = new Vue({
+				el: '#app',
+				data: {
+					details: ''
+				},
+				methods: {
+
+				}
+			});
+
+			function getdetails(token) {
+				mui.ajax({
+					type: 'get',
+					url: baseurl + "mffl/getUserInfo",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {},
+					success: function(data) {
+						console.log(data)
+						if (data.errCode == 200) {
+							options.details = data.datas;
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

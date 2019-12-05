@@ -173,7 +173,8 @@
 		var options = new Vue({
 			el: '#app',
 			data: {
-				typelist: []
+				typelist: [],
+				details:''
 			},
 			methods: {
 				gohome: function() {
@@ -210,14 +211,14 @@
 			mui("#education").popover('toggle', document.getElementById("div"));
 		})
 		// 监听ffn
-		window.addEventListener('ffn', function(event) {
-			console.log(event)
-			// 数据都在event.detail里面  
-			var val = event.detail.name;
-			var phone = event.detail.phone;
-			document.getElementById('myname').innerHTML = val;
-			document.getElementById('phonenum').innerHTML = phone;
-		})
+		// window.addEventListener('ffn', function(event) {
+		// 	console.log(event)
+		// 	// 数据都在event.detail里面  
+		// 	var val = event.detail.name;
+		// 	var phone = event.detail.phone;
+		// 	document.getElementById('myname').innerHTML = val;
+		// 	document.getElementById('phonenum').innerHTML = phone;
+		// })
 
 		function changinfo(token, field, content, education, thirdlevel) {
 			mui.ajax({
@@ -257,17 +258,11 @@
 
 		mui.plusReady(function() {
 			var token = plus.storage.getItem('token');
-			var userinfo = plus.storage.getItem('userinfo');
-			var message = JSON.parse(userinfo);
-			console.log(message)
+			// var userinfo = plus.storage.getItem('userinfo');
+			// var message = JSON.parse(userinfo);
+			// console.log(message)
 			gettype(token)
-			document.getElementById('head-img').src = imgurl + message.headImgUrl;
-			document.getElementById('myname').innerText = message.nickname;
-			document.getElementById('phonenum').innerText = message.phone;
-			document.getElementById('jiyu').innerText = message.content;
-			document.getElementById('jiaoyu').innerText = message.education;
-			document.getElementById('lingyu').innerText = message.field;
-			document.getElementById('zizhi').innerText = message.lawfirm;
+			getdetails(token)
 			mui('body').on('tap', '#lsjybtn', function() {
 				var content = document.getElementById('lsjy').value;
 				changinfo(token, '', content, '', '')
@@ -497,8 +492,8 @@
 		// 认证信息
 		mui("body").on("tap", "#certification", function() {
 			mui.openWindowWithTitle({
-				url: "certification.html",
-				id: "certification.html",
+				url: "certificationinfo.html",
+				id: "certificationinfo.html",
 				styles: {},
 				extras: {
 					// 打开页面的同时，向新页面传递数据。
@@ -551,6 +546,43 @@
 					console.log(err)
 				}
 			});
+		}
+
+		function getdetails(token) {
+			mui.ajax({
+				type: 'get',
+				url: baseurl + "mffl/getUserInfo",
+				dataType: "json",
+				beforeSend: function(XMLHttpRequest) {
+					XMLHttpRequest.setRequestHeader(
+						"token", token
+					);
+				},
+				headers: {
+					'contentType': "application/x-www-form-urlencoded",
+					'token': token
+				},
+				data: {},
+				success: function(data) {
+					console.log(data)
+					if (data.errCode == 200) {
+						options.details = data.datas;
+						var message = data.datas;
+						document.getElementById('head-img').src = imgurl + message.headImgUrl;
+						document.getElementById('myname').innerText = message.nickname;
+						document.getElementById('phonenum').innerText = message.phone;
+						document.getElementById('jiyu').innerText = message.content;
+						document.getElementById('jiaoyu').innerText = message.education;
+						document.getElementById('lingyu').innerText = message.field;
+						document.getElementById('zizhi').innerText = message.lawfirm;
+					} else {
+						mui.toast(data.message)
+					}
+				},
+				error: function(err) {
+					console.log(err)
+				}
+			})
 		}
 
 		function getVals(token) {

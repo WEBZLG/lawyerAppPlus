@@ -16,30 +16,32 @@
 		<div class="myorderlist" id="app">
 			<div class="mui-scroll-wrapper" id="pullrefresh">
 				<div class="mui-scroll">
-					<div class="orderlistitem" v-for="item in datalist" :key="item.id">
-						<div class="orderreference" :id="item.id">
-							<div class="ordernum">
-								<p>订单编号：</p>
-								<p>{{item.payMerchantNumber}}</p>
+					<div class="orderlistitem" v-for="item in datalist">
+						<div class="clickbox" :id="item.id">
+							<div class="orderreference" :id="item.id">
+								<div class="ordernum">
+									<p>订单编号：</p>
+									<p>{{item.payMerchantNumber}}</p>
+								</div>
+								<em class="orangecolor">悬赏{{item.money}}元</em>
+								<div class="orderstatus orangecolor" v-if="item.state==0">待支付</div>
+								<div class="orderstatus greencolor" v-if="item.state==1">已支付</div>
+								<div class="orderstatus redcolor" v-if="item.state==2">已退款</div>
+								<div class="orderstatus orangecolor" v-if="item.state==3">申请退款</div>
 							</div>
-							<em class="orangecolor">悬赏{{item.money}}元</em>
-							<div class="orderstatus orangecolor" v-if="item.state==0">待支付</div>
-							<div class="orderstatus greencolor" v-if="item.state==1">已支付</div>
-							<div class="orderstatus redcolor" v-if="item.state==2">已退款</div>
-							<div class="orderstatus orangecolor" v-if="item.state==3">申请退款</div>
-						</div>
-						<div class="orderquestion">
-							<label>问题内容</label>
-							<p class="ordercontent">{{item.content}}</p>
-							<div class="news-show" v-if="item.imageUrl!=''">
-								<div class="news-img" v-for="imgitem in item.imageUrl.split(';')" :key="imgitem">
-									<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+							<div class="orderquestion">
+								<label>问题内容</label>
+								<p class="ordercontent">{{item.content}}</p>
+								<div class="news-show" v-if="item.imageUrl!=''">
+									<div class="news-img" v-for="imgitem in item.imageUrl.split(';')" :key="imgitem">
+										<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="orderchange">
 							<div class="ordertime">{{item.updateTime}}</div>
-<!-- 							<div class="orderaction">
+							<!-- 							<div class="orderaction">
 								<button type="button" class="mui-btn changebtn" :id='item.id'>修改内容</button>
 								<button type="button" class="mui-btn cancelbtn" :id='item.id'>取消发布</button>
 							</div> -->
@@ -144,7 +146,7 @@
 					}
 				})
 			}
-			mui("body").on("tap", ".orderreference", function() {
+			mui("body").on("tap", ".clickbox", function() {
 				var yid = this.getAttribute('id');
 				mui.openWindowWithTitle({
 					url: "myorderlistdetailszy.html",
@@ -190,7 +192,6 @@
 					}
 				})
 			});
-
 		</script>
 	</body>
 

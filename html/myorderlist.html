@@ -16,7 +16,7 @@
 		<div class="myorderlist" id="app">
 			<div class="mui-scroll-wrapper" id="pullrefresh">
 				<div class="mui-scroll">
-					<div class="orderlistitem" v-for="item in datalist" :key="item.id">
+					<div class="orderlistitem" v-for="item in datalist" :key="item.id" :id="item.id">
 						<div class="orderreference" :id="item.id">
 							<div class="ordernum">订单编号：{{item.payMerchantNumber}}</div>
 							<div class="orderstatus" :class='item.tradingState==0?"orangecolor":""'>{{item.tradingState==0?"未完成":"已完成"}}</div>
@@ -138,7 +138,7 @@
 					}
 				})
 			}
-			mui("body").on("tap", ".orderreference", function() {
+			mui("body").on("tap", ".orderlistitem", function() {
 				var yid = this.getAttribute("id");
 				mui.openWindowWithTitle({
 					url: "myorderlistdetails.html",

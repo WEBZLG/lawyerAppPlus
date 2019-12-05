@@ -9,6 +9,13 @@
 		<link rel="stylesheet" href="../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 	</head>
+	<style type="text/css">
+		#sliderSegmentedControl{
+			width: 90%;
+			margin: 0 auto;
+			overflow: hidden;
+		}
+	</style>
 	<body>
 		<div class="" id="app">
 			<div class="greybg">
@@ -16,9 +23,7 @@
 				<div class="banner">
 					<div class="mui-slider banner-slider">
 						<div class="mui-slider-group mui-slider-loop">
-							<div class="mui-slider-item"><a href="#"><img src="../images/banner1.png" /></a></div>
-							<div class="mui-slider-item"><a href="#"><img src="../images/banner1.png" /></a></div>
-							<div class="mui-slider-item"><a href="#"><img src="../images/banner1.png" /></a></div>
+							<div class="mui-slider-item" v-for="item in bannerlist" :key="item"><a href="#"><img :src=imgurl+item.url /></a></div>
 						</div>
 					</div>
 				</div>
@@ -71,7 +76,7 @@
 				<div class="recom-tab">
 					<div id="slider" class="mui-slider mui-sliders">
 						<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-							<div class="mui-scroll marginlr">
+							<div class="mui-scroll">
 								<a class="mui-control-item navitem mui-active tjbtn" href="'#mm00" :idx="00" :type="0">
 									推荐
 								</a>
@@ -142,6 +147,7 @@
 					data: {
 						lawyerlist: [],
 						lawyertype: [],
+						bannerlist:[]
 					},
 					methods: {
 
@@ -151,6 +157,7 @@
 					var token = plus.storage.getItem('token');
 					console.log(token)
 					options.token = token;
+					banner(token);
 					lawyerlist(token, 0, 20);
 					tjlawyerlist(token);
 					mui('.type-list').on('tap', '#mfzx', function(e) {
@@ -239,7 +246,35 @@
 					// 	});
 					// });
 				});
-
+				// banner推荐
+				function banner(token) {
+					mui.ajax({
+						type: 'get',
+						url: baseurl + "mffl/getAdvertising",
+						dataType: "json",
+						beforeSend: function(XMLHttpRequest) {
+							XMLHttpRequest.setRequestHeader(
+								"token", token
+							);
+						},
+						headers: {
+							'contentType': "application/x-www-form-urlencoded",
+							'token': token
+						},
+						data: {},
+						success: function(data) {
+							console.log(data)
+							if (data.errCode == 200) {
+							options.bannerlist = data.datas;
+							} else {
+								mui.toast(data.message)
+							}
+						},
+						error: function(err) {
+							console.log(err)
+						}
+					})
+				}
 				// 律师推荐
 				function lawyerlist(token, type, num) {
 					mui.ajax({
