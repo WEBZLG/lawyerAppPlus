@@ -41,7 +41,7 @@
 					<label>问题内容</label>
 					<div v-html="datadetails.content"></div>
 					<div class="news-show" v-if="datadetails.imageUrl!=''">
-						<div class="news-img" v-for="imgitem in datadetails.imageUrl.split(';')" :key="imgitem">
+						<div class="news-img" v-for="imgitem in (datadetails.imageUrl || ' ').split(';')" :key="imgitem">
 							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
 						</div>
 					</div>
@@ -50,7 +50,7 @@
 					<label>对方态度</label>
 					<div v-html="datadetails.defendantAttitude"></div>
 					<div class="news-show" v-if="datadetails.defendantUrl!=''">
-						<div class="news-img" v-for="imgitem in datadetails.defendantUrl.split(';')" :key="imgitem">
+						<div class="news-img" v-for="imgitem in (datadetails.defendantUrl||' ').split(';')" :key="imgitem">
 							<img :src=imgurl+imgitem data-preview-src="" data-preview-group="1">
 						</div>
 					</div>
@@ -72,7 +72,7 @@
 							<div class="user-name">{{item.userinfo.nickname}}</div>
 						</div>
 						<div class="hot-box">
-							<div class="hot-num">{{item.userinfo.updateTime}}</div>
+							<div class="hot-num">{{item.updateTime}}</div>
 						</div>
 					</div>
 					<div class="mui-text-right" v-if="datadetails.bestAnswerId==item.id">
@@ -109,13 +109,16 @@
 		<script src="../js/mui.js"></script>
 		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			mui.previewImage();
 			mui.init({
 				beforeback: function() {
 					//获得父页面的webview
 					var list = plus.webview.currentWebview().opener();
 					//触发父页面的自定义事件(refresh),从而进行刷新
-					mui.fire(list, 'refresh');
+					mui.fire(list, 'refreshes');
 					//返回true,继续页面关闭逻辑
 					return true;
 				}

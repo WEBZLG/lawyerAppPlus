@@ -72,10 +72,10 @@
 				</div>
 				<div class="orderchange">
 					<div class="ordertime"></div>
-					<div class="orderaction" v-if="datadetails.state==0&&datadetails.payState">
+					<div class="orderaction" v-if="datadetails.state==0&&datadetails.payState==1">
 						<button type="button" class="mui-btn handle">立即处理</button>
 					</div>
-					<div class="orderaction" v-if="datadetails.state==1&&datadetails.state==3">
+					<div class="orderaction" v-if="datadetails.state==1&&datadetails.state==1">
 						<button type="button" class="mui-btn complete">服务完成</button>
 					</div>
 				</div>
@@ -84,13 +84,16 @@
 		<script src="../js/mui.js"></script>
 		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			mui.previewImage();
 			mui.init({
 				beforeback: function() {
 					//获得父页面的webview
 					var list = plus.webview.currentWebview().opener();
 					//触发父页面的自定义事件(refresh),从而进行刷新
-					mui.fire(list, 'refresh');
+					mui.fire(list, 'refreshes');
 					//返回true,继续页面关闭逻辑
 					return true;
 				}

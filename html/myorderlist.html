@@ -48,6 +48,14 @@
 		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			(function($, doc) {
+				window.addEventListener('refreshes', function(e) {
+					//执行刷新
+					console.log("刷新父页面")
+					location.reload();
+				});
+			})(mui, document);
+
 			mui.init({
 				longtap: true,
 				pullRefresh: {
@@ -121,7 +129,7 @@
 					},
 					data: {
 						'freeOrPaid': '0',
-						'offset': offset, 
+						'offset': offset,
 						'limit': limit
 					},
 					success: function(data) {

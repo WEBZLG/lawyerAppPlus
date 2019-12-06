@@ -519,7 +519,7 @@
 						console.log(data);
 						if (status == 200) {
 							if (data.errCode == 200) {
-								var imgUrl = data.datas.max;
+								var imgUrl = data.datas.med;
 								mui.toast('发送成功');
 								var contentbox = document.getElementsByTagName('ul')[0];
 								contentbox.innerHTML += '<li><img  src="' + imgurl + options.userinfo.headImgUrl +

@@ -165,16 +165,23 @@
 				//获得父页面的webview
 				var list = plus.webview.currentWebview().opener();
 				//触发父页面的自定义事件(refresh),从而进行刷新
-				mui.fire(list, 'refresh');
+				mui.fire(list, 'refreshes');
 				//返回true,继续页面关闭逻辑
 				return true;
 			}
 		});
+		(function($, doc) {
+			window.addEventListener('refreshes', function(e) {
+				//执行刷新
+				console.log("刷新父页面")
+				location.reload();
+			});
+		})(mui, document);
 		var options = new Vue({
 			el: '#app',
 			data: {
 				typelist: [],
-				details:''
+				details: ''
 			},
 			methods: {
 				gohome: function() {
@@ -573,8 +580,20 @@
 						document.getElementById('phonenum').innerText = message.phone;
 						document.getElementById('jiyu').innerText = message.content;
 						document.getElementById('jiaoyu').innerText = message.education;
-						document.getElementById('lingyu').innerText = message.field;
 						document.getElementById('zizhi').innerText = message.lawfirm;
+						var fieldArray = message.field.split(',');
+						var rdsObj = document.getElementsByClassName('checkeds');
+						var nameArray = [];
+						for (var i = 0; i < fieldArray.length; i++) {
+							console.log(fieldArray[i])
+							for (var j = 0; j < rdsObj.length; j++) {
+								if (rdsObj[j].value == fieldArray[i]) {
+									rdsObj[j].setAttribute('checked','checked');
+									nameArray.push(rdsObj[j].name)
+								}
+							}
+						}
+						document.getElementById('lingyu').innerText = nameArray.join(',');
 					} else {
 						mui.toast(data.message)
 					}

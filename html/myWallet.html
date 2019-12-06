@@ -14,19 +14,23 @@
 			<div class="successtext wallet">
 				<div class="nick-icon"><img src="../images/money1.png"></div>
 				<h4>我的收益</h4>
-				<h4>￥1889</h4>
+				<h4>￥<span id="money"></span></h4>
 			</div>
 			<div class="">
 				<button type="button" class="mui-btn walletbtn" id="deposit">钱包提现</button>
 			</div>
 			<div class="">
-				<button type="button" class="mui-btn walletbtn" id="earnings">收益明细</button>
+				<button type="button" class="mui-btn walletbtn" id="earnings">收支明细</button>
 			</div>
 		</div>
 		<script src="../js/mui.js"></script>
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
-			// 返回首页
+			mui.plusReady(function () {
+			    var token = plus.storage.getItem('token');
+				getmoney(token)
+			})
 			mui(".paysuccess").on("tap", "#deposit", function() {
 				mui.openWindowWithTitle({
 					url: "deposit.html",
@@ -70,7 +74,7 @@
 					// bottomBorderColor:"#267CFB",
 					title: {
 						//标题文字的内容和样式配置
-						text: "收益明细",
+						text: "收支明细",
 						styles: {
 							color: "#333333"
 						}
@@ -82,7 +86,37 @@
 						}
 					}
 				})
-			})
+			});
+			// 获取账户金额
+			function getmoney(token) {
+				mui.ajax({
+					type: 'get',
+					contentType: "application/x-www-form-urlencoded",
+					url: baseurl + "client/mffCashwithdrawalapplications/getusermoneyall", //此处填写自己的服务器url地址；
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					headers: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+							document.getElementById('money').innerText = data.datas;
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
+			};
 		</script>
 	</body>
 </html>

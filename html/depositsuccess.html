@@ -13,11 +13,11 @@
 		<div class="paysuccess">
 			<div class="successtext">
 				<div class="nick-icon"><img src="../images/published.png" ></div>
-				<h4>提现成功</h4>
-				<p>您的提现操作已成功!</p>
+				<h4>提现审核</h4>
+				<p>您的提现操作已成功!正在审核中</p>
 			</div>
 			<div class="dbbtn">
-				<button type="button" class="mui-btn">查看钱包</button>
+				<button type="button" class="mui-btn viewapply">查看申请</button>
 				<button type="button" class="mui-btn gohome">返回首页</button>
 			</div>
 		</div>
@@ -29,10 +29,11 @@
 				var home = plus.webview.getLaunchWebview().getURL();
 				plus.webview.open(home)
 			})
-			mui("body").on("tap", ".addems", function() {
+
+			mui(".paysuccess").on("tap", ".viewapply", function() {
 				mui.openWindowWithTitle({
-					url: "mailinginfor.html",
-					id: "mailinginfor.html",
+					url: "earningsdetails.html",
+					id: "earningsdetails.html",
 					styles: {},
 					extras: {
 						// 打开页面的同时，向新页面传递数据。
@@ -44,7 +45,7 @@
 					// bottomBorderColor:"#267CFB",
 					title: {
 						//标题文字的内容和样式配置
-						text: "邮寄信息",
+						text: "收支明细",
 						styles: {
 							color: "#333333"
 						}

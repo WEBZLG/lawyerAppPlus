@@ -167,11 +167,11 @@
 										<li class="mui-table-view-cell" v-for="item in applydatalist" :key='item.id'>
 											<div class="">
 												<p class="gettype">剩余金额</p>
-												<p>{{item.surplus}}</p>
+												<p class="orangecolor">{{item.surplus}}</p>
 											</div>
 											<div class="orangecolor">
 												<p class="gettype">提现金额</p>
-												<p>{{item.expenditure}}</p>
+												<p class="orangecolor">{{item.expenditure}}</p>
 											</div>
 										</li>
 									</ul>
@@ -269,7 +269,7 @@
 					success: function(data) {
 						console.log(data)
 						if (data.errCode == 200) {
-							options.applydatalist = data.data;
+							options.applydatalist = data.datas.data;
 							//初始化轮播组件
 							gallery = mui('.mui-slider');
 							gallery.slider();

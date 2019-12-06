@@ -50,9 +50,9 @@
 							<div class="orderaction" v-if="item.payState==1&&item.state==0">
 								<button type="button" class="mui-btn handle" :yid="item.id">立即处理</button>
 							</div>
-							<div class="orderaction" v-if="item.state==2">
-								<button type="button" class="mui-btn viewlogistics" :yid="item.id">查看物流</button>
-								<button type="button" class="mui-btn telephone" :phone="item.number" :id="item.id">拨打电话</button>
+							<div class="orderaction">
+								<button type="button" class="mui-btn viewlogistics" :yid="item.id" v-if="item.payState==1&&item.state==3&&item.state==4">查看物流</button>
+								<button type="button" class="mui-btn telephone" :phone="item.number" :id="item.id"  v-if="item.payState!=1">拨打电话</button>
 							</div>
 						</div>
 					</div>
@@ -66,6 +66,14 @@
 		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			(function($, doc) {
+				window.addEventListener('refreshes', function(e) {
+					//执行刷新
+					console.log("刷新父页面")
+					location.reload();
+				});
+			})(mui, document);
+
 			mui.init({
 				longtap: true,
 				pullRefresh: {

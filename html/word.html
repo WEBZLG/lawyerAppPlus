@@ -54,7 +54,7 @@
 			var token = plus.storage.getItem('token');
 			options.token = token;
 			getlist(token);
-			getsys(token)
+			getsys(token);
 		})
 		var options = new Vue({
 			el: '#app',
@@ -175,61 +175,33 @@
 			})
 		});
 
-		mui(".user-message").on("tap", "li", function() {
-			var sendId = this.getAttribute("sendId");
-			var newname = this.getAttribute("name");
-			mui.ajax({
-				type: 'post',
-				url: baseurl + "client/mfflChatContents/setStartTime",
-				dataType: "json",
-				beforeSend: function(XMLHttpRequest) {
-					XMLHttpRequest.setRequestHeader(
-						"token", options.token
-					);
-				},
-				headers: {
-					'contentType': "application/x-www-form-urlencoded",
-					'token': options.token
-				},
-				data: {
-					'receiveId': sendId,
-				},
-				success: function(data) {
-					console.log(data)
-					if (data.errCode == 200) {
-						mui.openWindowWithTitle({
-							url: "dialog.html",
-							id: "dialog.html",
-							styles: {},
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								sendId: sendId,
-								firstTime:data.datas.firstTime
-							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: newname + (data.datas.timeRemaining),
-								whiteSpace: "normal"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
-					} else {
-						mui.toast(data.message)
-					}
-				},
-				error: function(err) {
-					console.log(err)
+	mui(".user-message").on("tap", "li", function() {
+		var sendId = this.getAttribute("sendId");
+		var newname = this.getAttribute("name");
+		mui.openWindowWithTitle({
+			url: "dialog.html",
+			id: "dialog.html",
+			styles: {},
+			extras: {
+				// 打开页面的同时，向新页面传递数据。
+				sendId: sendId,
+			}
+		}, {
+			//标题栏的背景色和底边线配置
+			backgroundColor: "#ffffff",
+			//bottomBorderColor:"#00ff00",
+			title: {
+				//标题文字的内容和样式配置
+				text: newname,
+				whiteSpace: "normal"
+			},
+			back: {
+				image: {
+					/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+					imgSrc: "../images/left-icon.png"
 				}
-			})
-		});
+			}
+		})
+	});
 	</script>
 </html>
