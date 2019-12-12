@@ -134,7 +134,7 @@
 									<ul class="mui-table-view">
 										<li class="mui-table-view-cell" v-for="item in datalist" :key='item.id' v-if="item.settlement !=1 ">
 											<div class="">
-												<p class="gettype">{{item.servciceName}}</p>
+												<p class="gettype">{{item.servciceName}}<span v-if="item.settlement==2" class="redcolor">/退款</span><span v-if="item.settlement==3" class="redcolor">/申请退款</span></p>
 												<p>{{item.settlementTime}}</p>
 											</div>
 											<div class="orangecolor">{{item.state==0?"-":"+"}}{{item.money}}</div>
@@ -165,13 +165,18 @@
 								<div class="mui-scroll">
 									<ul class="mui-table-view">
 										<li class="mui-table-view-cell" v-for="item in applydatalist" :key='item.id'>
+											<div class="orangecolor">
+												<p class="gettype">提现金额</p>
+												<p class="orangecolor">{{item.expenditure}}
+													<span v-if="item.state==1" class="redcolor">提现成功</span>
+													<span v-if="item.state==2" class="redcolor">提现失败</span>
+													<span v-if="item.state==3" class="redcolor">申请提现</span>
+													<span v-if="item.state==4" class="redcolor">取消提现</span>
+												</p>
+											</div>
 											<div class="">
 												<p class="gettype">剩余金额</p>
 												<p class="orangecolor">{{item.surplus}}</p>
-											</div>
-											<div class="orangecolor">
-												<p class="gettype">提现金额</p>
-												<p class="orangecolor">{{item.expenditure}}</p>
 											</div>
 										</li>
 									</ul>

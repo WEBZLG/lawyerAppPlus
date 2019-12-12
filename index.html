@@ -41,14 +41,18 @@
 			// var floatw = null;
 			mui.plusReady(function() {
 				// 检测登录
+				var timestamp = (new Date()).getTime() - 86400000 * 3;
 				var token = plus.storage.getItem('token'); //读取token的值
+				var loginTime = plus.storage.getItem('loginTime'); //读取token的值
 				console.log(token);
 				if (token == "" || token == null) {
-					mui.openWindow({
-						'url': "html/login.html",
-						'id': "html/login.html"
-					})
-					return false;
+					if (loginTime < timestamp) {
+						mui.openWindow({
+							'url': "html/login.html",
+							'id': "html/login.html"
+						})
+						return false;
+					}
 				}
 				var userinfo = plus.storage.getItem('userinfo');
 				userinformation = JSON.parse(userinfo);

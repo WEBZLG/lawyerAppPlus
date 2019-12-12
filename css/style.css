@@ -1820,6 +1820,7 @@ input[type='password'] {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	z-index: 999;
 }
 
 .pubbox .iptbox {
@@ -2175,4 +2176,18 @@ textarea {
 
 .mui-show-loading-mask-hidden {
 	display: none !important;
+}
+.dialogtitle {
+	height: 60px;
+	border-bottom: 1px solid #E1E1E1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: fixed;
+	text-align: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 999;
+	background-color: #ffffff;
 }

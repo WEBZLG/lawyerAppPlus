@@ -20,7 +20,7 @@
 	<body>
 		<div class="contact-box" id="changepassword">
 			<div class="mui-input-row">
-				<label>银行卡号</label>
+				<label>开户姓名</label>
 				<input type="text" id="name" placeholder="请输入真实姓名">
 			</div>
 			<div class="mui-input-row">
@@ -203,6 +203,7 @@
 						if (data.errCode == 200) {
 							document.getElementById('banknum').value = data.datas.bankcardnumber;
 							document.getElementById('bankname').value = data.datas.bank;
+							document.getElementById('name').value = data.datas.realname;
 						} else {
 							mui.toast(data.message)
 						}

@@ -226,7 +226,7 @@
 		// 	document.getElementById('myname').innerHTML = val;
 		// 	document.getElementById('phonenum').innerHTML = phone;
 		// })
-
+			// 修改信息
 		function changinfo(token, field, content, education, thirdlevel) {
 			mui.ajax({
 				type: 'post',
@@ -250,9 +250,10 @@
 				success: function(data) {
 					console.log(data)
 					if (data.errCode == 200) {
-						mui.toast(data.message)
-						var over = document.getElementsByClassName('mui-backdrop')[0];
-						mui.trigger(over, 'tap');
+						mui.toast(data.message);
+						location.reload();
+						// var over = document.getElementsByClassName('mui-backdrop')[0];
+						// mui.trigger(over, 'tap');
 					} else {
 						mui.toast(data.message)
 					}
@@ -579,8 +580,11 @@
 						document.getElementById('myname').innerText = message.nickname;
 						document.getElementById('phonenum').innerText = message.phone;
 						document.getElementById('jiyu').innerText = message.content;
+						document.getElementById('lsjy').innerText = message.content;
 						document.getElementById('jiaoyu').innerText = message.education;
+						document.getElementById('jybj').innerText = message.education;
 						document.getElementById('zizhi').innerText = message.lawfirm;
+						document.getElementById('lszz').innerText = message.lawfirm;
 						var fieldArray = message.field.split(',');
 						var rdsObj = document.getElementsByClassName('checkeds');
 						var nameArray = [];
