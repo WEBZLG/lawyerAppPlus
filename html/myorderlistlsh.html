@@ -52,7 +52,7 @@
 							</div>
 							<div class="orderaction">
 								<button type="button" class="mui-btn viewlogistics" :yid="item.id" v-if="item.payState==1&&item.state==3&&item.state==4">查看物流</button>
-								<button type="button" class="mui-btn telephone" :phone="item.number" :id="item.id"  v-if="item.payState!=1||item.payState==2">拨打电话</button>
+								<!-- <button type="button" class="mui-btn telephone" :phone="item.number" :id="item.id"  v-if="item.payState!=1||item.payState!=2">拨打电话</button> -->
 							</div>
 						</div>
 					</div>

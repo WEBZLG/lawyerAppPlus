@@ -18,7 +18,6 @@
 	</style>
 	<body>
 		<div class="" id="app">
-			<div class="greybg">
 				<!-- 轮播 -->
 				<div class="banner">
 					<div class="mui-slider banner-slider">
@@ -27,11 +26,12 @@
 						</div>
 					</div>
 				</div>
+			<div class="greybg">
 				<!-- 咨询律师 -->
 				<div class="lawyer-list">
-					<div class="pub-sm-title">
+<!-- 					<div class="pub-sm-title">
 
-					</div>
+					</div> -->
 					<div class="type-list">
 						<ul id="type-list">
 							<li>
@@ -261,7 +261,9 @@
 							'contentType': "application/x-www-form-urlencoded",
 							'token': token
 						},
-						data: {},
+						data: {
+							'advertisingType': 1
+						},
 						success: function(data) {
 							console.log(data)
 							if (data.errCode == 200) {

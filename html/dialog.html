@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 		<style type="text/css">
-/* 			#container {
+			/* 			#container {
 				position: absolute;
 				top: 60px;
 				left: 0;
@@ -216,7 +216,7 @@
 					</ul>
 				</div>
 				<div class="footer" id="action">
-					
+
 					<div id="user_face_icon" onclick="btn_toggle();"><img src="../images/yuyin1.png" alt=""></div>
 					<input id="text" type="text" placeholder="说点什么吧...">
 					<button id="btnsay" class="mui-hidden" type="button">按住说话</button>
@@ -255,8 +255,8 @@
 			 */
 			function pulldownRefresh() {
 				setTimeout(function() {
-					getlist(options.token, 0,options.limit)
-					options.limit = options.limit+20;
+					getlist(options.token, 0, options.limit)
+					options.limit = options.limit + 20;
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 				}, 1500);
 			}
@@ -287,22 +287,28 @@
 					showtime: '',
 					lawyerId: '',
 					firstTime: '',
-					offset:0,
-					limit:20
+					offset: 0,
+					limit: 20
 				},
 				methods: {
-
+					keepMessageListOnButtom: function() {
+						var e = $('#ul');
+						e && (this.preScrollHeight - e[0].clientHeight - e[0].scrollTop < 20 ? (this.$nextTick(function() {
+							e.scrollTop(e[0].scrollHeight);
+							document.body.scrollTop = e[0].scrollHeight;
+						})) : this.preScrollHeight = e[0].scrollHeight)
+					}
 				},
-				
+
 				watch: {
-				    Talk() {
-				      this.$nextTick(() => {
-				        var container = this.$el.querySelector('#wordlist')
-						console.log(container)
-				        container.scrollTop = container.scrollHeight
-				      })
-				    }
-				  }
+					Talk() {
+						this.$nextTick(() => {
+							var container = this.$el.querySelector('#wordlist')
+							console.log(container)
+							container.scrollTop = container.scrollHeight
+						})
+					}
+				}
 
 			});
 			//开启长按、释放功能
@@ -428,7 +434,7 @@
 						document.getElementById('btn').classList.add('mui-hidden')
 					}
 				});
-				
+
 			}
 
 

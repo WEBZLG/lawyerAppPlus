@@ -15,6 +15,7 @@
 		<div class="mes-list" id="app">
 			<div class="mui-content systerm-message">
 				<div class="mes-head">
+					<span class="chatdot" v-if="systermstatus==1"></span>
 					<div class="mes-img"><img src="../images/xttz.png"></div><!-- <span class="mui-badge mui-badge-danger">1</span> -->
 				</div>
 				<div class="mes-item">
@@ -29,6 +30,7 @@
 			<ul class="mui-content user-message">
 				<li :id="item.id" :sendId="item.sendId" :name="item.nickname" v-for="item in datalist" :key="item.id">
 					<div class="mes-head">
+						<span class="chatdot" v-if="item.status==1"></span>
 						<div class="mes-img"><img :src=imgurl+item.headImgUrl></div><!-- <span class="mui-badge mui-badge-danger">1</span> -->
 					</div>
 					<div class="mes-item">
@@ -61,10 +63,11 @@
 			data: {
 				datalist: [],
 				token: "",
-				systermnum:''
+				systermnum: '',
+				systermstatus: ''
 			},
 			methods: {
-			
+
 			}
 		});
 
@@ -81,18 +84,18 @@
 		}
 		document.addEventListener("jpush.receiveNotification", receiveNotification, false);
 		document.addEventListener("plusready", function() {
-		    // 监听点击消息事件
-		    plus.push.addEventListener("click", function(msg) {
-		        //根据需要填写
-		        plus.webview.open("word.html");
-		 
-		    }, false);
+			// 监听点击消息事件
+			plus.push.addEventListener("click", function(msg) {
+				//根据需要填写
+				plus.webview.open("word.html");
+
+			}, false);
 		}, false);
 		// 获取系统消息
 		function getsys(token) {
 			mui.ajax({
 				type: 'get',
-				url: baseurl + "client/mfflChatContents/getSystemMessages",
+				url: baseurl + "client/mfflChatContents/getSystemMessagesCount",
 				dataType: "json",
 				beforeSend: function(XMLHttpRequest) {
 					XMLHttpRequest.setRequestHeader(
@@ -107,7 +110,8 @@
 				success: function(data) {
 					console.log(data)
 					if (data.errCode == 200) {
-						options.systermnum = data.datas.length;
+						options.systermnum = data.datas.messageCount;
+						options.systermstatus = data.datas.status;
 					} else {
 						mui.toast(data.message)
 					}
@@ -175,19 +179,19 @@
 			})
 		});
 
-	mui(".user-message").on("tap", "li", function() {
-		var sendId = this.getAttribute("sendId");
-		var newname = this.getAttribute("name");
-		mui.openWindow({
-			url: "dialog.html",
-			id: "dialog.html",
-			styles: {},
-			extras: {
-				// 打开页面的同时，向新页面传递数据。
-				sendId: sendId,
-				name:newname
-			}
-		})
-	});
+		mui(".user-message").on("tap", "li", function() {
+			var sendId = this.getAttribute("sendId");
+			var newname = this.getAttribute("name");
+			mui.openWindow({
+				url: "dialog.html",
+				id: "dialog.html",
+				styles: {},
+				extras: {
+					// 打开页面的同时，向新页面传递数据。
+					sendId: sendId,
+					name: newname
+				}
+			})
+		});
 	</script>
 </html>

@@ -131,6 +131,11 @@
 			})
 			mui('body').on('tap', '#pubtalk', function() {
 				var text = document.getElementById('saytext').value;
+				text=text.replace( /^\s*/, '');
+				if(text==''){
+					mui.toast('请输入内容');
+					return false;
+				}
 				if (options.appendid == null) {
 					addans(options.token, options.datadetails.id, 0, text)
 				} else {

@@ -15,6 +15,9 @@
 	<body>
 		<header class="mui-bar mui-bar-nav header">
 			<h1 class="mui-title" id="title">首页</h1>
+			<div class="search-icon mui-hidden">
+				<img src="images/sch.png" >
+			</div>
 		</header>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="defaultTab" class="mui-tab-item mui-active" href="html/home.html">
@@ -176,8 +179,12 @@
 							// wobj.reload(true);
 							// 更换标题
 							title.innerHTML = this.querySelector('.mui-tab-label').title;
-
-							if (i == 3) {
+							if(i==0){
+								document.getElementsByClassName('search-icon')[0].classList.remove('mui-hidden');
+							}else{
+								document.getElementsByClassName('search-icon')[0].classList.add('mui-hidden');
+							}
+							if (i == 3||i==0) {
 								header.style.background = "#267CFB";
 								title.style.color = '#FFFFFF';
 							} else {

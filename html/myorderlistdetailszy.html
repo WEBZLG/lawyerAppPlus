@@ -8,7 +8,6 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="../css/mui.min.css">
-		<!-- <link rel="stylesheet" type="text/css" href="../css/mui.imageviewer.css" /> -->
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 	</head>
 
@@ -35,7 +34,9 @@
 					</div>
 
 					<div class="orderstatus orangecolor"><em class="orangecolor">悬赏{{datadetails.money}}元</em>
-						{{datadetails.state==0?"未完成":"已完成"}}</div>
+						<span v-if="datadetails.bestAnswerId">已完成</span>
+						<span v-if="datadetails.tradingState==4">已关闭</span>
+					</div>
 				</div>
 				<div class="descitem">
 					<label>问题内容</label>
