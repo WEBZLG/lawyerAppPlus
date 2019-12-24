@@ -52,6 +52,13 @@
 		mui.init({
 			swipeBack: false //启用右滑关闭功能
 		});
+		(function($, doc) {
+			window.addEventListener('refreshes', function(e) {
+				//执行刷新
+				console.log("刷新父页面")
+				location.reload();
+			});
+		})(mui, document);
 		mui.plusReady(function() {
 			var token = plus.storage.getItem('token');
 			options.token = token;

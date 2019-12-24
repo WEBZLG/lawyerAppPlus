@@ -39,6 +39,14 @@
 						contentrefresh: '正在加载...',
 						callback: pullupRefresh
 					}
+				},
+				beforeback: function() {
+					//获得父页面的webview
+					var list = plus.webview.currentWebview().opener();
+					//触发父页面的自定义事件(refresh),从而进行刷新
+					mui.fire(list, 'refreshes');
+					//返回true,继续页面关闭逻辑
+					return true;
 				}
 			});
 			/**
@@ -307,37 +315,38 @@
 					}
 				});
 			}
-	function getlist(token, offset, limit) {
-		mui.ajax({
-			type: 'get',
-			url: baseurl + "client/mfflChatContents/getSystemMessagesLimit",
-			dataType: "json",
-			beforeSend: function(XMLHttpRequest) {
-				XMLHttpRequest.setRequestHeader(
-					"token", token
-				);
-			},
-			header: {
-				'contentType': "application/x-www-form-urlencoded",
-				'token': token
-			},
-			data: {
-				'offset': offset,
-				'limit': limit
-			},
-			success: function(data) {
-				console.log(data);
-				if (data.errCode == 200) {
-					options.datadetails = data.datas.data
-				} else {
-					mui.toast(data.message)
-				}
-			},
-			error: function(err) {
-				console.log(err)
+
+			function getlist(token, offset, limit) {
+				mui.ajax({
+					type: 'get',
+					url: baseurl + "client/mfflChatContents/getSystemMessagesLimit",
+					dataType: "json",
+					beforeSend: function(XMLHttpRequest) {
+						XMLHttpRequest.setRequestHeader(
+							"token", token
+						);
+					},
+					header: {
+						'contentType': "application/x-www-form-urlencoded",
+						'token': token
+					},
+					data: {
+						'offset': offset,
+						'limit': limit
+					},
+					success: function(data) {
+						console.log(data);
+						if (data.errCode == 200) {
+							options.datadetails = data.datas.data
+						} else {
+							mui.toast(data.message)
+						}
+					},
+					error: function(err) {
+						console.log(err)
+					}
+				});
 			}
-		});
-	}
 		</script>
 	</body>
 </html>

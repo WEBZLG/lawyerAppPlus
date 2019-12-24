@@ -31,6 +31,10 @@
 				<label>所在律所</label>
 				<input type="text" id="lawfirm" placeholder="请输入律师事务所名称">
 			</div>
+			<div class="mui-input-row">
+				<label>律所编号</label>
+				<input type="text" id="licensenumber" placeholder="请输入律所编号">
+			</div>
 			<div class="mui-content" style="margin-bottom: 15px;">
 				<ul id="ulelem" class="justbetween">
 					<li class="addimg imageup " id="imageup1-1">
@@ -117,7 +121,8 @@
 				var workBootImage = options.img1 + ';' + options.img2;
 				var idnumberImage = options.img3 + ';' + options.img4;
 				var comid = options.comid;
-				if (name == '' || cardnum == '' || lawfirm == '' || idcard == '' || area == '' || comid == '') {
+				var licensenumber =document.getElementById('licensenumber').value;
+				if (name == '' || cardnum == '' || lawfirm == '' || idcard == '' || area == '' || comid == ''||licensenumber =='') {
 					mui.toast('请完善认证信息');
 					return false;
 				} else if (options.img1 == '' || options.img2 == '' || options.img3 == '' || options.img4 == '') {
@@ -145,7 +150,8 @@
 						'lawfirm': lawfirm,
 						'workBootImage': workBootImage,
 						'idnumber': idcard,
-						'idnumberImage': idnumberImage
+						'idnumberImage': idnumberImage,
+						'licensenumber':licensenumber 
 					},
 					success: function(data) {
 						console.log(data);
