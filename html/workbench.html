@@ -138,7 +138,7 @@
 				options.token = token
 				servicetype(token);
 				console.log(options.freeOrPaid)
-				worklist(token, options.freeOrPaid,options.type, options.rank, 0, 10);
+				worklist(token, options.freeOrPaid, options.type, options.rank, 0, 10);
 			});
 
 			var options = new Vue({
@@ -152,7 +152,7 @@
 					rank: '',
 					offset: 0,
 					limit: 10,
-					zxtype:''
+					zxtype: ''
 				},
 				methods: {
 
@@ -267,11 +267,11 @@
 								if (zxtype == 0) {
 									options.freeOrPaid = 0;
 									title.innerText = '免费咨询';
-									worklist(options.token,'0', options.type, options.rank, options.offset, options.limit)
+									worklist(options.token, '0', options.type, options.rank, options.offset, options.limit)
 								} else if (zxtype == 1) {
 									options.freeOrPaid = 1;
 									title.innerText = '专业咨询';
-									worklist(options.token,'1', options.type, options.rank, options.offset, options.limit)
+									worklist(options.token, '1', options.type, options.rank, options.offset, options.limit)
 								}
 							})
 						} else {
@@ -324,59 +324,63 @@
 				var yid = this.getAttribute('id');
 				var wordtype = this.getAttribute('type');
 				if (wordtype == 0) {
-					mui.openWindowWithTitle({
+					mui.openWindow({
 						url: "myorderlistdetails.html",
 						id: "myorderlistdetails.html",
-						styles: {},
+						show: {
+							//autoShow: false
+						},
+						styles: {
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true,
+								titleText: "免费咨询详情",
+								titleColor: "#000000",
+								titleSize: "16px",
+								backgroundColor: "#ffffff",
+								progress: { // 标题栏控件的进度条样式
+									color: "#2E82FF",
+									height: "2px"
+								},
+								// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								// 	color: "#CCCCCC",
+								// 	height: "1px"
+								// }
+							}
+						},
 						extras: {
-							// 打开页面的同时，向新页面传递数据。
 							yid: yid
 						}
-					}, {
-						//标题栏的背景色和底边线配置
-						// backgroundColor: "#267CFB",
-						// bottomBorderColor: "#267CFB",
-						title: {
-							//标题文字的内容和样式配置
-							text: "免费咨询详情",
-							// styles: {
-							// 	color: "#fffff"
-							// }
-						},
-						back: {
-							image: {
-								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-								imgSrc: "../images/left-icon.png"
-							}
-						}
-					})
+					});
+
 				} else if (wordtype == 1) {
-					mui.openWindowWithTitle({
+					mui.openWindow({
 						url: "myorderlistdetailszy.html",
 						id: "myorderlistdetailszy.html",
-						styles: {},
+						show: {
+							//autoShow: false
+						},
+						styles: {
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true,
+								titleText: "专业咨询详情",
+								titleColor: "#000000",
+								titleSize: "16px",
+								backgroundColor: "#ffffff",
+								progress: { // 标题栏控件的进度条样式
+									color: "#2E82FF",
+									height: "2px"
+								},
+								// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								// 	color: "#CCCCCC",
+								// 	height: "1px"
+								// }
+							}
+						},
 						extras: {
-							// 打开页面的同时，向新页面传递数据。
 							yid: yid
 						}
-					}, {
-						//标题栏的背景色和底边线配置
-						// backgroundColor: "#267CFB",
-						// bottomBorderColor: "#267CFB",
-						title: {
-							//标题文字的内容和样式配置
-							text: "专业咨询详情",
-							// styles: {
-							// 	color: "#fffff"
-							// }
-						},
-						back: {
-							image: {
-								/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-								imgSrc: "../images/left-icon.png"
-							}
-						}
-					})
+					});
+
 				}
 
 			});

@@ -261,11 +261,12 @@
 			function pulldownRefresh() {
 				setTimeout(function() {
 					options.limit = options.limit + 20;
-					getlist(options.token,options.sendId,0, options.limit)
+					getlist(options.token, options.sendId, 0, options.limit)
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 				}, 1500);
 			}
 			mui.plusReady(function() {
+
 				var token = plus.storage.getItem('token');
 				var self = plus.webview.currentWebview();
 				var sendId = self.sendId;
@@ -295,23 +296,10 @@
 					limit: 20
 				},
 				methods: {
-					// keepMessageListOnButtom: function() {
-					//   console.log('-----keepMessageListOnButtom START-----');
-					//   // var e = $('#pullrefresh');
-					//   var e = $('body');
-					//   e && (this.preScrollHeight - e[0].clientHeight - e[0].scrollTop < 20 ? (this.$nextTick(function() {
-					//    console.log('数据列表长度：'+this.datalist.length); 
-					//    console.log('屏幕展示高度：'+e[0].clientHeight);
-					//    console.log('盒子高度：'+e[0].scrollHeight);
-					//    e.scrollTop(e[0].scrollHeight);
-					//    document.body.scrollTop = e[0].scrollHeight; 
-					//    console.log('滚动距离：'+e.scrollTop());
-					//   })) : this.preScrollHeight = e[0].scrollHeight)
-					//   console.log('-----keepMessageListOnButtom END-----');
-					//  },
+
 					keepMessageListOnButtom: function() {
 						var e = $('body');
-						console.log(e); 
+						console.log(e);
 						e && (this.preScrollHeight - e[0].clientHeight - e[0].scrollTop < 20 ? (this.$nextTick(function() {
 							e.scrollTop(e[0].scrollHeight);
 							document.body.scrollTop = e[0].scrollHeight;
@@ -326,6 +314,21 @@
 				}
 
 			});
+			window.addEventListener('listenerWorkState', function(e) {
+			     getlist(options.token, options.sendId,0,20)
+			});
+			// // 极光推送监听
+			// var receiveNotification = function(event) {
+			// 	var content;
+			// 	if (plus.os.name == 'iOS') {
+			// 		content = window.plus.Push.receiveNotification.aps.alert;
+			// 	} else {
+			// 		content = window.plus.Push.receiveNotification.alert;
+			// 	}
+			// 	console.log(content)
+			// 	getlist(options.token, options.sendId,0,20)
+			// }
+			// document.addEventListener("jpush.receiveNotification", receiveNotification, false);
 			//开启长按、释放功能
 			var r;
 			var voiceTime;
@@ -359,9 +362,9 @@
 								//语音解析成功
 								if (dataJson.errCode == "200") {
 									var contentbox = document.getElementsByTagName('ul')[0];
-									contentbox.innerHTML += '<li><img  src="' + imgurl + options.userinfo.headImgUrl +
+									contentbox.innerHTML += '<li><div class="clearfix"><img  src="' + imgurl + options.userinfo.headImgUrl +
 										'" class="imgright"><span class="imgright"><img class="dialogimg fr" src="../images/labaright.png" url=' +
-										imgurl + dataJson.datas + '></span></li>';
+										imgurl + dataJson.datas + '></span></div></li>';
 								} else {
 									mui.alert("语音解析失败:" + dataJson.data, "系统错误", "关闭", false);
 								}
@@ -452,20 +455,6 @@
 
 			}
 
-
-			// 极光推送监听
-			var receiveNotification = function(event) {
-				var content;
-				if (plus.os.name == 'iOS') {
-					content = window.plus.Push.receiveNotification.aps.alert;
-				} else {
-					content = window.plus.Push.receiveNotification.alert;
-				}
-				getlist(options.token, options.sendId,0,20)
-				console.log(content)
-			}
-
-
 			// 发送信息
 			function sendmsg(token, rid, content) {
 				mui.ajax({
@@ -489,8 +478,8 @@
 						console.log(data)
 						if (data.errCode == 200) {
 							var contentbox = document.getElementsByTagName('ul')[0];
-							contentbox.innerHTML += '<li><img  src="' + imgurl + options.userinfo.headImgUrl +
-								'" class="imgright"><span class="spanright">' + text.value + '</span></li>';
+							contentbox.innerHTML += '<li><div class="clearfix"><img  src="' + imgurl + options.userinfo.headImgUrl +
+								'" class="imgright"><span class="spanright">' + text.value + '</span></div></li>';
 							text.value = '';
 							document.getElementById('user_add_icon').classList.remove('mui-hidden')
 							document.getElementById('btn').classList.add('mui-hidden')
@@ -660,8 +649,8 @@
 								var imgUrl = data.datas;
 								mui.toast('发送成功');
 								var contentbox = document.getElementsByTagName('ul')[0];
-								contentbox.innerHTML += '<li><img  src="' + imgurl + options.userinfo.headImgUrl +
-									'" class="imgright"><span class="imgright"><img src=' + imgurl + imgUrl + '></span></li>';
+								contentbox.innerHTML += '<li><div class="clearfix"><img  src="' + imgurl + options.userinfo.headImgUrl +
+									'" class="imgright"><span class="imgright"><img src=' + imgurl + imgUrl + '></span></div></li>';
 							} else {
 								mui.toast(data.message)
 							}

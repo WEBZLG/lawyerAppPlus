@@ -84,102 +84,119 @@
 				aLi[i].onclick = function() {
 					console.log(this.index);
 					if (this.index == 0) {
-						mui.openWindowWithTitle({
+						mui.openWindow({
 							url: "personal.html",
 							id: "personal.html",
-							styles: {},
+							show: {
+								//autoShow: false
+							},
+							styles: {
+								titleNView: { // 窗口的标题栏控件
+									autoBackButton: true,
+									titleText: "个人资料",
+									titleColor: "#000000",
+									titleSize: "16px",
+									backgroundColor: "#ffffff",
+									progress: { // 标题栏控件的进度条样式
+										color: "#2E82FF",
+										height: "2px"
+									},
+									// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									// 	color: "#CCCCCC",
+									// 	height: "1px"
+									// }
+								}
+							},
 							extras: {
-								// 打开页面的同时，向新页面传递数据。
 								newsId: "0"
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: "个人资料"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						});
 					} else if (this.index == 1) {
-						mui.openWindowWithTitle({
+						mui.openWindow({
 							url: "myorder.html",
 							id: "myorder.html",
-							styles: {},
+							show: {
+								//autoShow: false
+							},
+							styles: {
+								titleNView: { // 窗口的标题栏控件
+									autoBackButton: true,
+									titleText: "我的订单",
+									titleColor: "#000000",
+									titleSize: "16px",
+									backgroundColor: "#ffffff",
+									progress: { // 标题栏控件的进度条样式
+										color: "#2E82FF",
+										height: "2px"
+									},
+									// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									// 	color: "#CCCCCC",
+									// 	height: "1px"
+									// }
+								}
+							},
 							extras: {
-								// 打开页面的同时，向新页面传递数据。
 								newsId: "0"
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: "我的订单"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						});
 					} else if (this.index == 2) {
-						mui.openWindowWithTitle({
+						mui.openWindow({
 							url: "myWallet.html",
 							id: "myWallet.html",
-							styles: {},
+							show: {
+								//autoShow: false
+							},
+							styles: {
+								titleNView: { // 窗口的标题栏控件
+									autoBackButton: true,
+									titleText: "我的钱包",
+									titleColor: "#000000",
+									titleSize: "16px",
+									backgroundColor: "#ffffff",
+									progress: { // 标题栏控件的进度条样式
+										color: "#2E82FF",
+										height: "2px"
+									},
+									// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									// 	color: "#CCCCCC",
+									// 	height: "1px"
+									// }
+								}
+							},
 							extras: {
-								// 打开页面的同时，向新页面传递数据。
 								newsId: "0"
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: "我的钱包"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						});
 					} else {
 						{
-							mui.openWindowWithTitle({
+							mui.openWindow({
 								url: "myservice.html",
 								id: "myservice.html",
-								styles: {},
+								show: {
+									//autoShow: false
+								},
+								styles: {
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true,
+										titleText: "服务设置",
+										titleColor: "#000000",
+										titleSize: "16px",
+										backgroundColor: "#ffffff",
+										progress: { // 标题栏控件的进度条样式
+											color: "#2E82FF",
+											height: "2px"
+										},
+										// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+										// 	color: "#CCCCCC",
+										// 	height: "1px"
+										// }
+									}
+								},
 								extras: {
-									// 打开页面的同时，向新页面传递数据。
 									newsId: "0"
 								}
-							}, {
-								//标题栏的背景色和底边线配置
-								backgroundColor: "#ffffff",
-								//bottomBorderColor:"#00ff00",
-								title: {
-									//标题文字的内容和样式配置
-									text: "服务设置"
-								},
-								back: {
-									image: {
-										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-										imgSrc: "../images/left-icon.png"
-									}
-								}
-							})
+							});
+
 						}
 					}
 
@@ -194,85 +211,94 @@
 				aboutLi[i].onclick = function() {
 					console.log(this.index);
 					if (this.index == 0) {
-						mui.openWindowWithTitle({
+						mui.openWindow({
 							url: "about.html",
 							id: "about.html",
-							styles: {},
+							show: {
+								//autoShow: false
+							},
+							styles: {
+								titleNView: { // 窗口的标题栏控件
+									autoBackButton: true,
+									titleText: "关于我们",
+									titleColor: "#000000",
+									titleSize: "16px",
+									backgroundColor: "#ffffff",
+									progress: { // 标题栏控件的进度条样式
+										color: "#2E82FF",
+										height: "2px"
+									},
+									// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									// 	color: "#CCCCCC",
+									// 	height: "1px"
+									// }
+								}
+							},
 							extras: {
-								// 打开页面的同时，向新页面传递数据。
 								newsId: "0"
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: "关于我们"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						});
 					} else if (this.index == 1) {
-						mui.openWindowWithTitle({
+						mui.openWindow({
 							url: "contact.html",
 							id: "contact.html",
-							styles: {},
+							show: {
+								//autoShow: false
+							},
+							styles: {
+								titleNView: { // 窗口的标题栏控件
+									autoBackButton: true,
+									titleText: "联系我们",
+									titleColor: "#000000",
+									titleSize: "16px",
+									backgroundColor: "#ffffff",
+									progress: { // 标题栏控件的进度条样式
+										color: "#2E82FF",
+										height: "2px"
+									},
+									// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									// 	color: "#CCCCCC",
+									// 	height: "1px"
+									// }
+								}
+							},
 							extras: {
-								// 打开页面的同时，向新页面传递数据。
 								newsId: "0"
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							//bottomBorderColor:"#00ff00",
-							title: {
-								//标题文字的内容和样式配置
-								text: "联系我们"
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						});
 					}
 				}
 			}
 
 			// 登录
 			mui("body").on('tap', '#login', function() {
-				mui.openWindowWithTitle({
+				mui.openWindow({
 					url: "login.html",
 					id: "login.html",
-					styles: {},
-					extras: {
-						// 打开页面的同时，向新页面传递数据。
-						newsId: "0"
-					}
-				}, {
-					//标题栏的背景色和底边线配置
-					backgroundColor: "#267CFB",
-					bottomBorderColor: "#267CFB",
-					title: {
-						//标题文字的内容和样式配置
-						text: "登录",
-						styles: {
-							color: "#ffffff"
+					show: {
+						//autoShow: false
+					},
+					styles: {
+						titleNView: { // 窗口的标题栏控件
+							autoBackButton: true,
+							titleText: "登录",
+							titleColor: "#ffffff",
+							titleSize: "16px",
+							backgroundColor: "#267CFB",
+							progress: { // 标题栏控件的进度条样式
+								color: "#2E82FF",
+								height: "2px"
+							},
+							// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+							// 	color: "#CCCCCC",
+							// 	height: "1px"
+							// }
 						}
 					},
-					back: {
-						image: {
-							/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-							imgSrc: "../images/wleft-icon.png"
-						}
+					extras: {
+						newsId: "0"
 					}
-				})
+				});
 			});
 			// 个人信息
 			function details(token) {
@@ -293,7 +319,7 @@
 					success: function(data) {
 						console.log(data)
 						if (data.errCode == 200) {
-							options.userinfo =  data.datas;
+							options.userinfo = data.datas;
 						} else {
 							mui.toast(data.message)
 						}

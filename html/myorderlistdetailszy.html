@@ -130,7 +130,7 @@
 				var infoid = self.yid;
 				options.token = token;
 				options.infoid = infoid;
-				getdetails(token, infoid)
+				getdetails(token, infoid);
 			})
 			mui('body').on('tap', '#pubtalk', function() {
 				var text = document.getElementById('saytext').value;
@@ -177,6 +177,10 @@
 						if (data.errCode == 200) {
 							options.datadetails = data.datas;
 							options.appendid = data.datas.status;
+							//关闭等待框
+							plus.nativeUI.closeWaiting();
+							//显示当前页面
+							mui.currentWebview.show();
 						} else {
 							mui.toast(data.message);
 							mui.back();

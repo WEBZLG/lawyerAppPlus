@@ -123,166 +123,149 @@
 				updatemes(options.token, kid)
 				switch (type) {
 					case "1":
-						mui.openWindowWithTitle({
+						mui.openWindow({
 							url: "myorderlistdetails.html",
 							id: "myorderlistdetails.html",
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								yid: mid
-							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							// bottomBorderColor:"#267CFB",
-							title: {
-								//标题文字的内容和样式配置
-								text: "免费咨询",
-								styles: {
-									color: "#333333"
+							show: {
+								//autoShow: false
+							},
+							styles: {
+								titleNView: { // 窗口的标题栏控件
+									autoBackButton: true,
+									titleText: "免费咨询",
+									titleColor: "#000000",
+									titleSize: "16px",
+									backgroundColor: "#ffffff",
+									progress: { // 标题栏控件的进度条样式
+										color: "#2E82FF",
+										height: "2px"
+									},
+									// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									// 	color: "#CCCCCC",
+									// 	height: "1px"
+									// }
 								}
 							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
+							extras: {
+								yid: mid
 							}
-						})
+						});
 						break;
 					case "2":
-						mui.openWindowWithTitle({
-							url: "myorderlistdetailszy.html",
-							id: "myorderlistdetailszy.html",
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								yid: mid
+					mui.openWindow({
+						url: "myorderlistdetailszy.html",
+						id: "myorderlistdetailszy.html",
+						show: {
+							//autoShow: false
+						},
+						styles: {
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true,
+								titleText: "专业咨询",
+								titleColor: "#000000",
+								titleSize: "16px",
+								backgroundColor: "#ffffff",
+								progress: { // 标题栏控件的进度条样式
+									color: "#2E82FF",
+									height: "2px"
+								},
+								// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								// 	color: "#CCCCCC",
+								// 	height: "1px"
+								// }
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							// bottomBorderColor:"#267CFB",
-							title: {
-								//标题文字的内容和样式配置
-								text: "专业咨询",
-								styles: {
-									color: "#333333"
-								}
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						},
+						extras: {
+							yid: mid
+						}
+					});
 						break;
 					case '3':
-						mui.openWindowWithTitle({
-							url: "myorderlistdetailslsh.html",
-							id: "myorderlistdetailslsh.html",
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								lshid: mid
+					mui.openWindow({
+						url: "myorderlistdetailslsh.html",
+						id: "myorderlistdetailslsh.html",
+						show: {
+							//autoShow: false
+						},
+						styles: {
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true,
+								titleText: "律师函",
+								titleColor: "#ffffff",
+								titleSize: "16px",
+								backgroundColor: "#267CFB",
+								progress: { // 标题栏控件的进度条样式
+									color: "#2E82FF",
+									height: "2px"
+								},
+								// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								// 	color: "#CCCCCC",
+								// 	height: "1px"
+								// }
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#267CFB",
-							bottomBorderColor: "#267CFB",
-							title: {
-								//标题文字的内容和样式配置
-								text: "律师函",
-								styles: {
-									color: "#ffffff"
-								}
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/wleft-icon.png"
-								}
-							}
-						})
+						},
+						extras: {
+							lshid: mid
+						}
+					});
 						break;
 					case '4':
-						mui.openWindowWithTitle({
-							url: "myorderlistdetailshtsh.html",
-							id: "myorderlistdetailshtsh.html",
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								lshid: mid
+					mui.openWindow({
+						url: "myorderlistdetailshtsh.html",
+						id: "myorderlistdetailshtsh.html",
+						show: {
+							//autoShow: false
+						},
+						styles: {
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true,
+								titleText: "合同审核",
+								titleColor: "#ffffff",
+								titleSize: "16px",
+								backgroundColor: "#267CFB",
+								progress: { // 标题栏控件的进度条样式
+									color: "#2E82FF",
+									height: "2px"
+								},
+								// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								// 	color: "#CCCCCC",
+								// 	height: "1px"
+								// }
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#267CFB",
-							bottomBorderColor: "#267CFB",
-							title: {
-								//标题文字的内容和样式配置
-								text: "合同审核",
-								styles: {
-									color: "#ffffff"
-								}
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/wleft-icon.png"
-								}
-							}
-						})
+						},
+						extras: {
+							lshid: mid
+						}
+					});
 						break;
 					case '5':
-						mui.openWindowWithTitle({
-							url: "myorderlistdetailshtdz.html",
-							id: "myorderlistdetailshtdz.html",
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								lshid: mid
+					mui.openWindow({
+						url: "myorderlistdetailshtdz.html",
+						id: "myorderlistdetailshtdz.html",
+						show: {
+							//autoShow: false
+						},
+						styles: {
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true,
+								titleText: "免费咨询",
+								titleColor: "#ffffff",
+								titleSize: "16px",
+								backgroundColor: "#267CFB",
+								progress: { // 标题栏控件的进度条样式
+									color: "#2E82FF",
+									height: "2px"
+								},
+								// splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								// 	color: "#CCCCCC",
+								// 	height: "1px"
+								// }
 							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#267CFB",
-							bottomBorderColor: "#267CFB",
-							title: {
-								//标题文字的内容和样式配置
-								text: "合同定制",
-								styles: {
-									color: "#ffffff"
-								}
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/wleft-icon.png"
-								}
-							}
-						})
-						break;
-					case '6':
-						mui.openWindowWithTitle({
-							url: "dialog.html",
-							id: "dialog.html",
-							extras: {
-								// 打开页面的同时，向新页面传递数据。
-								yid: 0
-							}
-						}, {
-							//标题栏的背景色和底边线配置
-							backgroundColor: "#ffffff",
-							// bottomBorderColor:"#267CFB",
-							title: {
-								//标题文字的内容和样式配置
-								text: "合同定制",
-								styles: {
-									color: "#333333"
-								}
-							},
-							back: {
-								image: {
-									/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-									imgSrc: "../images/left-icon.png"
-								}
-							}
-						})
+						},
+						extras: {
+							lshid: mid
+						}
+					});
 						break;
 				}
 			});

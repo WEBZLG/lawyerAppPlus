@@ -132,15 +132,16 @@
 							<div id="scroll1" class="mui-scroll-wrapper">
 								<div class="mui-scroll">
 									<ul class="mui-table-view">
-										<li class="mui-table-view-cell" v-for="item in datalist" :key='item.id' v-if="item.settlement !=1 ">
+										<li class="mui-table-view-cell" v-for="item in datalist0" :key='item.id'>
 											<div class="">
-												<p class="gettype">{{item.servciceName}}<span v-if="item.settlement==2" class="redcolor">/退款</span><span v-if="item.settlement==3" class="redcolor">/申请退款</span></p>
+												<p class="gettype">{{item.servciceName}}<span v-if="item.settlement==2" class="redcolor">/退款</span><span
+													 v-if="item.settlement==3" class="redcolor">/申请退款</span></p>
 												<p>{{item.settlementTime}}</p>
 											</div>
 											<div class="orangecolor">{{item.state==0?"-":"+"}}{{item.money}}</div>
 										</li>
 									</ul>
-									<div class="nodata" v-if="datalist.length==0">暂无数据</div>
+									<div class="nodata" v-if="datalist0.length==0">暂无数据</div>
 								</div>
 							</div>
 						</div>
@@ -148,7 +149,7 @@
 							<div class="mui-scroll-wrapper">
 								<div class="mui-scroll">
 									<ul class="mui-table-view">
-										<li class="mui-table-view-cell" v-for="item in datalist" :key='item.id' v-if="item.settlement ==1 ">
+										<li class="mui-table-view-cell" v-for="item in datalist1" :key='item.id'>
 											<div class="">
 												<p class="gettype">{{item.servciceName}}</p>
 												<p>{{item.settlementTime}}</p>
@@ -156,7 +157,7 @@
 											<div class="orangecolor">{{item.money}}</div>
 										</li>
 									</ul>
-									<div class="nodata" v-if="datalist.length==0">暂无数据</div>
+									<div class="nodata" v-if="datalist1.length==0">暂无数据</div>
 								</div>
 							</div>
 						</div>
@@ -201,7 +202,8 @@
 			var options = new Vue({
 				el: '#app',
 				data: {
-					datalist: [],
+					datalist0: [],
+					datalist1: [],
 					applydatalist: [],
 					token: "",
 					offset: 0,
@@ -214,11 +216,12 @@
 			mui.plusReady(function() {
 				var token = plus.storage.getItem('token');
 				options.token = token;
-				getlist(token, 0, 10);
+				getlist(token, 0, 10,0);
+				getlist(token, 0, 10,1);
 				getapplylist(token, 0, 10)
 			})
 			// 获取支出情况
-			function getlist(token, offset, limit) {
+			function getlist(token, offset, limit, settlement) {
 				mui.ajax({
 					type: 'get',
 					url: baseurl + "client/mfflUsers/getUserProfitP",
@@ -234,12 +237,17 @@
 					},
 					data: {
 						'offset': offset,
-						'limit': limit
+						'limit': limit,
+						'settlement': settlement
 					},
 					success: function(data) {
 						console.log(data)
 						if (data.errCode == 200) {
-							options.datalist = data.datas.data;
+							if (settlement == 0) {
+								options.datalist0 = data.datas.data;
+							} else if(settlement==1){
+								options.datalist1 = data.datas.data;
+							}
 							//初始化轮播组件
 							gallery = mui('.mui-slider');
 							gallery.slider();
@@ -304,7 +312,8 @@
 								callback: function() {
 									var self = this;
 									setTimeout(function() {
-										getlist(options.token, 0, 10);
+										getlist(options.token, 0, 10,0);
+										getlist(options.token, 0, 10,1);
 										getapplylist(options.token, 0, 10)
 										self.endPullDownToRefresh();
 									}, 1000);
@@ -315,7 +324,8 @@
 									var self = this;
 									options.limit = options.limit * 1 + 10;
 									setTimeout(function() {
-										getlist(options.token, 0, options.limit);
+										getlist(options.token, 0, options.limit,0);
+										getlist(options.token, 0, options.limit,1);
 										getapplylist(options.token, 0, options.limit)
 										self.endPullUpToRefresh();
 									}, 1000);
