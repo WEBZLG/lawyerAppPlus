@@ -49,13 +49,15 @@
 				var loginTime = plus.storage.getItem('loginTime'); //读取token的值
 				console.log(token);
 				if (token == "" || token == null) {
-					if (loginTime < timestamp) {
+					mui.openWindow({
+						'url': "html/login.html",
+						'id': "html/login.html"
+					})
+				}else if (loginTime < timestamp){
 						mui.openWindow({
 							'url': "html/login.html",
 							'id': "html/login.html"
 						})
-						return false;
-					}
 				}
 				var userinfo = plus.storage.getItem('userinfo');
 				userinformation = JSON.parse(userinfo);
