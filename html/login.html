@@ -89,13 +89,8 @@
 						},
 						success: function(data) {
 							console.log(data);
+							userinformation = data.datas.userInfo;
 							if (data.errCode == 200) {
-								mui.toast('登录成功!')
-								plus.storage.setItem('loginTime', ''+data.datas.loginTime);
-								plus.storage.setItem('token', data.datas.token);
-								var userinfo = JSON.stringify(data.datas.userInfo)
-								plus.storage.setItem('userinfo', userinfo);
-								userinformation = data.datas.userInfo;
 								if (userinformation.lawyerinspect == 0) {
 									mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
 										console.log(e.index)
@@ -165,7 +160,7 @@
 													}
 												},
 												extras: {
-													newsId: "0"
+													token: data.datas.token
 												}
 											});
 										} else {
@@ -174,6 +169,12 @@
 									}, 'div');
 									return false;
 								} else {
+									mui.toast('登录成功!')
+									plus.storage.setItem('loginTime', ''+data.datas.loginTime);
+									plus.storage.setItem('token', data.datas.token);
+									var userinfo = JSON.stringify(data.datas.userInfo)
+									plus.storage.setItem('userinfo', userinfo);
+									
 									setTimeout(function() {
 										plus.webview.currentWebview().close();
 										var home = plus.webview.getLaunchWebview().getURL();

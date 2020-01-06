@@ -59,78 +59,79 @@
 							'id': "html/login.html"
 						})
 				}
-				var userinfo = plus.storage.getItem('userinfo');
-				userinformation = JSON.parse(userinfo);
-				if (userinformation.lawyerinspect == 0) {
-					mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
-						console.log(e.index)
-						if (e.index == 1) {
-							mui.openWindowWithTitle({
-								url: "html/certification.html",
-								id: "html/certification.html",
-								styles: {},
-								extras: {
-									// 打开页面的同时，向新页面传递数据。
-									newsId: "0"
-								}
-							}, {
-								//标题栏的背景色和底边线配置
-								backgroundColor: "#ffffff",
-								//bottomBorderColor:"#00ff00",
-								title: {
-									//标题文字的内容和样式配置
-									text: "律师认证"
-								},
-								back: {
-									image: {
-										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-										imgSrc: "../images/left-icon.png"
-									}
-								}
-							})
-						} else {
-							plus.runtime.quit();
-						}
-					}, 'div');
-					return false;
-				} else if (userinformation.lawyerinspect == 2) {
-					mui.alert('律师认证审核中', '提示', '关闭', function(e) {
-						plus.runtime.quit();
-					}, 'div')
-					return false;
-				} else if (userinformation.lawyerinspect == 3) {
-					mui.confirm('您的律师认证未通过\n请重新认证信息', '温馨提示', ['取消', '确认'], function(e) {
-						console.log(e.index)
-						if (e.index == 1) {
-							mui.openWindowWithTitle({
-								url: "html/certification.html",
-								id: "html/certification.html",
-								styles: {},
-								extras: {
-									// 打开页面的同时，向新页面传递数据。
-									newsId: "0"
-								}
-							}, {
-								//标题栏的背景色和底边线配置
-								backgroundColor: "#ffffff",
-								//bottomBorderColor:"#00ff00",
-								title: {
-									//标题文字的内容和样式配置
-									text: "律师认证"
-								},
-								back: {
-									image: {
-										/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
-										imgSrc: "../images/left-icon.png"
-									}
-								}
-							})
-						} else {
-							plus.runtime.quit();
-						}
-					}, 'div');
-					return false;
-				}
+				// var userinfo = plus.storage.getItem('userinfo');
+				// userinformation = JSON.parse(userinfo);
+				// console.log(userinformation)
+				// if (userinformation.lawyerinspect == 0) {
+				// 	mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
+				// 		console.log(e.index)
+				// 		if (e.index == 1) {
+				// 			mui.openWindowWithTitle({
+				// 				url: "html/certification.html",
+				// 				id: "html/certification.html",
+				// 				styles: {},
+				// 				extras: {
+				// 					// 打开页面的同时，向新页面传递数据。
+				// 					newsId: "0"
+				// 				}
+				// 			}, {
+				// 				//标题栏的背景色和底边线配置
+				// 				backgroundColor: "#ffffff",
+				// 				//bottomBorderColor:"#00ff00",
+				// 				title: {
+				// 					//标题文字的内容和样式配置
+				// 					text: "律师认证"
+				// 				},
+				// 				back: {
+				// 					image: {
+				// 						/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+				// 						imgSrc: "../images/left-icon.png"
+				// 					}
+				// 				}
+				// 			})
+				// 		} else {
+				// 			plus.runtime.quit();
+				// 		}
+				// 	}, 'div');
+				// 	return false;
+				// } else if (userinformation.lawyerinspect == 2) {
+				// 	mui.alert('律师认证审核中', '提示', '关闭', function(e) {
+				// 		plus.runtime.quit();
+				// 	}, 'div')
+				// 	return false;
+				// } else if (userinformation.lawyerinspect == 3) {
+				// 	mui.confirm('您的律师认证未通过\n请重新认证信息', '温馨提示', ['取消', '确认'], function(e) {
+				// 		console.log(e.index)
+				// 		if (e.index == 1) {
+				// 			mui.openWindowWithTitle({
+				// 				url: "html/certification.html",
+				// 				id: "html/certification.html",
+				// 				styles: {},
+				// 				extras: {
+				// 					// 打开页面的同时，向新页面传递数据。
+				// 					newsId: "0"
+				// 				}
+				// 			}, {
+				// 				//标题栏的背景色和底边线配置
+				// 				backgroundColor: "#ffffff",
+				// 				//bottomBorderColor:"#00ff00",
+				// 				title: {
+				// 					//标题文字的内容和样式配置
+				// 					text: "律师认证"
+				// 				},
+				// 				back: {
+				// 					image: {
+				// 						/*返回箭头图片可以使用imgSrc，也可以使用base64编码*/
+				// 						imgSrc: "../images/left-icon.png"
+				// 					}
+				// 				}
+				// 			})
+				// 		} else {
+				// 			plus.runtime.quit();
+				// 		}
+				// 	}, 'div');
+				// 	return false;
+				// }
 				var pages = ["html/home.html", "html/workbench.html", "html/word.html", "html/myself.html"];
 				var arr = document.getElementsByClassName("mui-tab-item");
 				var styles = {

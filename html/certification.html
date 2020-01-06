@@ -68,7 +68,7 @@
 				</ul>
 			</div>
 			<div class="dbbtn" style="margin-bottom: 15px;">
-				<button type="button" class="mui-btn" id="" onclick="mui.back();">取消</button>
+				<button type="button" class="mui-btn" id="cancel">取消</button>
 				<button type="button" class="mui-btn" id="submit">提交</button>
 			</div>
 		</div>
@@ -101,7 +101,9 @@
 				});
 			})(mui, document);
 			mui.plusReady(function() {
-				var token = plus.storage.getItem('token');
+				var self = plus.webview.currentWebview();
+				var token = self.token;
+				// var token = plus.storage.getItem('token');
 				options.token = token;
 				mui('body').on('tap', '#submit', function() {
 					publish(token)
