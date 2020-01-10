@@ -16,7 +16,7 @@
 				<div class="logintitle">
 					<div class="toptitle">登录</div>
 					<div class="wlogo"><img src="../images/logo1.png"></div>
-					<h4>慕法法律咨询</h4>
+					<h4>法智法律咨询</h4>
 					<h4>(律师端)</h4>
 				</div>
 			</div>
@@ -176,9 +176,17 @@
 									plus.storage.setItem('userinfo', userinfo);
 									
 									setTimeout(function() {
-										plus.webview.currentWebview().close();
-										var home = plus.webview.getLaunchWebview().getURL();
-										plus.webview.open(home);
+										mui.openWindow({
+											'url': "../index.html",
+											'id': "../index.html"
+										});
+										setTimeout(function() {
+											plus.webview.hide(plus.webview.currentWebview());
+											plus.webview.currentWebview().close();
+										}, 1000);
+										// plus.webview.currentWebview().close();
+										// var home = plus.webview.getLaunchWebview().getURL();
+										// plus.webview.open(home);
 									}, 1000)
 								}
 								// plus.Push.getRegistrationID(function(res) {

@@ -1785,25 +1785,22 @@ input[type='password'] {
 	overflow: hidden;
 }
 
-.dot,
 .chatdot {
 	display: inline-block;
 	vertical-align: middle;
-/* 	height: 5px;
-	width: 5px; */
+    height: 10px;
+    min-width:10px;
+    font-size: 10px;
+    text-align: center;
+    line-height: 10px;
+    position: absolute;
+    z-index: 999;
+    top: 5px;
+    left: 5px;
+    color: #2E82FF;
+    background: #ffffff;
 	margin-right: 3px;
-	border-radius: 50%;
-	/* background-color: #DC4F51; */
-}
-
-.chatdot {
-/* 	height: 8px;
-	width: 8px; */
-	position: absolute;
-	z-index: 999;
-	top: 5px;
-	left: 5px;
-	background: #ffffff;
+	border-radius: 10px;
 }
 
 
@@ -1893,6 +1890,10 @@ input[type='password'] {
 
 .textcontent {
 	padding: 15px 0;
+	overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	}
 }
 
 .mui-content-grey {

@@ -27,10 +27,10 @@
 					<p v-else>有{{systermnum}}条系统通知</p>
 				</div>
 			</div>
-			<ul class="mui-content user-message">
-				<li :id="item.id" :sendId="item.sendId" :name="item.nickname" v-for="item in datalist" :key="item.id">
+			<ul class="mui-content user-message" v-if="datalist">
+				<li v-for="item in datalist" :key="item.id" :id="item.id"  :sendId="item.sendId" :name="item.nickname" >
 					<div class="mes-head">
-						<span class="chatdot" v-if="item.status==1"></span>
+						<span class="chatdot" v-if="item.status==1">{{item.chatCount}}</span>
 						<div class="mes-img"><img :src=imgurl+item.headImgUrl></div><!-- <span class="mui-badge mui-badge-danger">1</span> -->
 					</div>
 					<div class="mes-item">
