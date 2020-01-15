@@ -189,7 +189,7 @@
 				<div class="dialogback" onclick="mui.back();"><img src="../images/left-icon.png"></div>
 				<div>
 					<h4 id="title"></h4>
-					<p id="time" class="bluecolor"></p>
+					<!-- <p id="time" class="bluecolor"></p> -->
 				</div>
 				<div class="deleteword">
 					<!-- <img src="../images/del.png" > -->
@@ -556,15 +556,15 @@
 							} else {
 								document.getElementById('action').classList.remove("mui-hidden");
 								document.getElementById('actionbuy').classList.add('mui-hidden')
-								var timeset = setInterval(function() {
-									if (firstTime < 1) {
-										clearInterval(timeset)
-									} else {
-										formatTime(firstTime);
-										firstTime = firstTime - 1;
-										document.getElementById('time').innerText = formatTime(firstTime);
-									}
-								}, 1000)
+								// var timeset = setInterval(function() {
+								// 	if (firstTime < 1) {
+								// 		clearInterval(timeset)
+								// 	} else {
+								// 		formatTime(firstTime);
+								// 		firstTime = firstTime - 1;
+								// 		document.getElementById('time').innerText = formatTime(firstTime);
+								// 	}
+								// }, 1000)
 							}
 						} else {
 							mui.toast(data.message)

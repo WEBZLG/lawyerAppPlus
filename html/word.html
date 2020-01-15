@@ -15,7 +15,7 @@
 		<div class="mes-list" id="app">
 			<div class="mui-content systerm-message">
 				<div class="mes-head">
-					<span class="chatdot" v-if="systermstatus==1">{{item.chatCount}}</span>
+					<span class="chatdot" v-if="systermstatus==1"></span>
 					<div class="mes-img"><img src="../images/xttz.png"></div><!-- <span class="mui-badge mui-badge-danger">1</span> -->
 				</div>
 				<div class="mes-item">
@@ -55,51 +55,51 @@
 		(function($, doc) {
 			window.addEventListener('refreshes', function(e) {
 				//执行刷新
-				console.log("刷新父页面")
+				var  token=options.token ;
 				location.reload();
+				getlist(token);
+				getsys(token);
 			});
 		})(mui, document);
 		mui.plusReady(function() {
 			var token = plus.storage.getItem('token');
-			options.token = token;
 			getlist(token);
 			getsys(token);
-		})
-		var options = new Vue({
-			el: '#app',
-			data: {
-				datalist: [],
-				token: "",
-				systermnum: '',
-				systermstatus: ''
-			},
-			methods: {
-
+			options.token = token;
+			// 极光推送监听
+			var receiveNotification = function(event) {
+				var content;
+				if (plus.os.name == 'iOS') {
+					content = window.plus.Push.receiveNotification.aps.alert;
+				} else {
+					content = window.plus.Push.receiveNotification.alert;
+				}
+				getlist(options.token)
+				var xunguan = plus.webview.getWebviewById("dialog.html");
+				mui.fire(xunguan, 'listenerWorkState') //事件名称
+				console.log(content)
 			}
+			document.addEventListener("jpush.receiveNotification", receiveNotification, false);
+			document.addEventListener("plusready", function() {
+				// 监听点击消息事件
+				plus.push.addEventListener("click", function(msg) {
+					//根据需要填写
+					plus.webview.open("word.html");
+			
+				}, false);
+			}, false);
+		})
+
+		mui.plusReady(function() {
+			//推送消息监听
+			plus.push.addEventListener("click", function(msg) {
+				// alert("9999999");
+				// alert(msg.content);
+				// alert(msg.title);
+				// alert(msg.payload); //获取透传消息，不知道对不对？
+			});
 		});
 
-		// 极光推送监听
-		var receiveNotification = function(event) {
-			var content;
-			if (plus.os.name == 'iOS') {
-				content = window.plus.Push.receiveNotification.aps.alert;
-			} else {
-				content = window.plus.Push.receiveNotification.alert;
-			}
-			getlist(options.token)
-			var xunguan = plus.webview.getWebviewById("dialog.html");
-			mui.fire(xunguan, 'listenerWorkState') //事件名称
-			console.log(content)
-		}
-		document.addEventListener("jpush.receiveNotification", receiveNotification, false);
-		document.addEventListener("plusready", function() {
-			// 监听点击消息事件
-			plus.push.addEventListener("click", function(msg) {
-				//根据需要填写
-				plus.webview.open("word.html");
-
-			}, false);
-		}, false);
 		// 获取系统消息
 		function getsys(token) {
 			mui.ajax({
@@ -159,6 +159,19 @@
 				}
 			})
 		}
+		
+		var options = new Vue({
+			el: '#app',
+			data: {
+				datalist: [],
+				token: "",
+				systermnum: '',
+				systermstatus: ''
+			},
+			methods: {
+		
+			}
+		});
 
 		mui("body").on("tap", ".systerm-message", function() {
 			// console.log(this.getAttribute("name"))
@@ -206,5 +219,8 @@
 				}
 			})
 		});
+		
+		
+
 	</script>
 </html>
