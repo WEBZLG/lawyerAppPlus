@@ -89,8 +89,8 @@
 						},
 						success: function(data) {
 							console.log(data);
-							userinformation = data.datas.userInfo;
 							if (data.errCode == 200) {
+								userinformation = data.datas.userInfo;
 								if (userinformation.lawyerinspect == 0) {
 									mui.confirm('您还有没进行律师认证\n认证后才能接单和回答问题', '温馨提示', ['取消', '确认'], function(e) {
 										console.log(e.index)
